@@ -13,18 +13,53 @@ module Trepan
   PORT = 8989 unless defined?(PORT)
 
   # What file is used for debugger startup commands.
-  unless defined?(INITFILE)
-    if RUBY_PLATFORM =~ /mswin/
-      # Of course MS Windows has to be different
-      INITFILE = 'trepan8.ini'
-      HOME_DIR =  (ENV['HOME'] || 
-                   ENV['HOMEDRIVE'].to_s + ENV['HOMEPATH'].to_s).to_s
+  unless defined?(CMD_INITFILE_BASE)
+    CMD_INITFILE_BASE = 
+      if RUBY_PLATFORM =~ /mswin/
+        # Of course MS Windows has to be different
+        HOME_DIR =  (ENV['HOME'] || 
+                     ENV['HOMEDRIVE'].to_s + ENV['HOMEPATH'].to_s).to_s
+        'trepan8.ini'
     else
-      INITFILE = '.trepan8rc'
-      HOME_DIR = ENV['HOME'].to_s
+        HOME_DIR = ENV['HOME'].to_s
+        '.trepan8rc'
     end
   end
+
+  CMD_INITFILE = File.join(HOME_DIR, CMD_INITFILE_BASE) unless
+    defined?(CMD_INITFILE)
   
+  # Default settings for Trepan run from the command line.
+  DEFAULT_CMDLINE_SETTINGS = {
+    'annotate'           => 0,
+    'client'             => false,
+    'control'            => true,
+    'cport'              => PORT + 1,
+    'frame_bind'         => false,
+    'host'               => nil,
+    'quit'               => true,
+    'no_rewrite_program' => false,
+    'stop'               => true,
+    'nx'                 => false,
+    'port'               => PORT,
+    'post_mortem'        => false,
+    'restart_script'     => nil,
+    'script'             => nil,
+    'server'             => false,
+    'tracing'            => false,
+    'verbose_long'       => false,
+    'wait'               => false
+    ## :cmdfiles => [],  # initialization command files to run
+    ## :client   => false, # attach to out-of-process program?
+    ## :nx       => false, # don't run user startup file (e.g. .trepanrc)
+    ## :output   => nil,
+    ## :port     => default_settings[:port],
+    ## :host     => default_settings[:host], 
+    ## :server   => false, # out-of-process debugging?
+    ## :readline => true,  # try to use gnu readline?
+    ## Note that at most one of :server or :client can be true.
+  } unless defined?(DEFAULT_CMDLINE_SETTINGS)
+
   class CmdProcessor
 
     DEFAULT_SETTINGS = {

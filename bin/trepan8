@@ -279,32 +279,11 @@ EOB
 end
 
 begin
-  initfile = File.join(HOME_DIR, Trepan::INITFILE)
-  eval(File.read(initfile)) if 
-    File.exist?(initfile)
+  eval(File.read(Trepan::CMD_INITFILE)) if File.exist?(Trepan::CMD_INITFILE)
 rescue
 end
 
-options = OpenStruct.new(
-                         'annotate'           => Trepan.annotate,
-                         'client'             => false,
-                         'control'            => true,
-                         'cport'              => Trepan::PORT + 1,
-                         'frame_bind'         => false,
-                         'host'               => nil,
-                         'quit'               => true,
-                         'no_rewrite_program' => false,
-                         'stop'               => true,
-                         'nx'                 => false,
-                         'port'               => Trepan::PORT,
-                         'post_mortem'        => false,
-                         'restart_script'     => nil,
-                         'script'             => nil,
-                         'server'             => false,
-                         'tracing'            => false,
-                         'verbose_long'       => false,
-                         'wait'               => false
-                         )
+options = OpenStruct.new(Trepan::DEFAULT_CMDLINE_SETTINGS)
 
 opts = Trepan::process_options(options)
 begin

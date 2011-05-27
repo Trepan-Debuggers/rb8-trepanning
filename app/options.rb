@@ -74,13 +74,13 @@ EOB
       end
       opts.on("-h", "--host NAME", String, 
               "Host or IP used in TCP connections for --server or --client. " + 
-              "Default is #{DEFAULT_SETTINGS[:host].inspect}.") do 
+              "Default is #{DEFAULT_CMDLINE_SETTINGS[:host].inspect}.") do 
         |name_or_ip| 
         options[:host] = name_or_ip
       end
       opts.on("-p", "--port NUMBER", Integer, 
               "Port number used in TCP connections for --server or --client. " + 
-              "Default is #{DEFAULT_SETTINGS[:port]}.") do 
+              "Default is #{DEFAULT_CMDLINE_SETTINGS[:port]}.") do 
         |num| 
         options[:port] = num
       end

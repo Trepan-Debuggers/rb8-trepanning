@@ -4,5 +4,5 @@ require 'rubygems'
 require 'require_relative'
 require_relative "rubygems"
 require './trepanning'
-Debugger.start
+Trepan.start
 debugger
