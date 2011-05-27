@@ -20,7 +20,7 @@ and a patched YARV 1.9.2.
 EOF
   # spec.add_dependency('rb-threadframe', '>= 0.38')
   # spec.add_dependency('rb-trace', '>= 0.5')
-  spec.add_dependency('linecache', '>= 1.0')
+  spec.add_dependency('linecache', '>= 0.43')
   spec.add_dependency('columnize')
   spec.add_dependency('diff-lcs') # For testing only
   spec.author       = 'R. Bernstein'
