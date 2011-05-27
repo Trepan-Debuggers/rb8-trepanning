@@ -29,6 +29,25 @@ module Trepan
   CMD_INITFILE = File.join(HOME_DIR, CMD_INITFILE_BASE) unless
     defined?(CMD_INITFILE)
   
+  # Default settings for a Trepan class object
+  DEFAULT_SETTINGS = {
+    :cmdproc_opts    => {},    # Default Trepan::CmdProcessor settings
+    :core_opts       => {},    # Default Trepan::Core settings
+    :delete_restore  => true,  # Delete restore profile after reading? 
+    :initial_dir     => nil,   # If --cd option was given, we save it here.
+    :nx              => false, # Don't run user startup file (e.g. .trepanxrc)
+    :offset          => 0,     # skipping back +offset+ frames. This lets you start
+                               # the debugger straight into callers method.
+
+    # Default values used only when 'server' or 'client'
+    # (out-of-process debugging)
+    :port            => 1955,
+    :host            => 'localhost', 
+
+    :restart_argv    => [],
+    :server          => false  # Out-of-process debugging?
+  } unless defined?(DEFAULT_SETTINGS)
+
   # Default settings for Trepan run from the command line.
   DEFAULT_CMDLINE_SETTINGS = {
     'annotate'           => 0,
