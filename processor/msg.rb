@@ -2,8 +2,9 @@
 # I/O related command processor methods
 require 'rubygems'; require 'require_relative'
 require_relative '../app/util'
+require_relative 'virtual'
 module Trepan
-  class CmdProcessor
+  class CmdProcessor < VirtualCmdProcessor
     attr_accessor :ruby_highlighter
 
     def errmsg(message, opts={})

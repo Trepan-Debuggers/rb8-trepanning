@@ -30,6 +30,7 @@ class Trepan::SubcommandMgr < Trepan::Command
     @name    = obj_const(self, :NAME)
     @subcmds = Trepan::Subcmd.new(self)
     @proc    = proc
+    @intf    = proc.interfaces[-1]
     load_debugger_subcommands(self)
   end
 

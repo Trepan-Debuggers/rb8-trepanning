@@ -16,7 +16,7 @@ end
 ## require_relative '../app/brkptmgr'
 
 module Trepan
-  class CmdProcessor
+  class CmdProcessor < VirtualCmdProcessor
 
     # SEE ALSO attr's in require_relative's of loop above.
 
@@ -98,6 +98,7 @@ module Trepan
       @cmd_queue       = []
       ### @dbgr            =  dbgr
       @interfaces      = interfaces
+      @intf            = interfaces[-1]
       @debug_nest      = 1
       @hidelevels      = {}
       @last_command    = nil

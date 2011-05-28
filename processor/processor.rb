@@ -4,13 +4,13 @@ require 'require_relative'
 require_relative '../app/interface'
 require_relative './command'
 
-# _Debugger_ is the module name space for ruby-debug.
+# _Trepan_ is the module name space for this debugger.
 module Trepan
 
   # A processor handles the kind of front-end to program interaction.
   # Debugger::Processor is the the base class with subclasses
   # Debugger::CommandProcessor and Debugger::ControlCommandProcessor.
-  class Processor 
+  class Processor
     attr_accessor :interface
     attr_reader   :processor
     attr_reader   :commands

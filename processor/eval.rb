@@ -1,6 +1,9 @@
 # Copyright (C) 2010 Rocky Bernstein <rockyb@rubyforge.net>
+require 'rubygems'
+require 'require_relative'
+require_relative 'virtual'
 module Trepan
-  class CmdProcessor
+  class CmdProcessor < VirtualCmdProcessor
 
     def debug_eval(str, max_fake_filename=15)
       begin
@@ -73,7 +76,7 @@ end
 
 if __FILE__ == $0
   # Demo it.
-  cmdp = Trepan::CmdProcessor.new
+  cmdp = Trepan::CmdProcessor.new([])
   puts cmdp.fake_eval_filename('x = 1; y = 2')
   puts cmdp.fake_eval_filename('x = 1; y = 2', 7)
 
