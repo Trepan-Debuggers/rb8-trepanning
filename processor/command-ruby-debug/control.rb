@@ -1,5 +1,5 @@
 module Trepan
-  class RestartCommand < Command # :nodoc:
+  class RestartCommand < OldCommand # :nodoc:
     self.allow_in_control = true
 
     def regexp
@@ -75,7 +75,7 @@ module Trepan
     end
   end
 
-  class InterruptCommand < Command # :nodoc:
+  class InterruptCommand < OldCommand # :nodoc:
     self.allow_in_control     = true
     self.allow_in_post_mortem = false
     self.event                = false

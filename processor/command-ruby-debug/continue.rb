@@ -1,7 +1,7 @@
 module Trepan
 
   # Implements debugger "continue" command.
-  class ContinueCommand < Command
+  class ContinueCommand < OldCommand
     self.allow_in_post_mortem = true
     self.need_context         = false
     def regexp

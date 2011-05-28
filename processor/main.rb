@@ -94,7 +94,7 @@ module Trepan
     end
 
     ## def initialize(dbgr, settings={})
-    def initialize(interfaces, settings={})
+    def initialize(interfaces, state, settings={})
       @cmd_queue       = []
       ### @dbgr            =  dbgr
       @interfaces      = interfaces
@@ -106,6 +106,7 @@ module Trepan
       @next_level      = 32000
       @next_thread     = nil
       @user_variables = 0
+      @state           = state
       
 
       start_cmds       = settings.delete(:start_cmds)

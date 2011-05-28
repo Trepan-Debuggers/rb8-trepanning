@@ -152,7 +152,7 @@ module Trepan
   end
 
   # Implements debugger "where" or "backtrace" command.
-  class WhereCommand < Command
+  class WhereCommand < OldCommand
     def regexp
       /^\s*(?:w(?:here)?|bt|backtrace)$/
     end
@@ -197,7 +197,7 @@ The position of the current frame is marked with -->.  }
     end
   end
 
-  class UpCommand < Command # :nodoc:
+  class UpCommand < OldCommand # :nodoc:
     def regexp
       /^\s* u(?:p)? (?:\s+(\S+))? $/x
     end
@@ -221,7 +221,7 @@ The position of the current frame is marked with -->.  }
     end
   end
 
-  class DownCommand < Command # :nodoc:
+  class DownCommand < OldCommand # :nodoc:
     def regexp
       /^\s* down (?:\s+(\S+))? $/x
     end
@@ -245,7 +245,7 @@ The position of the current frame is marked with -->.  }
     end
   end
   
-  class FrameCommand < Command # :nodoc:
+  class FrameCommand < OldCommand # :nodoc:
     def regexp
       / ^\s* 
         f(?:rame)? 

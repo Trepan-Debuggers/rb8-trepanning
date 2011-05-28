@@ -148,7 +148,7 @@ module Trepan
   end
 
   # Implements debugger "show" command.
-  class ShowCommand < Command
+  class ShowCommand < OldCommand
     
     Subcommands = 
       [

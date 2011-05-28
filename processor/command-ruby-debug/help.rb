@@ -3,7 +3,7 @@ require_relative '../../app/options'
 module Trepan
 
   # Implements debugger "help" command.
-  class HelpCommand < Command
+  class HelpCommand < OldCommand
     self.allow_in_control = true
 
     # An input line is matched against this regular expression. If we have

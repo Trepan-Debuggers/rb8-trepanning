@@ -1,6 +1,6 @@
 module Trepan
   # Implements debugger "source" command.
-  class SourceCommand < Command
+  class SourceCommand < OldCommand
     self.allow_in_control = true
     
     def regexp

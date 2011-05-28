@@ -25,7 +25,7 @@ module Trepan
   # 
   # _help_ and _help_command_ methods are singleton methods, not 
   # instance methods like _regexp_ and _execute_.
-  class Command
+  class OldCommand
     SubcmdStruct=Struct.new(:name, :min, :short_help, :long_help) unless
       defined?(SubcmdStruct)
 
@@ -74,7 +74,7 @@ module Trepan
       # Trepan::RUBY_DEBUG_DIR
       def load_commands
         Dir[File.join(%W(#{Trepan.const_get(:RUBY_DEBUG_DIR)}
-                      command *))].each do 
+                      command-ruby-debug *))].each do 
           |file|
           require file if file =~ /\.rb$/
         end
@@ -249,7 +249,7 @@ module Trepan
     end  
   end
   
-  Command.load_commands
+  OldCommand.load_commands
 
   # Returns setting object.
   # Use Debugger.settings[] and Debugger.settings[]= methods to query and set

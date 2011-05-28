@@ -223,7 +223,7 @@ if __FILE__ == $0
     end
   end
 
-  cmdproc = Trepan::CmdProcessor.new(nil)
+  cmdproc = Trepan::CmdProcessor.new([], nil)
   cmddir = File.join(File.dirname(__FILE__), 'command')
   cmdproc.instance_variable_set('@settings', {})
   cmdproc.load_cmds_initialize

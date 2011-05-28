@@ -1,7 +1,7 @@
 module Trepan
 
   # Implements debugger "kill" command
-  class KillCommand < Command
+  class KillCommand < OldCommand
     self.allow_in_control = true
 
     def regexp

@@ -19,7 +19,7 @@ module Trepan
   end
 
   # Implements debugger "info" command.
-  class InfoCommand < Command
+  class InfoCommand < OldCommand
     self.allow_in_control = true
     Subcommands = 
       [

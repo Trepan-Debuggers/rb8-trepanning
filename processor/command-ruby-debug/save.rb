@@ -13,7 +13,7 @@ module Trepan
     end
   end
 
-  class SaveCommand < Command # :nodoc:
+  class SaveCommand < OldCommand # :nodoc:
     self.allow_in_control = true
     
     def save_breakpoints(file)

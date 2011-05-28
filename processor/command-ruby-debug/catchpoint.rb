@@ -1,5 +1,5 @@
 module Trepan
-  class CatchCommand < Command # :nodoc:
+  class CatchCommand < OldCommand # :nodoc:
     self.allow_in_control = true
 
     def regexp

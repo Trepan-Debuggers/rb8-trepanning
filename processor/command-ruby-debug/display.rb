@@ -20,7 +20,7 @@ module Trepan
     end
   end
 
-  class AddDisplayCommand < Command # :nodoc:
+  class AddDisplayCommand < OldCommand # :nodoc:
     def regexp
       /^\s*disp(?:lay)?\s+(.+)$/
     end
@@ -45,7 +45,7 @@ module Trepan
     end
   end
 
-  class DisplayCommand < Command # :nodoc:
+  class DisplayCommand < OldCommand # :nodoc:
     def self.always_run 
       Trepan.annotate = 0 unless Trepan.annotate
       if Trepan.annotate > 1 
@@ -76,7 +76,7 @@ module Trepan
     end
   end
 
-  class DeleteDisplayCommand < Command # :nodoc:
+  class DeleteDisplayCommand < OldCommand # :nodoc:
 
     def regexp
       /^\s* undisp(?:lay)? \s* (?:(\S+))?$/x

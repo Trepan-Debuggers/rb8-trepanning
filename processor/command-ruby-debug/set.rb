@@ -1,6 +1,6 @@
 module Trepan
   # Implements debugger "set" command.
-  class SetCommand < Command
+  class SetCommand < OldCommand
     SubcmdStruct2=Struct.new(:name, :min, :is_bool, :short_help, 
                              :long_help) unless defined?(SubcmdStruct2)
     Subcommands = 

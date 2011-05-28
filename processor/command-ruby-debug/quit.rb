@@ -1,7 +1,7 @@
 module Trepan
 
   # Implements debugger "quit" command
-  class QuitCommand < Command
+  class QuitCommand < OldCommand
     self.allow_in_control = true
 
     # An input line is matched against this regular expression. If we have

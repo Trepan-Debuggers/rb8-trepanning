@@ -1,6 +1,6 @@
 module Trepan
   # Implements the debugger 'finish' command.
-  class FinishCommand < Command
+  class FinishCommand < OldCommand
     self.allow_in_post_mortem = false
     self.need_context         = true
     

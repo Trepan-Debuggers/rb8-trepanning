@@ -25,7 +25,7 @@ module Trepan
     end
   end
   
-  class EvalCommand < Command # :nodoc:
+  class EvalCommand < OldCommand # :nodoc:
     self.allow_in_control = true
     
     register_setting_get(:autoeval) do
@@ -72,7 +72,7 @@ module Trepan
     end
   end
 
-  class PPCommand < Command # :nodoc:
+  class PPCommand < OldCommand # :nodoc:
     self.allow_in_control = true
     
     def regexp
@@ -102,7 +102,7 @@ module Trepan
     end
   end
 
-  class PutLCommand < Command # :nodoc:
+  class PutLCommand < OldCommand # :nodoc:
     self.allow_in_control = true
     
     def regexp
@@ -138,7 +138,7 @@ module Trepan
     end
   end
   
-  class PSCommand < Command # :nodoc:
+  class PSCommand < OldCommand # :nodoc:
     self.allow_in_control = true
     
     include EvalFunctions

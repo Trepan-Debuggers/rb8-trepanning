@@ -1,6 +1,6 @@
 module Trepan
   # Implements debugger "list" command.
-  class ListCommand < Command
+  class ListCommand < OldCommand
 
     register_setting_get(:autolist) do
       ListCommand.always_run 

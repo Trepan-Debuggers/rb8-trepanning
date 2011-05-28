@@ -109,7 +109,7 @@ module Trepan
     # basename. Or we are eliding filenames.
     def self.canonic_file(filename)
       # For now we want resolved filenames 
-      if Command.settings[:basename]
+      if OldCommand.settings[:basename]
         File.basename(filename)
       else
         # Cache this?
@@ -259,7 +259,7 @@ module Trepan
     # display", "set autolist", or set "autoirb".  We return a list of
     # commands that are acceptable to run bound to the current state.
     def always_run(context, file, line, run_level)
-      event_cmds = Command.commands.select{|cmd| cmd.event }
+      event_cmds = OldCommand.commands.select{|cmd| cmd.event }
 
       # Remove some commands if we are post mortem.
       event_cmds = event_cmds.find_all do |cmd| 
@@ -291,7 +291,7 @@ module Trepan
     # are told to continue execution or terminate.
     def process_commands(context, file, line)
       state, @commands = always_run(context, file, line, 1)
-      $rdebug_state = state if Command.settings[:debuggertesting]
+      $rdebug_state = state if OldCommand.settings[:debuggertesting]
       splitter = lambda do |str|
         str.split(/;/).inject([]) do |m, v|
           if m.empty?

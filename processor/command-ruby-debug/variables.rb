@@ -25,7 +25,7 @@ module Trepan
   end
 
   # Implements the debugger 'var class' command.
-  class VarClassVarCommand < Command
+  class VarClassVarCommand < OldCommand
     def regexp
       /^\s*v(?:ar)?\s+cl(?:ass)?/
     end
@@ -51,7 +51,7 @@ module Trepan
     end
   end
 
-  class VarConstantCommand < Command # :nodoc:
+  class VarConstantCommand < OldCommand # :nodoc:
     def regexp
       /^\s*v(?:ar)?\s+co(?:nst(?:ant)?)?\s+/
     end
@@ -84,7 +84,7 @@ module Trepan
     end
   end
 
-  class VarGlobalCommand < Command # :nodoc:
+  class VarGlobalCommand < OldCommand # :nodoc:
     def regexp
       /^\s*v(?:ar)?\s+g(?:lobal)?\s*$/
     end
@@ -106,7 +106,7 @@ module Trepan
     end
   end
 
-  class VarInstanceCommand < Command # :nodoc:
+  class VarInstanceCommand < OldCommand # :nodoc:
     def regexp
       /^\s*v(?:ar)?\s+ins(?:tance)?\s*/
     end
@@ -130,7 +130,7 @@ module Trepan
   end
 
   # Implements the debugger 'var local' command.
-  class VarLocalCommand < Command
+  class VarLocalCommand < OldCommand
     def regexp
       /^\s*v(?:ar)?\s+l(?:ocal)?\s*$/
     end
@@ -164,7 +164,7 @@ module Trepan
     have_classtree = false
   end
 
-  class VarInheritCommand < Command
+  class VarInheritCommand < OldCommand
     def regexp
       /^\s*v(?:ar)?\s+ct\s*/
     end

@@ -1,6 +1,6 @@
 module Trepan
   # Implements debugger "reload" command.
-  class ReloadCommand < Command
+  class ReloadCommand < OldCommand
     self.allow_in_control = true
 
     register_setting_get(:reload_source_on_change) do 

@@ -1,7 +1,7 @@
 module Trepan
 
   # Implements debugger "break" command.
-  class AddBreakpoint < Command
+  class AddBreakpoint < OldCommand
     self.allow_in_control = true
     
     def regexp
@@ -112,7 +112,7 @@ module Trepan
   end
 
   # Implements debugger "delete" command.
-  class DeleteBreakpointCommand < Command
+  class DeleteBreakpointCommand < OldCommand
     self.allow_in_control = true
 
     def regexp

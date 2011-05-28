@@ -3,7 +3,7 @@ module Trepan
   module SteppingFunctions # :nodoc:
     def parse_stepping_args(command_name, match)
       if match[1].nil? 
-          force = Command.settings[:force_stepping]
+          force = OldCommand.settings[:force_stepping]
       elsif match[1] == '+' 
         force = true
       elsif match[1] == '-' 
@@ -14,7 +14,7 @@ module Trepan
     end
   end
   # Implements debugger "next" command.
-  class NextCommand < Command
+  class NextCommand < OldCommand
     self.allow_in_post_mortem  = false
     self.need_context          = true
     
@@ -47,7 +47,7 @@ module Trepan
   end
 
   # Implements debugger "step" command.
-  class StepCommand < Command
+  class StepCommand < OldCommand
     self.allow_in_post_mortem = false
     self.need_context         = true
     

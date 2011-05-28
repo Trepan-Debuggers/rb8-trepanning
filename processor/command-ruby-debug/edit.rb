@@ -1,5 +1,5 @@
 module Trepan
-  class Edit < Command # :nodoc:
+  class Edit < OldCommand # :nodoc:
     self.allow_in_control = true
     def regexp
       /^\s* ed(?:it)? (?:\s+(.*))?$/ix

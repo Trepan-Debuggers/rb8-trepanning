@@ -1,6 +1,6 @@
 module Trepan
 
-  class ConditionCommand < Command # :nodoc:
+  class ConditionCommand < OldCommand # :nodoc:
 
     def regexp
       /^\s* cond(?:ition)? (?:\s+(\d+)\s*(.*))?$/ix

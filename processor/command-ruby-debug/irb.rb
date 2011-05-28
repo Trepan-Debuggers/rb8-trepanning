@@ -105,7 +105,7 @@ end
 module Trepan
 
   # Implements debugger "irb" command.
-  class IRBCommand < Command
+  class IRBCommand < OldCommand
 
     register_setting_get(:autoirb) do 
       IRBCommand.always_run

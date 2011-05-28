@@ -41,7 +41,7 @@ module Trepan
     end
   end
 
-  class ThreadListCommand < Command # :nodoc:
+  class ThreadListCommand < OldCommand # :nodoc:
     self.allow_in_control = true
 
     def regexp
@@ -67,7 +67,7 @@ module Trepan
     end
   end
 
-  class ThreadStopCommand < Command # :nodoc:
+  class ThreadStopCommand < OldCommand # :nodoc:
     self.allow_in_control     = true
     self.allow_in_post_mortem = false
     self.need_context         = true
@@ -96,7 +96,7 @@ module Trepan
     end
   end
 
-  class ThreadResumeCommand < Command # :nodoc:
+  class ThreadResumeCommand < OldCommand # :nodoc:
     self.allow_in_post_mortem = false
     self.allow_in_control = true
     self.need_context = true
@@ -132,7 +132,7 @@ module Trepan
   # Thread switch Must come after "Thread resume" because "switch" is
   # optional
 
-  class ThreadSwitchCommand < Command # :nodoc:
+  class ThreadSwitchCommand < OldCommand # :nodoc:
     self.allow_in_control     = true
     self.allow_in_post_mortem = false
     self.need_context         = true
@@ -163,7 +163,7 @@ module Trepan
     end
   end
 
-  class ThreadCurrentCommand < Command # :nodoc:
+  class ThreadCurrentCommand < OldCommand # :nodoc:
     self.need_context = true
     
     def regexp

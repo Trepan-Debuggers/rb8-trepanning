@@ -1,5 +1,5 @@
 module Trepan
-  class TraceCommand < Command # :nodoc:
+  class TraceCommand < OldCommand # :nodoc:
     def regexp
       /^\s* tr(?:ace)? (?: \s+ (\S+))         # on |off | var(iable)
                        (?: \s+ (\S+))?        # (all | variable-name)?

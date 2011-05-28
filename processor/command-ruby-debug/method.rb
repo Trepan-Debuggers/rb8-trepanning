@@ -8,7 +8,7 @@ module Trepan
   end
 
   # Implements the debugger 'method sig' command.
-  class MethodSigCommand < Command
+  class MethodSigCommand < OldCommand
     def regexp
       /^\s*m(?:ethod)?\s+sig(?:nature)?\s+(\S+)\s*$/
     end
@@ -40,7 +40,7 @@ module Trepan
   end if have_methodsig
 
   # Implements the debugger 'method' command.
-  class MethodCommand < Command
+  class MethodCommand < OldCommand
     def regexp
       /^\s*m(?:ethod)?\s+((iv)|(i(:?nstance\s+)?)\s+)?/
     end

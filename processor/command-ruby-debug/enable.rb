@@ -43,7 +43,7 @@ module Trepan
 
   end
 
-  class EnableCommand < Command # :nodoc:
+  class EnableCommand < OldCommand # :nodoc:
     Subcommands = 
       [
        ['breakpoints', 2, "Enable specified breakpoints",
@@ -121,7 +121,7 @@ Do \"info display\" to see current list of code numbers."],
     end
   end
 
-  class DisableCommand < Command # :nodoc:
+  class DisableCommand < OldCommand # :nodoc:
     Subcommands = 
       [
        ['breakpoints', 1, "Disable some breakpoints",
