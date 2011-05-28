@@ -474,7 +474,7 @@ module Trepan
     # debugger command, perform it, and ask for another one unless we
     # are told to continue execution or terminate.
     def process_commands(verbose=false)
-      control_cmds = Command.commands.select do |cmd| 
+      control_cmds = OldCommand.commands.select do |cmd| 
         cmd.allow_in_control 
       end
       state = State.new(@interface, control_cmds)
