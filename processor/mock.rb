@@ -2,12 +2,13 @@
 # Mock setup for commands.
 require 'rubygems'; require 'require_relative'
 
-## require_relative 'main'
+require_relative 'main'
 
 # require_relative '../app/core'
 require_relative '../app/default'
 ## require_relative '../app/frame'
 require_relative '../interface/user'  # user interface (includes I/O)
+require_relative 'load_cmds' 
 
 module MockDebugger
   class MockDebugger
@@ -34,7 +35,7 @@ module MockDebugger
       @intf                 = [Trepan::UserInterface.new(nil, nil,
                                                          :history_save=>false)]
       # @current_frame        = Trepan::Frame.new(self, 0, @vm_locations[0])
-      # @debugee_thread       = Thread.current
+      @debugee_thread       = Thread.current
       @frames               = []
       # @restart_argv         = Rubinius::OS_STARTUP_DIR
 
@@ -57,7 +58,7 @@ module MockDebugger
   def setup(name=nil, show_constants=true)
     unless name
       file = caller.first.split(/:\d/,2).first
-      name = File.basename(File.dirname(file), '.rb')
+      name = File.basename(File.basename(file), '.rb')
     end
 
     if ARGV.size > 0 && ARGV[0] == 'debug'
@@ -68,17 +69,16 @@ module MockDebugger
       dbgr = MockDebugger.new(:start_frame=>2)
     end
 
-    cmdproc = Trepan::CmdProcessor.new
+    cmdproc = Trepan::CmdProcessor.new(dbgr.intf)
     ## cmdproc.frame = dbgr.frame(0)
     dbgr.processor = cmdproc
     
-    ## cmdproc.load_cmds_initialize
-    cmds = {}
-    ## cmds = cmdproc.commands
+    cmdproc.load_cmds_initialize
+    cmds = cmdproc.commands
     cmd  = cmds[name]
     ## cmd.proc.frame_setup
     ## cmd.proc.event = 'debugger-call'
-    ## show_special_class_constants(cmd) if show_constants
+    show_special_class_constants(cmd) if show_constants
 
     def cmd.confirm(prompt, default)
       true

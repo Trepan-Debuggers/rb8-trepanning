@@ -34,6 +34,10 @@ module Trepan
       end
     end
     
+    def section(*args)
+      errmsg *args
+    end
+
     # Format msg with gdb-style annotation header
     def afmt(msg, newline="\n")
       "\032\032#{msg}#{newline}"

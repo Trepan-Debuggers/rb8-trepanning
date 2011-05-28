@@ -6,6 +6,7 @@
 require 'rubygems'; require 'require_relative'
 require 'columnize'
 require_relative '../../../app/complete'
+## require 'rubygems'; require 'ruby-debug'; Debugger.start
 
 module Trepan
   class Command
@@ -89,6 +90,7 @@ module Trepan
     end
 
     def section(message, opts={})
+      ## debugger
       @proc.section(message, opts)
     end
 
