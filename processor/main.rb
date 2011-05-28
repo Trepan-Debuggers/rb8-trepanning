@@ -9,7 +9,7 @@ require 'rubygems'; require 'require_relative'
 ##    validate).each do
 # %w(default breakpoint disassemble display eval eventbuf load_cmds location 
 #    frame hook msg running stepping validate).each do
-%w(load_cmds msg).each do
+%w(load_cmds eval msg).each do
   |mod_str|
   require_relative mod_str
 end
