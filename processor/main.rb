@@ -27,9 +27,12 @@ module Trepan
     attr_reader   :cmd_queue       # queue of commands to run
     ## attr_reader   :core            # Trepan core object
     attr_reader   :current_command # Current command getting run, a String.
-    attr_accessor   :dbgr          # Trepan instance (via
+
+    attr_accessor :dbgr          # Trepan instance (via
                                    # Trepan::Core instance)
                                    ## FIXME 1.9.2 has attr_reader !
+    attr_accessor :interfaces
+
     attr_accessor :debug_nest      # Number of nested debugs. Used in showing
                                    # prompt.
     attr_accessor :different_pos   # Same type as settings[:different] 
@@ -91,10 +94,10 @@ module Trepan
     end
 
     ## def initialize(dbgr, settings={})
-    def initialize(interface, settings={})
+    def initialize(interfaces, settings={})
       @cmd_queue       = []
       ### @dbgr            =  dbgr
-      @intf            = interface
+      @interfaces      = interfaces
       @debug_nest      = 1
       @hidelevels      = {}
       @last_command    = nil
@@ -177,51 +180,51 @@ module Trepan
       return true
     end
 
-    # # Run one debugger command. True is returned if we want to quit.
-    # def process_command_and_quit?()
-    #   intf_size = @dbgr.intf.size
-    #   @intf  = @dbgr.intf[-1]
-    #   return true if @intf.input_eof? && intf_size == 1
-    #   while intf_size > 1 || !@intf.input_eof?
-    #     begin
-    #       @current_command = 
-    #         if @cmd_queue.empty?
-    #           # Leave trailing blanks on for the "complete" command
-    #           read_command.chomp 
-    #         else
-    #           @cmd_queue.shift
-    #         end
-    #       if @current_command.empty? 
-    #         if @last_command && intf.interactive?
-    #           @current_command = @last_command 
-    #         else
-    #           next
-    #         end
-    #       end
-    #       next if @current_command[0..0] == '#' # Skip comment lines
-    #       break
-    #     rescue IOError, Errno::EPIPE => e
-    #       if intf_size > 1
-    #         @dbgr.intf.pop
-    #         intf_size = @dbgr.intf.size
-    #         @intf = @dbgr.intf[-1]
-    #         @last_command = nil
-    #         print_location
-    #       else
-    #         ## FIXME: think of something better.
-    #         quit('exit!')
-    #         return true
-    #       end
-    #     rescue Exception => exc
-    #       errmsg("Internal debugger error in read: #{exc.inspect}")
-    #       exception_dump(exc, @settings[:debugexcept], $!.backtrace)
-    #     end
-    #   end
-    #   run_command(@current_command)
+    # Run one debugger command. True is returned if we want to quit.
+    def process_command_and_quit?()
+      intf_size = @dbgr.intf.size
+      @intf  = @dbgr.intf[-1]
+      return true if @intf.input_eof? && intf_size == 1
+      while intf_size > 1 || !@intf.input_eof?
+        begin
+          @current_command = 
+            if @cmd_queue.empty?
+              # Leave trailing blanks on for the "complete" command
+              read_command.chomp 
+            else
+              @cmd_queue.shift
+            end
+          if @current_command.empty? 
+            if @last_command && intf.interactive?
+              @current_command = @last_command 
+            else
+              next
+            end
+          end
+          next if @current_command[0..0] == '#' # Skip comment lines
+          break
+        rescue IOError, Errno::EPIPE => e
+          if intf_size > 1
+            @dbgr.intf.pop
+            intf_size = @dbgr.intf.size
+            @intf = @dbgr.intf[-1]
+            @last_command = nil
+            print_location
+          else
+            ## FIXME: think of something better.
+            quit('exit!')
+            return true
+          end
+        rescue Exception => exc
+          errmsg("Internal debugger error in read: #{exc.inspect}")
+          exception_dump(exc, @settings[:debugexcept], $!.backtrace)
+        end
+      end
+      run_command(@current_command)
 
-    #   # Save it to the history.
-    #   @intf.history_io.puts @last_command if @last_command && @intf.history_io
-    # end
+      # Save it to the history.
+      @intf.history_io.puts @last_command if @last_command && @intf.history_io
+    end
 
     def after_cmdloop
       @cmdloop_posthooks.run

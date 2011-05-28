@@ -12,21 +12,21 @@ module Trepan
         message = 
           Term::ANSIColor.italic + message + Term::ANSIColor.reset 
       end
-      @intf[-1].errmsg(message)
+      @intf.errmsg(message)
     end
 
     def msg(message, opts={})
       message = safe_rep(message) unless opts[:unlimited]
-      @intf[-1].msg(message)
+      @intf.msg(message)
     end
 
     def msg_nocr(message, opts={})
       message = safe_rep(message) unless opts[:unlimited]
-      @intf[-1].msg_nocr(message)
+      @intf.msg_nocr(message)
     end
 
     def read_command()
-      @intf[-1].read_command(@prompt)
+      @intf.read_command(@prompt)
     end
 
     def ruby_format(text)
@@ -53,7 +53,7 @@ module Trepan
         message = 
           Term::ANSIColor.bold + message + Term::ANSIColor.reset 
       end
-      @intf[-1].msg(message)
+      @intf.msg(message)
     end
 
   end
