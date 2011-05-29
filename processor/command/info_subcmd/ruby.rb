@@ -10,8 +10,7 @@ class Trepan::Subcommand::InfoRuby < Trepan::Subcommand
 #{CMD} [-v|--verbose|-no-verbose]
 
 Show Ruby version information such as you'd get from 
-"rbx -v" (which is really just the value of RUBY_RELEASE_DATE),
-or from "rbx -vv". 
+"ruby -v" (which is really just the value of RUBY_RELEASE_DATE).
 
 See also constants: RUBY_DESCRIPITON, RUBY_VERSION, and RUBY_RELEASE_DATE."
     EOH
