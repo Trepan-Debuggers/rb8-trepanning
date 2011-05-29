@@ -46,7 +46,7 @@ See also the commands:
   # self.allow_in_post_mortem = false
   # self.need_context         = true
     
-  def run
+  def run(args)
     condition = nil
     opts = {}
     if args.size == 1
@@ -68,8 +68,8 @@ See also the commands:
       step_count = @proc.get_an_int(step_str, count_opts)
       return unless step_count
     end
-    ## @state.context.step(steps, force)
-    @state.context.step(steps, true)
-    @state.proceed
+    ## @proc.state.context.step(step_count, force)
+    @proc.state.context.step(step_count, true)
+    @proc.state.proceed
   end
 end

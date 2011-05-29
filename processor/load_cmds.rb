@@ -218,14 +218,12 @@ module Trepan
   end
 end
 if __FILE__ == $0
-  class Trepan::CmdProcessor
-    def initialize(core, settings={})
-    end
-  end
-
+  require_relative '../interface/user'  # user interface (includes I/O)
   cmdproc = Trepan::CmdProcessor.new([], nil)
   cmddir = File.join(File.dirname(__FILE__), 'command')
   cmdproc.instance_variable_set('@settings', {})
+  cmdproc.interfaces = [Trepan::UserInterface.new(nil, nil,
+                                                  :history_save=>false)]
   cmdproc.load_cmds_initialize
   require 'columnize'
   puts Columnize.columnize(cmdproc.commands.keys.sort)

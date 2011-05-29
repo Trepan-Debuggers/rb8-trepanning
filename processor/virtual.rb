@@ -1,6 +1,8 @@
 module Trepan
   class VirtualCmdProcessor
-    def initialize(interfaces, state, settings={})
+    attr_accessor :interfaces
+    attr_accessor :state
+    def initialize(interfaces, settings={})
     end
   end
 end

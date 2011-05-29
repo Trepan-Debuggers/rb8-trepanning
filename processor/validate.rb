@@ -30,7 +30,7 @@ module Trepan
     ## include Trepan::Condition
 
     def confirm(msg, default)
-      @settings[:confirm] ? @dbgr.intf[-1].confirm(msg, default) : true
+      @settings[:confirm] ? @intf.confirm(msg, default) : true
     end
 
     # Like cmdfns.get_an_int(), but if there's a stack frame use that

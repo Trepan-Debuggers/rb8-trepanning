@@ -89,8 +89,12 @@ module Trepan
       readline(prompt, true)
     end
     
-    def confirm(prompt)
-      readline(prompt, false)
+    def confirm(prompt, default=false)
+      readline(prompt +' ', default)
+    end
+    
+    def msg(*args)
+      STDOUT.puts(*args)
     end
     
     def print(*args)

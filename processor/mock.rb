@@ -73,6 +73,7 @@ module MockDebugger
     ## cmdproc.frame = dbgr.frame(0)
     dbgr.processor = cmdproc
     
+    cmdproc.interfaces = dbgr.intf
     cmdproc.load_cmds_initialize
     cmds = cmdproc.commands
     cmd  = cmds[name]

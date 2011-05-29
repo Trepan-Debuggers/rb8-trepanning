@@ -3,6 +3,7 @@ require 'ruby-debug-base'
 require 'require_relative'
 require_relative '../app/interface'
 require_relative './command'
+require_relative './main'
 
 # _Trepan_ is the module name space for this debugger.
 module Trepan
@@ -92,6 +93,7 @@ module Trepan
       @debugger_breakpoints_were_empty = false # Show breakpoints 1st time
       @debugger_displays_were_empty = true # No display 1st time
       @debugger_context_was_dead = true # Assume we haven't started.
+      @cmdproc = CmdProcessor.new([interface])
     end
     
     def interface=(interface)
@@ -220,6 +222,26 @@ module Trepan
 
     # Return the command object to run given input string _input_.
     def lookup(input)
+      ###########################################
+      ## Test the waters with new-style commands
+      args = input.split
+      cmd_name = args[0]
+      run_cmd_name = 
+        if @cmdproc.aliases.member?(cmd_name)
+          @cmdproc.aliases[cmd_name] 
+        else
+          cmd_name
+        end
+            
+      if @cmdproc.commands.member?(run_cmd_name)
+        cmd = @cmdproc.commands[run_cmd_name]
+        if @cmdproc.ok_for_running(cmd, run_cmd_name, args.size-1)
+          puts "Found a runnable command #{run_cmd_name}"
+          return cmd
+        end
+      end
+      ###########################################
+      
       @commands.find{ |c| c.match(input) }
     end
 
@@ -228,7 +250,13 @@ module Trepan
     # a Debugger::Context object.
     def one_cmd(commands, context, input)
       if cmd = lookup(input)
-        if context.dead? && cmd.class.need_context
+        if cmd.kind_of?(Command)
+          args = input.split
+          cmd_name = args[0]
+          @cmdproc.instance_variable_set('@cmd_argstr', input[cmd_name.size..-1].lstrip)
+          @cmdproc.instance_variable_set('@cmd_name', cmd_name)
+          cmd.run(args)
+        elsif context.dead? && cmd.class.need_context
           p cmd
           print "Command is unavailable\n"
         else
@@ -292,6 +320,7 @@ module Trepan
     def process_commands(context, file, line)
       state, @commands = always_run(context, file, line, 1)
       $rdebug_state = state if OldCommand.settings[:debuggertesting]
+      @cmdproc.state = state
       splitter = lambda do |str|
         str.split(/;/).inject([]) do |m, v|
           if m.empty?
@@ -478,6 +507,7 @@ module Trepan
         cmd.allow_in_control 
       end
       state = State.new(@interface, control_cmds)
+      @cmdproc.state = state
       @commands = control_cmds.map{|cmd| cmd.new(state) }
 
       unless @debugger_context_was_dead
