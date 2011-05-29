@@ -255,7 +255,13 @@ module Trepan
           cmd_name = args[0]
           @cmdproc.instance_variable_set('@cmd_argstr', input[cmd_name.size..-1].lstrip)
           @cmdproc.instance_variable_set('@cmd_name', cmd_name)
-          cmd.run(args)
+          begin
+            cmd.run(args)
+          rescue Exception
+            print "INTERNAL ERROR running command: #{cmd_name}\n"
+            puts $!
+            puts $!.backtrace.map{|l| "\t#{l}"}.join("\n") rescue nil
+          end
         elsif context.dead? && cmd.class.need_context
           p cmd
           print "Command is unavailable\n"
@@ -321,6 +327,7 @@ module Trepan
       state, @commands = always_run(context, file, line, 1)
       $rdebug_state = state if OldCommand.settings[:debuggertesting]
       @cmdproc.state = state
+      @cmdproc.context = context
       splitter = lambda do |str|
         str.split(/;/).inject([]) do |m, v|
           if m.empty?

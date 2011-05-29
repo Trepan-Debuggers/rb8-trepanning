@@ -63,7 +63,7 @@ module Trepan
     def get_binding_and_filename(str, maxlen)
       b = 
         begin
-          @frame.binding
+          @proc.context.frame_binding(@state.frame_pos)
         rescue
           binding
         end

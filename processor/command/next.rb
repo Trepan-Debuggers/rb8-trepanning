@@ -2,37 +2,34 @@
 require 'rubygems'; require 'require_relative'
 require_relative 'base/cmd'
 
-class Trepan::Command::StepCommand < Trepan::Command
+class Trepan::Command::NextCommand < Trepan::Command
 
-  ALIASES      = %w(s s+ s- step+ step-)
+  ALIASES      = %w(n n+ n- next+)
   CATEGORY     = 'running'
   NAME         = File.basename(__FILE__, '.rb')
   HELP         = <<-HELP
 #{NAME}[+|-] [into]  [count]
 
-Execute the current line, stopping at the next line.  Sometimes this
-is called 'step into'.
+Attempt to continue execution and stop at the next line. If there is
+a conditional branch between the current position and the next line,
+execution is stopped within the conditional branch instead.
 
-Behaves like 'next', but if there is a method call on the current line,
-execution is stopped in the called method.
+The optional argument is a number which specifies how many lines to
+attempt to skip past before stopping execution.
+
+If the current line is the last in a method, execution is stopped
+at the current position of the caller.
+
+See also 'step' and 'nexti'.
 
 Examples: 
-  #{NAME}        # step 1 line
+  #{NAME}        # next 1 line
   #{NAME} 1      # same as above
-  #{NAME} into   # same as above
-  #{NAME} into 1 # same as above
-  #{NAME} 5/5+0  # same as above
   #{NAME}+       # same but force stopping on a new line
-  #{NAME}-       # same but force stopping on a new line a new frame added
-  #{NAME} until a > b
-  #{NAME} over   # same as 'next'
-  #{NAME} out    # same as 'finish'
+  #{NAME}-       # same but force stopping on a new line or a new frame added
 
-Related and similar is the 'next' (step over) and 'finish' (step out)
+Related and similar is the 'step' (step into) and 'finish' (step out)
 commands.
-
-See also the commands:
-'continue', 'next', 'nexti' and 'finish' for other ways to progress execution.
       HELP
   NEED_RUNNING = true
   SHORT_HELP   = 'Step into next method call or to next line'
@@ -69,7 +66,8 @@ See also the commands:
       return unless step_count
     end
     ## @proc.state.context.step(step_count, force)
-    @proc.context.step(step_count, opts[:different_pos])
+    @proc.context.step_over(step_count, @proc.state.frame_pos, 
+                            opts[:different_pos])
     @proc.state.proceed
   end
 end

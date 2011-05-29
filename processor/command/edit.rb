@@ -33,9 +33,16 @@ Editing targets can also be specified.
       text = @proc.cmd_argstr
     end
     editor = ENV['EDITOR'] || '/bin/ex'
-    file = @proc.frame.file
+
+    # FIXME:
+    ## file = @proc.frame.file
+    state = @proc.state
+    context = @proc.context
+    file = context.frame_file(state.frame_pos)
+    line = context.frame_line(state.frame_pos)
+
     if File.readable?(file)
-      edit_cmd = "#{editor} +#{@proc.frame.line} \"#{file}\""
+      edit_cmd = "#{editor} +#{line} \"#{file}\""
       msg "Running #{edit_cmd}..."
       system(edit_cmd)
       msg "Warning: return code was #{$?.exitstatus}" if $?.exitstatus != 0

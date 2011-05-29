@@ -175,7 +175,7 @@ module Trepan
       #   return false
       # end
 
-      if cmd.class.const_get(:NEED_STACK) && !@frame
+      if cmd.class.const_get(:NEED_STACK) && !@context
         errmsg "Command '%s' requires a running stack frame." % name
         return false
       end
