@@ -37,10 +37,6 @@ if __FILE__ == $0
   # Demo it.
   $0 = __FILE__ + 'notagain' # So we don't run this again
   require_relative '../../mock'
-  cmd = MockDebugger::sub_setup(Trepan::Subcommand::InfoRuby, false)
+  cmd = MockDebugger::sub_setup(Trepan::Subcommand::InfoArgs, false)
   cmd.run(cmd.prefix)
-  %w(-v --verbose --no-verbose).each do |opt|
-    puts '-' * 10 + " #{opt}"
-    cmd.run(cmd.prefix + [opt])
-  end
 end
