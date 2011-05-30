@@ -1,8 +1,7 @@
 require 'rubygems'; require 'require_relative'
 require_relative '../app/default'
 require_relative 'virtual'
-module Trepan
-  class CmdProcessor < VirtualCmdProcessor
+class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
 
     DEFAULT_SETTINGS = {
       :autoeval      => true,      # Ruby eval non-debugger commands
@@ -43,5 +42,4 @@ module Trepan
       :user_cmd_dir  => File.join(Trepan::HOME_DIR, 'trepan', 'command'),
                                    # User command directory
     }
-  end
 end

@@ -8,10 +8,9 @@ class Trepan::Subcommand::InfoFiles < Trepan::Subcommand
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
     HELP         = 'Show files cached by the debugger'
     MIN_ABBREV   = 'files'.size
-    NEED_STACK   = false
     MIN_ARGS     = 0
     MAX_ARGS     = 0
-    NEED_STACK   = true
+    NEED_STACK   = false
    end
 
   def run(args)

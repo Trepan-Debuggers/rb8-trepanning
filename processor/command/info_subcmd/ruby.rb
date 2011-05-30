@@ -38,13 +38,7 @@ See also constants: RUBY_DESCRIPITON, RUBY_VERSION, and RUBY_RELEASE_DATE."
     options = parse_options(args[2..-1])
     msg RUBY_DESCRIPTION
     if options[:verbose]
-      msg "Options:"
-      msg "  Interpreter type: #{Rubinius::INTERPRETER}"
-      if jit = Rubinius::JIT
-        msg "  JIT enabled: #{jit.join(', ')}"
-      else
-        msg "  JIT disabled"
-      end
+      # To be completed
     end
   end
 

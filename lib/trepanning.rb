@@ -146,7 +146,7 @@ module Trepan
     #
     def start_client(host = 'localhost', port = PORT)
       require "socket"
-      interface = Debugger::LocalInterface.new
+      interface = Trepan::LocalInterface.new
       socket = TCPSocket.new(host, port)
       puts "Connected."
       

@@ -16,7 +16,7 @@ class Trepan::SubcommandMgr < Trepan::Command
     MAX_ARGS      = nil
     NAME          = '?' # FIXME: Need to define this, but should 
                         # pick this up from class/file name.
-    NEED_STACK    = false
+    ### NEED_STACK    = false
   end
 
   attr_accessor :subcmds   # Trepan::Subcmd
