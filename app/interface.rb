@@ -31,6 +31,7 @@ module Trepan
       else
         print '*** '
         print(*args)
+        print "\n"
       end
     end
     
