@@ -9,7 +9,7 @@ require 'rubygems'; require 'require_relative'
 ##    validate).each do
 # %w(default breakpoint disassemble display eval eventbuf load_cmds location 
 #    frame hook msg running stepping validate).each do
-%w(default frame load_cmds eval msg running validate).each do
+%w(default frame load_cmds location eval msg running validate).each do
   |mod_str|
   require_relative mod_str
 end
@@ -121,7 +121,7 @@ module Trepan
                                                 %w(.. data prelude.rb)))
 
       # Start with empty thread and frame info.
-      ## frame_teardown 
+      frame_teardown 
 
       # Run initialization routines for each of the "submodule"s.
       # load_cmds has to come first.
@@ -129,7 +129,7 @@ module Trepan
       ##   ).each do |submod|
       ## %w(load_cmds breakpoint display eventbuf frame running 
       ##    stepping validate).each do 
-       %w(load_cmds).each do 
+      %w(load_cmds frame running).each do 
         |submod|
         self.send("#{submod}_initialize")
       end

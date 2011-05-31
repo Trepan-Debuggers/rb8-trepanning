@@ -81,31 +81,29 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     return line.lstrip.chomp
   end
   
-  # def loc_and_text(loc, opts=
-  #                  {:reload_on_change => @reload_on_change,
-  #                    :output => @settings[:highlight]
-  #                  })
+  def loc_and_text(opts=
+                   {:reload_on_change => @reload_on_change,
+                     :output => @settings[:highlight]
+                   })
   
-  #   vm_location = @frame.vm_location
-  #   filename = vm_location.method.active_path
-  #   line_no  = @frame.line
-  #   static   = vm_location.static_scope
-  #   opts[:compiled_method] = top_scope(@frame.method)
+    loc = source_location_info
+    line_no  = @frame.line
+    filename = @frame.file
   
-  #   if @frame.eval?
-  #     file = LineCache::map_script(static.script)
-  #     text = LineCache::getline(static.script, line_no, opts)
-  #     loc += " remapped #{canonic_file(file)}:#{line_no}"
-  #   else
-  #     text = line_at(filename, line_no, opts)
-  #     map_file, map_line = LineCache::map_file_line(filename, line_no)
-  #     if [filename, line_no] != [map_file, map_line]
-  #       loc += " remapped #{canonic_file(map_file)}:#{map_line}"
-  #     end
-  #   end
+#    if @frame.eval?
+#      file = LineCache::map_script(static.script)
+#      text = LineCache::getline(static.script, line_no, opts)
+#      loc += " remapped #{canonic_file(file)}:#{line_no}"
+#    else
+      text = line_at(filename, line_no, opts)
+      map_file, map_line = LineCache::unmap_file_line(filename, line_no)
+      if [filename, line_no] != [map_file, map_line]
+        loc += " remapped #{canonic_file(map_file)}:#{map_line}"
+      end
+#    end
   
-  #   [loc, line_no, text]
-  # end
+    [loc, line_no, text]
+  end
   
   def format_location(event=@event, frame=@frame, frame_index=@frame_index)
     text      = nil
@@ -116,9 +114,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
                 end
     
     @line_no  = frame.vm_location.line
-    
-    loc = source_location_info
-    loc, @line_no, text = loc_and_text(loc)
+    loc, @line_no, text = loc_and_text
     
     "#{ev} (#{loc}"
   end
@@ -133,9 +129,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
                 end
     
     @line_no  = @frame.line
-    
-    loc = source_location_info
-    loc, @line_no, text = loc_and_text(loc)
+    loc, @line_no, text = loc_and_text
     
     msg "#{ev} (#{loc}"
     
@@ -160,7 +154,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
       ##  'eval ' + safe_repr(@frame.eval_string.gsub("\n", ';').inspect, 20)
       ## else
       canonic_file(filename, false)
-    ## end
+      ## end
     loc = "#{canonic_filename}:#{@frame.line}"
     return loc
   end 

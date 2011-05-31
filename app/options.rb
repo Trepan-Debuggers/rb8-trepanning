@@ -9,8 +9,8 @@ module Trepan
   require 'rubygems'; require 'require_relative'
   require_relative 'default'
 
-  VERSION = '0.1.3.dev' unless defined? VERSION
-  PROGRAM = 'trepan8' unless defined? PROGRAM
+  VERSION = '0.1.3.dev' unless defined? Trepan::VERSION
+  PROGRAM = 'trepan8' unless defined? Trepan::PROGRAM
 
   module_function
 
