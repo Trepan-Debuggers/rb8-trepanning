@@ -17,7 +17,7 @@ module Trepan
       @binding ||= @context.frame_binding(@state.frame_pos)
     end
 
-    def call_string(opts={:maxwidth=>80})
+    def call_string(opts={:maxwidth=>80, :callstyle => :last})
       call_str = ""
       klass = self.klass
       if meth
@@ -51,12 +51,11 @@ module Trepan
             end
             if call_str.size > opts[:maxwidth]
               # Strip off trailing ', ' if any but add stuff for later trunc
-              call_str[-2..-1] = ",..."
+              call_str[-2..-1] = ",...XX"
               break
             end
           end
-          call_str[-1..-1] = '' if call_str[-1..-1] == ','
-          call_str += ')'
+          call_str[-2..-1] = ")" # Strip off trailing ', ' if any 
         end
       end
       return call_str
@@ -67,13 +66,6 @@ module Trepan
       file  = self.file
       line  = self.line
       klass = self.klass
-      unless opts[:full_path]
-        path_components = file.split(/[\\\/]/)
-        if path_components.size > 3
-          path_components[0...-3] = '...'
-          file = path_components.join(File::ALT_SEPARATOR || File::SEPARATOR)
-        end
-      end
       
       call_str  = call_string(opts)
       file_line = "at line %s:%d\n" % [file, line]
@@ -106,7 +98,7 @@ module Trepan
     end
 
     def local_variables
-      @context.frame_locals
+      @context.frame_locals(@state.frame_pos)
     end
 
     def meth

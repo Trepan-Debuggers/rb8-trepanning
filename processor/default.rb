@@ -9,6 +9,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     :autolist      => false,     # Run 'list' 
     
     :basename      => false,     # Show basename of filenames only
+    :callstyle     => :last,     # 
     :confirm       => true,      # Confirm potentially dangerous operations?
     :different     => 'nostack', # stop *only* when  different position? 
     

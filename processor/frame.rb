@@ -43,8 +43,9 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
       prefix = "--> ##{frame_num} " 
       unless @settings[:traceprint]
         msg("#{prefix}%s" %
-            @frame.describe(:basename => settings[:basename],
-                            :maxwidth => settings[:maxwidth] - prefix.size))
+            @frame.describe(:basename  => settings[:basename],
+                            :maxwidth  => settings[:maxwidth] - prefix.size,
+                            :callstyle => settings[:callstyle]))
       end
       @line_no = @frame.line
       @frame
@@ -114,7 +115,8 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
       errmsg('Adjusting would put us beyond the oldest frame.')
       return [nil, nil]
     end
-    
+
+    @state.frame_pos = frame_num
     [frame, frame_num]
   end
   
