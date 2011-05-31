@@ -138,7 +138,7 @@ if __FILE__ == $0
   end
   require 'rubygems'
   require 'ruby-debug-base'; Debugger.start
-  state = Trepan::State.new(1)
+  state = Trepan::State.new(0)
   context = Debugger.current_context
   frame = Trepan::Frame.new(context, state)
   p frame.file
@@ -149,7 +149,9 @@ if __FILE__ == $0
     context = Debugger.current_context
     0.upto(context.stack_size) do |i|
       state.frame_pos = i
+      context = Debugger.current_context
       frame = Trepan::Frame.new(context, state)
+      frame.instance_variable_set('@binding', binding_n(i))
       puts "Frame #{i}: #{frame.file}, line #{frame.line}, class #{frame.klass}, thread: #{frame.thread}, " + 
         "method: #{frame.meth}"
       p frame.local_variables

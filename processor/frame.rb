@@ -117,7 +117,8 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     end
 
     @state.frame_pos = frame_num
-    [frame, frame_num]
+    @frame = Trepan::Frame.new(@context, @state)
+    [@frame, frame_num]
   end
   
   def parent_frame
