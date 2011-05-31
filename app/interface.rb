@@ -7,7 +7,7 @@ module Trepan
   # like how one wants to show error messages, or read input. This is
   # the base class. Subclasses inlcude Trepan::LocalInterface,
   # Trepan::RemoteInterface and Trepan::ScriptInterface.
-  class Interface 
+  class OldInterface 
     attr_writer :have_readline  # true if Readline is available
 
     def initialize
@@ -57,7 +57,7 @@ module Trepan
   # A _LocalInterface_ is the kind of I/O interactive performed when
   # the user interface is in the same process as the debugged program.
   # Compare with Trepan::RemoteInterface.
-  class LocalInterface < Interface
+  class LocalInterface < OldInterface
     attr_accessor :command_queue
     attr_accessor :histfile
     attr_accessor :history_save
@@ -161,7 +161,7 @@ module Trepan
   # the user interface is in a different process (and possibly
   # different computer) than the debugged program.  Compare with
   # Trepan::LocalInterface.
-  class RemoteInterface < Interface
+  class RemoteInterface < OldInterface
     attr_accessor :command_queue
     attr_accessor :histfile
     attr_accessor :history_save
@@ -219,7 +219,7 @@ module Trepan
   # from a command-file rather than an interactive user. Command files
   # appear in a users initialization script (e.g. .rdebugrc) and appear
   # when running the debugger command _source_ (Trepan::SourceCommand).
-  class ScriptInterface < Interface
+  class ScriptInterface < OldInterface
     attr_accessor :command_queue
     attr_accessor :histfile
     attr_accessor :history_save

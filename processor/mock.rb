@@ -1,16 +1,25 @@
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 # Mock setup for commands.
 require 'rubygems'; require 'require_relative'
-
-require_relative 'main'
+require_relative 'virtual'
 
 # require_relative '../app/core'
 require_relative '../app/default'
-## require_relative '../app/frame'
 require_relative '../interface/user'  # user interface (includes I/O)
-require_relative 'load_cmds' 
+
+require 'ruby-debug-base'; Debugger.start
+require_relative 'processor'
 
 module MockDebugger
+  class State
+    attr_accessor :frame_pos
+    
+    def initialize(processor=nil)
+      super()
+      @frame_pos     = 0
+    end
+  end
+
   class MockDebugger
     attr_accessor :trace_filter # Procs/Methods we ignore.
 
@@ -70,7 +79,9 @@ module MockDebugger
     end
 
     cmdproc = Trepan::CmdProcessor.new(dbgr.intf)
-    ## cmdproc.frame = dbgr.frame(0)
+    state = State.new(nil)
+    context = Debugger.current_context
+    cmdproc.frame_setup(context, state)
     dbgr.processor = cmdproc
     
     cmdproc.interfaces = dbgr.intf
@@ -84,17 +95,8 @@ module MockDebugger
     def cmd.confirm(prompt, default)
       true
     end
-    def cmd.errmsg(message, opts={})
-      puts "Error: #{message}"
-    end
-    def cmd.msg(message, opts={})
-      puts message
-    end
     def cmd.msg_nocr(message, opts={})
       print message
-    end
-    def cmd.section(message, opts={})
-      puts "Section: #{message}"
     end
 
     return dbgr, cmd
