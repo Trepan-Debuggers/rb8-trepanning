@@ -18,16 +18,11 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
                                  # "step>" or "step!" commands.
   attr_accessor :to_method
   
-  # # Does whatever needs to be done to set to continue program
-  # # execution.
-  # # FIXME: turn line_number into a condition.
-  # def continue
-  #   @next_level      = 32000 # I'm guessing the stack size can't
-  #                            # ever reach this
-  #   @next_thread     = nil
-  #   @core.step_count = -1    # No more event stepping
-  #   @leave_cmd_loop  = true  # Break out of the processor command loop.
-  # end
+  # Does whatever needs to be done to set to continue program
+  # execution.
+  def continue
+    @state.proceed
+  end
   
   # # Does whatever setup needs to be done to set to ignore stepping
   # # to the finish of the current method.
