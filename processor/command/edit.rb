@@ -33,14 +33,14 @@ Editing targets can also be specified.
       text = @proc.cmd_argstr
     end
     editor = ENV['EDITOR'] || '/bin/ex'
-
-    if File.readable?(@proc.frame.file)
-      edit_cmd = "#{editor} +#{@proc.frame.line} \"#{@proc.frame.file}\""
+    file = @proc.frame.file
+    if File.readable?(file)
+      edit_cmd = "#{editor} +#{@proc.frame.line} \"#{file}\""
       msg "Running #{edit_cmd}..."
       system(edit_cmd)
       msg "Warning: return code was #{$?.exitstatus}" if $?.exitstatus != 0
     else
-      errmsg "File \"#{@proc.frame.file}\" is not readable.\n"
+      errmsg "File \"#{file}\" is not readable.\n"
     end
   end
 end

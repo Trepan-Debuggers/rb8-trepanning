@@ -240,7 +240,6 @@ module Trepan
       if @cmdproc.commands.member?(run_cmd_name)
         cmd = @cmdproc.commands[run_cmd_name]
         if @cmdproc.ok_for_running(cmd, run_cmd_name, args.size-1)
-          puts "Found a runnable command #{run_cmd_name}"
           return cmd
         end
       end
@@ -255,21 +254,27 @@ module Trepan
     def one_cmd(commands, context, input)
       if cmd = lookup(input)
         if cmd.kind_of?(Command)
-          args = input.split
-          cmd_name = args[0]
-          @cmdproc.instance_variable_set('@cmd_argstr', input[cmd_name.size..-1].lstrip)
-          @cmdproc.instance_variable_set('@cmd_name', cmd_name)
-          begin
+          if context.dead? && cmd.class.need_context
+            p cmd
+            print "Command is unavailable\n"
+          else
+            args = input.split
+            cmd_name = args[0]
+            @cmdproc.instance_variable_set('@cmd_argstr', input[cmd_name.size..-1].lstrip)
+            @cmdproc.instance_variable_set('@cmd_name', cmd_name)
+            begin
             cmd.run(args)
-          rescue Exception
-            print "INTERNAL ERROR running command: #{cmd_name}\n"
-            puts $!
-            puts $!.backtrace.map{|l| "\t#{l}"}.join("\n") rescue nil
+            rescue Exception
+              print "INTERNAL ERROR running command: #{cmd_name}\n"
+              print "#{$!}\n"
+              print $!.backtrace.map{|l| "\t#{l}"}.join("\n"), "\n" rescue nil
+            end
           end
         elsif context.dead? && cmd.class.need_context
           p cmd
-          print "Command is unavailable\n"
+          msg "Command is unavailable"
         else
+          puts "Using old-style command"
           cmd.execute
         end
       else
@@ -330,9 +335,7 @@ module Trepan
     def process_commands(context, file, line)
       @state, @commands = always_run(context, file, line, 1)
       $rdebug_state = state if OldCommand.settings[:debuggertesting]
-      @cmdproc.context = @context = context
-      @cmdproc.state = @state
-      @cmdproc.frame = Trepan::Frame.new(context, @state)
+      @cmdproc.frame_setup(context, @state)
       splitter = lambda do |str|
         str.split(/;/).inject([]) do |m, v|
           if m.empty?
@@ -564,7 +567,7 @@ module Trepan
       
       def initialize(interface, commands)
         @interface = interface
-        @commands = commands
+        @commands  = commands
       end
       
       def proceed

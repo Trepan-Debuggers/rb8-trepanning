@@ -9,7 +9,7 @@ require 'rubygems'; require 'require_relative'
 ##    validate).each do
 # %w(default breakpoint disassemble display eval eventbuf load_cmds location 
 #    frame hook msg running stepping validate).each do
-%w(default load_cmds eval msg running validate).each do
+%w(default frame load_cmds eval msg running validate).each do
   |mod_str|
   require_relative mod_str
 end
@@ -64,10 +64,6 @@ module Trepan
     attr_accessor :last_pos       # Last position. 6-Tuple: of
                                   # [location, container, stack_size, 
                                   #  current_thread, pc_offset]
-
-    # FIXME: move into frame.rb
-    attr_accessor :frame
-
 
     unless defined?(EVENT2ICON)
       # Event icons used in printing locations.

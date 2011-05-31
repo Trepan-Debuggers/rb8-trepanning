@@ -9,7 +9,7 @@ module Trepan
     end
 
     def run(code, filename=nil)
-      filename="(eval :%s)" % code unless filename
+      filename='(eval :%s)' % code unless filename
       eval(code, self.binding, filename)
     end
 
@@ -17,43 +17,77 @@ module Trepan
       @binding ||= @context.frame_binding(@state.frame_pos)
     end
 
-    # def describe(opts = {})
-    #   if method.required_args > 0
-    #     locals = []
-    #     0.upto(method.required_args-1) do |arg|
-    #       locals << method.local_names[arg].to_s
-    #     end
+    def call_string(opts={:maxwidth=>80})
+      call_str = ""
+      klass = self.klass
+      if meth
+        args = self.args
+        locals = local_variables
+        if opts[:callstyle] != :short && klass
+          if opts[:callstyle] == :tracked
+            arg_info = context.frame_args_info(pos)
+          end
+          call_str << "#{klass}." 
+        end
+        call_str << meth
+        if args.any?
+          call_str << "("
+          args.each_with_index do |name, i|
+            case opts[:callstyle] 
+            when :short
+              call_str += "%s, " % [name]
+            when :last
+              klass = locals[name].class
+              if klass.inspect.size > 20+3
+                klass = klass.inspect[0..20]+"..." 
+              end
+              call_str += "%s#%s, " % [name, klass]
+            when :tracked
+              if arg_info && arg_info.size > i
+                call_str += "#{name}: #{arg_info[i].inspect}, "
+              else
+                call_str += "%s, " % name
+              end
+            end
+            if call_str.size > opts[:maxwidth]
+              # Strip off trailing ', ' if any but add stuff for later trunc
+              call_str[-2..-1] = ",..."
+              break
+            end
+          end
+          call_str[-1..-1] = '' if call_str[-1..-1] == ','
+          call_str += ')'
+        end
+      end
+      return call_str
+    end
 
-    #     arg_str = locals.join(", ")
-    #   else
-    #     arg_str = ""
-    #   end
-
-    #   loc = @vm_location
-
-    #   if loc.is_block
-    #     if arg_str.empty?
-    #       recv = "{ } in #{loc.describe_receiver}#{loc.name}"
-    #     else
-    #       recv = "{|#{arg_str}| } in #{loc.describe_receiver}#{loc.name}"
-    #     end
-    #   else
-    #     if arg_str.empty?
-    #       recv = loc.describe
-    #     else
-    #       recv = "#{loc.describe}(#{arg_str})"
-    #     end
-    #   end
-
-    #   filename = loc.method.active_path
-    #   filename = File.basename(filename) if opts[:basename]
-    #   str = "#{recv} at #{filename}:#{loc.line}"
-    #   if opts[:show_ip]
-    #     str << " (@#{loc.ip})"
-    #   end
-
-    #   str
-    # end
+    def describe(opts = {:maxwidth => 80})
+      str   = ''
+      file  = self.file
+      line  = self.line
+      klass = self.klass
+      unless opts[:full_path]
+        path_components = file.split(/[\\\/]/)
+        if path_components.size > 3
+          path_components[0...-3] = '...'
+          file = path_components.join(File::ALT_SEPARATOR || File::SEPARATOR)
+        end
+      end
+      
+      call_str  = call_string(opts)
+      file_line = "at line %s:%d\n" % [file, line]
+      unless call_str.empty?
+        str += call_str + ' '
+        if str.size + call_str.size + 1 + file_line.size > opts[:maxwidth]
+          str += "\n       "
+        else
+          str += '  '
+        end
+      end
+      str += file_line
+      str
+    end
 
     def args
       @context.frame_args(@state.frame_pos)
@@ -61,6 +95,10 @@ module Trepan
 
     def file
       @context.frame_file(@state.frame_pos)
+    end
+
+    def klass
+      @context.frame_class(@state.frame_pos)
     end
 
     def line
@@ -71,17 +109,17 @@ module Trepan
       @context.frame_locals
     end
 
-    def method
-      @context.frame_method(@state.frame_pos)
+    def meth
+      @context.frame_method(@state.frame_pos).id2name
     end
 
     def stack_size
       @context.stack_size
     end
 
-    # def scope
-    #   @vm_location.variables
-    # end
+    def thread
+      @context.thread
+    end
 
     # def eval?
     #   static = @vm_location.static_scope
@@ -119,12 +157,12 @@ if __FILE__ == $0
     0.upto(context.stack_size) do |i|
       state.frame_pos = i
       frame = Trepan::Frame.new(context, state)
-      puts "Frame #{i}"
-      p frame.file
-      p frame.line
+      puts "Frame #{i}: #{frame.file}, line #{frame.line}, class #{frame.klass}, thread: #{frame.thread}, " + 
+        "method: #{frame.meth}"
       p frame.local_variables
+      puts frame.describe
+      puts '-' * 30
     end
   end
-  state.frame_pos = 2
-  foo(1, state)
+  foo('arg', state)
 end

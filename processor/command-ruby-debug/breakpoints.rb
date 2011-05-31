@@ -62,7 +62,7 @@ module Trepan
       
       if line =~ /^\d+$/
         line = line.to_i
-        if LineCache.cache(brkpt_filename, Command.settings[:reload_source_on_change])
+        if LineCache.cache(brkpt_filename, OldCommand.settings[:reload_source_on_change])
           last_line = LineCache.size(brkpt_filename)
           if line > last_line
             errmsg("There are only %d lines in file \"%s\".\n", last_line, file) 
@@ -82,7 +82,7 @@ module Trepan
           return 
         end
         brkpt_filename = File.basename(brkpt_filename) if 
-          Command.settings[:basename]
+          OldCommand.settings[:basename]
         b = Debugger.add_breakpoint brkpt_filename, line, expr
         print "Breakpoint %d file %s, line %s\n", b.id, brkpt_filename, line.to_s
         unless syntax_valid?(expr)
