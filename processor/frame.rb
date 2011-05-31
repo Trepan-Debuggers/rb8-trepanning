@@ -38,14 +38,13 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   def adjust_frame(frame_num, absolute_pos)
     frame, frame_num = get_frame(frame_num, absolute_pos)
     if frame 
-      @frame = @dbgr.frame(frame_num)
+      @frame = frame
       @frame_index = frame_num
       prefix = "--> ##{frame_num} " 
       unless @settings[:traceprint]
-        msg("##{prefix}%s" %
+        msg("#{prefix}%s" %
             @frame.describe(:basename => settings[:basename],
-                            :width => settings[:maxwidth] - prefix.size))
-        print_location 
+                            :maxwidth => settings[:maxwidth] - prefix.size))
       end
       @line_no = @frame.line
       @frame
@@ -83,6 +82,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     
     @threads2frames   ||= {} 
     @threads2frames[@current_thread] = @top_frame
+    @stack_size         = @frame.stack_size
     ## FIXME: reinstate
     ## set_hide_level
   end

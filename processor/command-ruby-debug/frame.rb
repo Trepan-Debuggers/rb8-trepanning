@@ -38,8 +38,8 @@ module Trepan
       if id
         args = context.frame_args(pos)
         locals = context.frame_locals(pos)
-        if Command.settings[:callstyle] != :short && klass
-          if Command.settings[:callstyle] == :tracked
+        if OldCommand.settings[:callstyle] != :short && klass
+          if OldCommand.settings[:callstyle] == :tracked
             arg_info = context.frame_args_info(pos)
           end
           call_str << "#{klass}." 
@@ -48,7 +48,7 @@ module Trepan
         if args.any?
           call_str << "("
           args.each_with_index do |name, i|
-            case Command.settings[:callstyle] 
+            case OldCommand.settings[:callstyle] 
             when :short
               call_str += "%s, " % [name]
             when :last
@@ -81,7 +81,7 @@ module Trepan
       line = context.frame_line(pos)
       klass = context.frame_class(pos)
 
-      unless Command.settings[:full_path]
+      unless OldCommand.settings[:full_path]
         path_components = file.split(/[\\\/]/)
         if path_components.size > 3
           path_components[0...-3] = '...'

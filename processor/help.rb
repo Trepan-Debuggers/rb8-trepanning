@@ -60,7 +60,7 @@ module Trepan
     # Error message when subcommand asked for but doesn't exist
     def undefined_subcmd(cmd, subcmd)
       errmsg(('Undefined "%s" subcommand: "%s". ' + 
-              'Try "help %s *".') % [cmd, subcmd, cmd])
+              "Try \"help %s *.\"\n") % [cmd, subcmd, cmd])
     end
 
   end

@@ -110,7 +110,8 @@ module Trepan
     end
 
     def meth
-      @context.frame_method(@state.frame_pos).id2name
+      m = @context.frame_method(@state.frame_pos)
+      m ? m.id2name : ''
     end
 
     def stack_size

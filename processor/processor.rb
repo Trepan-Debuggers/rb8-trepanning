@@ -39,6 +39,7 @@ module Trepan
     # with something you would pass to Kernel::print.
     def errmsg(*args)
       @interface.errmsg(*args)
+      @interface.msg("\n")
     end
 
     # Print a normal debugger message; _args_ should be compatible
@@ -282,7 +283,7 @@ module Trepan
         if unknown_cmd
             unknown_cmd.execute
         else
-          errmsg "Unknown command: \"#{input}\".  Try \"help\".\n"
+          errmsg "Unknown command: \"#{input}\".  Try \"help\"."
         end
       end
     end
@@ -474,6 +475,7 @@ module Trepan
     # with something you would pass to Kernel::print.
       def errmsg(*args)
         @interface.errmsg(*args)
+        @interface.msg("\n")
       end
 
       # Print a normal debugger message; _args_ should be compatible
@@ -540,7 +542,7 @@ module Trepan
           if cmd = @commands.find{|c| c.match(input) }
             cmd.execute
           else
-            errmsg "Unknown command\n"
+            errmsg "Unknown command"
           end
         end
       end
@@ -577,6 +579,7 @@ module Trepan
       # with something you would pass to Kernel::print.
       def errmsg(*args)
         @interface.print(*args)
+        @interface.print "\n"
       end
       
     # Print a normal debugger message; _args_ should be compatible
@@ -590,6 +593,7 @@ module Trepan
     # error saying it is looking for more arguments.
       def print(*args)
         @interface.print(*args)
+        @interface.print "\n"
       end
 
       # confirm is called before performing a dangerous action. In
@@ -603,7 +607,7 @@ module Trepan
       end
 
       def file
-        errmsg "No filename given.\n"
+        errmsg "No filename given."
         throw :debug_error
       end
     end # State
