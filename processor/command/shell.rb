@@ -125,7 +125,11 @@ end
 
 if __FILE__ == $0
   require_relative '../mock'
-  dbgr, cmd = MockDebugger::setup
+  # dbgr, cmd = MockDebugger::setup
+  dbgr, cmd = MockDebugger::setup(nil, false)
+  cmd.proc.frame.instance_variable_set('@binding', binding)
   # Get an IRB session -- the hard way :-)
-  cmd.run([cmd.name]) if ARGV.size > 0
+  if ARGV.size > 0
+    cmd.run([cmd.name]) 
+  end
 end

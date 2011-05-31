@@ -11,15 +11,6 @@ require 'ruby-debug-base'; Debugger.start
 require_relative 'processor'
 
 module MockDebugger
-  class State
-    attr_accessor :frame_pos
-    
-    def initialize(processor=nil)
-      super()
-      @frame_pos     = 0
-    end
-  end
-
   class MockDebugger
     attr_accessor :trace_filter # Procs/Methods we ignore.
 
@@ -35,8 +26,7 @@ module MockDebugger
 
     # FIXME: move more stuff of here and into Trepan::CmdProcessor
     # These below should go into Trepan::CmdProcessor.
-    attr_reader :cmd_argstr, :cmd_name, :vm_locations, :current_frame, 
-                :debugee_thread, :completion_proc
+    attr_reader :cmd_argstr, :cmd_name, :current_frame, :completion_proc
 
     def initialize(settings={:start_frame=>1})
       @before_cmdloop_hooks = []
@@ -44,7 +34,6 @@ module MockDebugger
       @intf                 = [Trepan::UserInterface.new(nil, nil,
                                                          :history_save=>false)]
       # @current_frame        = Trepan::Frame.new(self, 0, @vm_locations[0])
-      @debugee_thread       = Thread.current
       @frames               = []
       # @restart_argv         = Rubinius::OS_STARTUP_DIR
 
@@ -79,9 +68,11 @@ module MockDebugger
     end
 
     cmdproc = Trepan::CmdProcessor.new(dbgr.intf)
-    state = State.new(nil)
-    context = Debugger.current_context
-    cmdproc.frame_setup(context, state)
+    state = Trepan::CommandProcessor::State.new(self) do |s|
+      s.context = Debugger.current_context
+      s.binding = binding
+    end
+    cmdproc.frame_setup(state.context, state)
     dbgr.processor = cmdproc
     
     cmdproc.interfaces = dbgr.intf
