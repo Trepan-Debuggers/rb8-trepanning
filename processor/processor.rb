@@ -4,6 +4,7 @@ require 'require_relative'
 require_relative '../app/interface'
 require_relative './command'
 require_relative './main'
+require_relative '../app/frame'
 
 # _Trepan_ is the module name space for this debugger.
 module Trepan
@@ -15,6 +16,8 @@ module Trepan
     attr_accessor :interface
     attr_reader   :processor
     attr_reader   :commands
+
+    attr_accessor :frame   # FIXME: move to frame.rb
 
     # optional argument passed passed in callback. For catchpoints it is
     # the catch object. For breakpoints it is the breakpoint object.
@@ -58,6 +61,7 @@ module Trepan
   # program.
   class CommandProcessor < Processor 
     attr_reader   :display
+    attr_accessor :frame
 
     # FIXME: get from Command regexp method.
     @@Show_breakpoints_postcmd = [
@@ -324,10 +328,11 @@ module Trepan
     # debugger command, perform it, and ask for another one unless we
     # are told to continue execution or terminate.
     def process_commands(context, file, line)
-      state, @commands = always_run(context, file, line, 1)
+      @state, @commands = always_run(context, file, line, 1)
       $rdebug_state = state if OldCommand.settings[:debuggertesting]
-      @cmdproc.state = state
-      @cmdproc.context = context
+      @cmdproc.context = @context = context
+      @cmdproc.state = @state
+      @cmdproc.frame = Trepan::Frame.new(context, @state)
       splitter = lambda do |str|
         str.split(/;/).inject([]) do |m, v|
           if m.empty?
@@ -346,7 +351,7 @@ module Trepan
       
       preloop(@commands, context)
       CommandProcessor.print_location_and_text(file, line)
-      while !state.proceed? 
+      while !@state.proceed? 
         input = if @interface.command_queue.empty?
                   @interface.read_command(prompt(context))
                 else
@@ -516,6 +521,7 @@ module Trepan
       state = State.new(@interface, control_cmds)
       @cmdproc.state = state
       @commands = control_cmds.map{|cmd| cmd.new(state) }
+      @frame = Trepan::Frame.new(@cmdproc.state, context)
 
       unless @debugger_context_was_dead
         if Trepan.annotate.to_i > 2

@@ -65,6 +65,9 @@ module Trepan
                                   # [location, container, stack_size, 
                                   #  current_thread, pc_offset]
 
+    # FIXME: move into frame.rb
+    attr_accessor :frame
+
 
     unless defined?(EVENT2ICON)
       # Event icons used in printing locations.

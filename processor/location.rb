@@ -39,9 +39,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   # Return the text to the current source line.
   def current_source_text
-    filename  = @context.frame_file(@state.frame_pos)
-    line_no  = @context.frame_line(@state.frame_pos)
-    LineCache::getline(filename, line_no)
+    LineCache::getline(@frame.file, @frame.line)
   end
   
   def resolve_file_with_dir(path_suffix)
@@ -156,14 +154,14 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   end
   
   def source_location_info
-    filename  = @context.frame_file(@state.frame_pos)
+    filename  = @frame.file
     canonic_filename = 
       ## if @frame.eval?
       ##  'eval ' + safe_repr(@frame.eval_string.gsub("\n", ';').inspect, 20)
       ## else
       canonic_file(filename, false)
     ## end
-    loc = "#{canonic_filename}:#{@context.frame_line(@state.frame_pos)}"
+    loc = "#{canonic_filename}:#{@frame.line}"
     return loc
   end 
 end

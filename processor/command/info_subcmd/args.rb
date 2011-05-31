@@ -14,10 +14,8 @@ class Trepan::Subcommand::InfoArgs < Trepan::Subcommand
    end
 
   def run(args)
-    state = @proc.state
-    context = @proc.context
-    locals = context.frame_locals(state.frame_pos)
-    args = context.frame_args(state.frame_pos)
+    locals = @proc.frame.local_variables
+    args = @proc.frame.args
     if args.empty?
       msg "argument list is empty"
     else
@@ -37,5 +35,5 @@ if __FILE__ == $0
   $0 = __FILE__ + 'notagain' # So we don't run this again
   require_relative '../../mock'
   cmd = MockDebugger::sub_setup(Trepan::Subcommand::InfoArgs, false)
-  cmd.run(cmd.prefix)
+  ## cmd.run(cmd.prefix)
 end

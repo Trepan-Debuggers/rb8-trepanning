@@ -34,20 +34,13 @@ Editing targets can also be specified.
     end
     editor = ENV['EDITOR'] || '/bin/ex'
 
-    # FIXME:
-    ## file = @proc.frame.file
-    state = @proc.state
-    context = @proc.context
-    file = context.frame_file(state.frame_pos)
-    line = context.frame_line(state.frame_pos)
-
-    if File.readable?(file)
-      edit_cmd = "#{editor} +#{line} \"#{file}\""
+    if File.readable?(@proc.frame.file)
+      edit_cmd = "#{editor} +#{@proc.frame.line} \"#{@proc.frame.file}\""
       msg "Running #{edit_cmd}..."
       system(edit_cmd)
       msg "Warning: return code was #{$?.exitstatus}" if $?.exitstatus != 0
     else
-      errmsg "File \"#{file}\" is not readable.\n"
+      errmsg "File \"#{@proc.frame.file}\" is not readable.\n"
     end
   end
 end

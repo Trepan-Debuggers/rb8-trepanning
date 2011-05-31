@@ -62,7 +62,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   def get_binding_and_filename(str, maxlen)
     b = 
       begin
-        @proc.context.frame_binding(@state.frame_pos)
+        @proc.frame.binding
       rescue
         binding
       end
