@@ -1,4 +1,4 @@
-b# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../app/complete'
 require_relative '../app/frame'
@@ -73,8 +73,9 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   # Initializes the thread and frame variables: @frame, @top_frame, 
   # @frame_index, @current_thread, and @threads2frames
-    @frame.index        = 0
+  def frame_setup(context, state)
     @frame = @top_frame = Trepan::Frame.new(context)
+    @frame.index        = 0
     @current_thread     = @frame.thread
     @context            = context
     @state              = state
@@ -89,7 +90,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   # Remove access to thread and frame variables
   def frame_teardown
-    @top_frame = @frame = @frame.index = @current_thread = nil 
+    @top_frame = @frame = @current_thread = nil 
     @threads2frames = {}
   end
   

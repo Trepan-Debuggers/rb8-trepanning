@@ -29,17 +29,6 @@ task :install => :gem do
 end
 
 require 'rake/testtask'
-desc "Test everything."
-Rake::TestTask.new(:test) do |t|
-  t.libs << './lib'
-  t.pattern = 'test/test-*.rb'
-  t.verbose = true
-end
-task :test => :lib
-
-desc "same as test"
-task :check => :test
-
 require 'rbconfig'
 
 def run_standalone_ruby_files(list)
@@ -88,7 +77,7 @@ end
 
 desc 'Test everything - unit tests for now.'
 task :test do
-  exceptions = %w(test:unit test:functional test:integration).collect do |task|
+  exceptions = %w(test:unit test:functional).collect do |task|
     begin
       Rake::Task[task].invoke
       nil

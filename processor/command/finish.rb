@@ -43,7 +43,6 @@ returns.
       return unless count
       frame_pos = count - 1  
     end
-    p frame_pos
     context.stop_frame = frame_pos
     state.frame_pos = 0
     state.proceed

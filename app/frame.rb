@@ -13,7 +13,7 @@ module Trepan
 
     def reset
       @binding = @klass = @file = @line = 
-        @local_variables = @meth = @thread = nil
+        @local_variables = @method_name = @thread = nil
     end
 
     def index=(new_value)
@@ -31,12 +31,12 @@ module Trepan
     end
 
     def binding
-      @binding ||= @context.frame_binding(@state.index)
+      @binding ||= @context.frame_binding(@index)
     end
 
     def call_string(opts={:maxwidth=>80, :callstyle => :last})
       call_str = ""
-      if meth
+      if method_name
         locals = local_variables
         if opts[:callstyle] != :short && klass
           if opts[:callstyle] == :tracked
@@ -44,7 +44,7 @@ module Trepan
           end
           call_str << "#{klass}." 
         end
-        call_str << meth
+        call_str << method_name
         if args.any?
           call_str << "("
           args.each_with_index do |name, i|
@@ -112,12 +112,12 @@ module Trepan
       @local_variables ||= @context.frame_locals(@index)
     end
 
-    def meth
-      if @meth 
-        @meth
+    def method_name
+      if @method_name
+        @method_name
       else
         m = @context.frame_method(@index)
-        @meth = m ? m.id2name : ''
+        @method_name = m ? m.id2name : ''
       end
     end
 
@@ -152,7 +152,7 @@ if __FILE__ == $0
         frame.index = i
         puts "Frame #{i}: #{frame.file}, line #{frame.line}, " + 
           "class #{frame.klass}, thread: #{frame.thread}, " + 
-          "method: #{frame.meth}"
+          "method: #{frame.method_name}"
         p frame.local_variables
         puts frame.describe(:maxwidth => 80, :callstyle=>:tracked)
         puts '-' * 30
