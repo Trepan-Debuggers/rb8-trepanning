@@ -39,7 +39,7 @@ module Trepan
     # with something you would pass to Kernel::print.
     def errmsg(*args)
       @interface.errmsg(*args)
-      @interface.msg("\n")
+      @interface.print("\n")
     end
 
     # Print a normal debugger message; _args_ should be compatible
@@ -522,7 +522,32 @@ module Trepan
     def initialize(interface)
       super()
       @interface = interface
+      @cmdproc   = CmdProcessor.new([interface])
       @debugger_context_was_dead = true # Assume we haven't started.
+    end
+
+    # Return the command object to run given input string _input_.
+    def lookup(input)
+      ###########################################
+      ## Test the waters with new-style commands
+      args = input.split
+      cmd_name = args[0]
+      run_cmd_name = 
+        if @cmdproc.aliases.member?(cmd_name)
+          @cmdproc.aliases[cmd_name] 
+        else
+          cmd_name
+        end
+            
+      if @cmdproc.commands.member?(run_cmd_name)
+        cmd = @cmdproc.commands[run_cmd_name]
+        if @cmdproc.ok_for_running(cmd, run_cmd_name, args.size-1)
+          return cmd
+        end
+      end
+      ###########################################
+      
+      @commands.find{ |c| c.match(input) }
     end
 
     # This the main debugger command-line loop. Here we read a
@@ -532,10 +557,10 @@ module Trepan
       control_cmds = OldCommand.commands.select do |cmd| 
         cmd.allow_in_control 
       end
-      state = State.new(@interface, control_cmds)
-      @cmdproc.state = state
-      @commands = control_cmds.map{|cmd| cmd.new(state) }
-      @frame = Trepan::Frame.new(@cmdproc.state, context)
+      context = Debugger.current_context
+      @state = State.new(@interface, control_cmds)
+      @cmdproc.frame_setup(context, @state)
+      @commands = control_cmds.map{|cmd| cmd.new(@state) }
 
       unless @debugger_context_was_dead
         if Trepan.annotate.to_i > 2
@@ -546,19 +571,42 @@ module Trepan
       end
 
       while input = @interface.read_command(prompt(nil))
-        print "+#{input}" if verbose
+        print "+#{input}\n" if true # verbose
         catch(:debug_error) do
-          if cmd = @commands.find{|c| c.match(input) }
-            cmd.execute
+          if cmd = lookup(input)
+            if cmd.kind_of?(Command)
+              args = input.split
+              cmd_name = args[0]
+              @cmdproc.instance_variable_set('@cmd_argstr', input[cmd_name.size..-1].lstrip)
+              @cmdproc.instance_variable_set('@cmd_name', cmd_name)
+              begin
+                cmd.run(args)
+              rescue Exception
+                print "INTERNAL ERROR running command: #{cmd_name}\n"
+                print "#{$!}\n"
+                print $!.backtrace.map{|l| "\t#{l}"}.join("\n"), "\n" rescue nil
+              end
+            else
+              puts "Using old-style command" unless
+                @cmdproc.settings[:debuggertesting]
+              cmd.execute
+            end
           else
-            errmsg "Unknown command"
+            if @cmdproc.settings[:autoeval]
+              begin
+                @cmdproc.eval_code(input, @cmdproc.settings[:maxstring])
+                return
+              rescue NameError
+              end
+            end
+            errmsg "Unknown command: \"#{input.chomp}\".  Try \"help\"."
           end
         end
       end
     rescue IOError, Errno::EPIPE
-    rescue Exception
-      print "INTERNAL ERROR!!! #{$!}\n" rescue nil
-      print $!.backtrace.map{|l| "\t#{l}"}.join("\n") rescue nil
+    # rescue Exception
+    #   print "INTERNAL ERROR!!! #{$!}\n" rescue nil
+    #   print $!.backtrace.map{|l| "\t#{l}"}.join("\n") rescue nil
     ensure
       @interface.close
     end
@@ -574,11 +622,12 @@ module Trepan
     end
 
     class State # :nodoc:
-      attr_reader :commands, :interface
+      attr_reader :commands, :interface, :frame_pos
       
       def initialize(interface, commands)
         @interface = interface
         @commands  = commands
+        @frame_pos = 0
       end
       
       def proceed

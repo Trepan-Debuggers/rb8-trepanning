@@ -189,7 +189,7 @@ module Trepan
     rescue Exception
     end
     
-    def confirm(prompt)
+    def confirm(prompt, default=false)
       send_command "CONFIRM #{prompt}"
     end
 
@@ -256,12 +256,16 @@ module Trepan
     # _confirm_ is called before performing a dangerous action. In
     # running a debugger script, we don't want to prompt, so we'll pretend
     # the user has unconditionally said "yes" and return String "y".
-    def confirm(prompt)
+    def confirm(prompt, default=false)
       'y'
     end
     
+    def msg(*args)
+      STDOUT.puts(*args)
+    end
+    
     def print(*args)
-      @out.printf(*args)
+      STDOUT.print *args
     end
     
     def close
