@@ -275,7 +275,8 @@ module Trepan
           p cmd
           msg "Command is unavailable"
         else
-          puts "Using old-style command"
+          puts "Using old-style command" unless
+            @cmdproc.settings[:debuggertesting]
           cmd.execute
         end
       else
@@ -283,7 +284,14 @@ module Trepan
         if unknown_cmd
             unknown_cmd.execute
         else
-          errmsg "Unknown command: \"#{input}\".  Try \"help\"."
+          if @cmdproc.settings[:autoeval]
+            begin
+              @cmdproc.eval_code(input, @cmdproc.settings[:maxstring])
+              return
+            rescue NameError
+            end
+          end
+          errmsg "Unknown command: \"#{input.chomp}\".  Try \"help\"."
         end
       end
     end
@@ -335,7 +343,7 @@ module Trepan
     # are told to continue execution or terminate.
     def process_commands(context, file, line)
       @state, @commands = always_run(context, file, line, 1)
-      $rdebug_state = state if OldCommand.settings[:debuggertesting]
+      $rdebug_state = state if @cmdproc.settings[:debuggertesting]
       @cmdproc.frame_setup(context, @state)
       splitter = lambda do |str|
         str.split(/;/).inject([]) do |m, v|
@@ -362,6 +370,7 @@ module Trepan
                   @interface.command_queue.shift
                 end
         break unless input
+        next if input =~ /^\s*#/
         catch(:debug_error) do
           if input == ""
             next unless @last_cmd

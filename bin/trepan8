@@ -355,11 +355,11 @@ else
 
     # run startup script if specified
     if options.script
-      Debugger.run_script(options.script)
+      Trepan.run_script(options.script)
     end
 
     # activate post-mortem
-    Debugger.post_mortem if options.post_mortem
+    Trepan.post_mortem if options.post_mortem
     options.stop = false if options.tracing
     Debugger.tracing = options.tracing
 

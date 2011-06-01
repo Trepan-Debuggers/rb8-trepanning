@@ -4,6 +4,7 @@ require 'rubygems'; require 'require_relative'
 require_relative '../base/subsubcmd'
 require_relative '../base/subsubmgr'
 
+puts "show auto called"
 class Trepan::SubSubcommand::ShowAuto < Trepan::SubSubcommandMgr
   unless defined?(HELP)
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)

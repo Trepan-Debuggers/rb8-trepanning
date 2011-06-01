@@ -1,3 +1,3 @@
 #!/usr/bin/env ruby
 
-raise "abc"
+raise ZeroDivisionError
