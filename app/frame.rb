@@ -14,18 +14,16 @@ module Trepan
     end
 
     def binding
-      @binding ||= @context.frame_binding(@state.frame_pos)
+      @context.frame_binding(@state.frame_pos)
     end
 
     def call_string(opts={:maxwidth=>80, :callstyle => :last})
       call_str = ""
-      klass = self.klass
       if meth
-        args = self.args
         locals = local_variables
         if opts[:callstyle] != :short && klass
           if opts[:callstyle] == :tracked
-            arg_info = context.frame_args_info(pos)
+            arg_info = @context.frame_args_info(@state.frame_pos)
           end
           call_str << "#{klass}." 
         end
@@ -63,10 +61,6 @@ module Trepan
 
     def describe(opts = {:maxwidth => 80})
       str   = ''
-      file  = self.file
-      line  = self.line
-      klass = self.klass
-      
       call_str  = call_string(opts)
       file_line = "at line %s:%d\n" % [file, line]
       unless call_str.empty?
@@ -139,24 +133,20 @@ if __FILE__ == $0
   require 'rubygems'
   require 'ruby-debug-base'; Debugger.start
   state = Trepan::State.new(0)
-  context = Debugger.current_context
-  frame = Trepan::Frame.new(context, state)
-  p frame.file
-  p frame.line
-  p frame.local_variables
   def foo(a, state)
     x = 1
     context = Debugger.current_context
-    0.upto(context.stack_size) do |i|
-      state.frame_pos = i
-      context = Debugger.current_context
-      frame = Trepan::Frame.new(context, state)
-      frame.instance_variable_set('@binding', binding_n(i))
-      puts "Frame #{i}: #{frame.file}, line #{frame.line}, class #{frame.klass}, thread: #{frame.thread}, " + 
-        "method: #{frame.meth}"
-      p frame.local_variables
-      puts frame.describe
-      puts '-' * 30
+    frame = Trepan::Frame.new(context, state)
+    Debugger.skip do 
+      0.upto(Debugger.current_context.stack_size-1) do |i|
+        state.frame_pos = i
+        puts "Frame #{i}: #{frame.file}, line #{frame.line}, " + 
+          "class #{frame.klass}, thread: #{frame.thread}, " + 
+          "method: #{frame.meth}"
+        p frame.local_variables
+        puts frame.describe(:maxwidth => 80, :callstyle=>:tracked)
+        puts '-' * 30
+      end
     end
   end
   foo('arg', state)
