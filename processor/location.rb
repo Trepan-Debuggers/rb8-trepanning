@@ -105,7 +105,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     [loc, line_no, text]
   end
   
-  def format_location(event=@event, frame=@frame, frame_index=@frame_index)
+  def format_location(event=@event, frame=@frame, frame_index=@frame.index)
     text      = nil
     ev        = if event.nil? || 0 != frame_index
                   '  ' 
@@ -122,7 +122,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   # FIXME: Use above format_location routine
   def print_location
     text      = nil
-    ev        = if @event.nil? || 0 != @frame_index
+    ev        = if @event.nil? || 0 != @frame.index
                   '  ' 
                 else
                   (EVENT2ICON[@event] || @event)

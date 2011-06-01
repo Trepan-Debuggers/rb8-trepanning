@@ -3,9 +3,26 @@ module Trepan
 
   # Call-Stack frame methods
   class Frame
-    def initialize(context, state)
+    attr_accessor :stack_size, :index
+    def initialize(context, index=0)
       @context = context
-      @state = state
+      @index = index
+      @stack_size = @context.stack_size
+      reset
+    end
+
+    def reset
+      @binding = @klass = @file = @line = 
+        @local_variables = @meth = @thread = nil
+    end
+
+    def index=(new_value)
+      if new_value > 0 && new_value < @stack_size
+        reset
+        @index  = new_value
+      else
+        nil
+      end
     end
 
     def run(code, filename=nil)
@@ -14,7 +31,7 @@ module Trepan
     end
 
     def binding
-      @context.frame_binding(@state.frame_pos)
+      @binding ||= @context.frame_binding(@state.index)
     end
 
     def call_string(opts={:maxwidth=>80, :callstyle => :last})
@@ -23,7 +40,7 @@ module Trepan
         locals = local_variables
         if opts[:callstyle] != :short && klass
           if opts[:callstyle] == :tracked
-            arg_info = @context.frame_args_info(@state.frame_pos)
+            arg_info = @context.frame_args_info(@index)
           end
           call_str << "#{klass}." 
         end
@@ -76,36 +93,36 @@ module Trepan
     end
 
     def args
-      @context.frame_args(@state.frame_pos)
+      @args ||= @context.frame_args(@index)
     end
 
     def file
-      @context.frame_file(@state.frame_pos)
+      @file ||= @context.frame_file(@index)
     end
 
     def klass
-      @context.frame_class(@state.frame_pos)
+      @klass ||= @context.frame_class(@index)
     end
 
     def line
-      @context.frame_line(@state.frame_pos)
+      @line ||= @context.frame_line(@index)
     end
 
     def local_variables
-      @context.frame_locals(@state.frame_pos)
+      @local_variables ||= @context.frame_locals(@index)
     end
 
     def meth
-      m = @context.frame_method(@state.frame_pos)
-      m ? m.id2name : ''
-    end
-
-    def stack_size
-      @context.stack_size
+      if @meth 
+        @meth
+      else
+        m = @context.frame_method(@index)
+        @meth = m ? m.id2name : ''
+      end
     end
 
     def thread
-      @context.thread
+      @thread ||= @context.thread
     end
 
     # def eval?
@@ -124,22 +141,15 @@ end
 
 if __FILE__ == $0
   # Show it:
-  class Trepan::State
-    attr_accessor :frame_pos
-    def initialize(frame_pos=0)
-      @frame_pos = frame_pos
-    end
-  end
   require 'rubygems'
   require 'ruby-debug-base'; Debugger.start
-  state = Trepan::State.new(0)
-  def foo(a, state)
+  def foo(str, num)
     x = 1
     context = Debugger.current_context
-    frame = Trepan::Frame.new(context, state)
     Debugger.skip do 
       0.upto(Debugger.current_context.stack_size-1) do |i|
-        state.frame_pos = i
+        frame = Trepan::Frame.new(context)
+        frame.index = i
         puts "Frame #{i}: #{frame.file}, line #{frame.line}, " + 
           "class #{frame.klass}, thread: #{frame.thread}, " + 
           "method: #{frame.meth}"
@@ -149,5 +159,5 @@ if __FILE__ == $0
       end
     end
   end
-  foo('arg', state)
+  foo('arg', 5)
 end

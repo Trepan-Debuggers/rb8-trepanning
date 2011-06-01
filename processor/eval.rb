@@ -97,7 +97,7 @@ if __FILE__ == $0
   puts "To be continued..."
   exit
   require_relative '../app/frame'
-  frame = Trepan::Frame.new(self, 1, Rubinius::VM.backtrace(0)[0])
+  frame = Trepan::Frame.new(context)
   cmdp.instance_variable_set('@frame', frame)
   cmdp.instance_variable_set('@settings', {:stack_trace_on_error => true})
   def cmdp.errmsg(mess) ; puts mess end

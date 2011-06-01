@@ -33,7 +33,7 @@ module MockDebugger
       @settings             = Trepan::DEFAULT_SETTINGS.merge(settings)
       @intf                 = [Trepan::UserInterface.new(nil, nil,
                                                          :history_save=>false)]
-      # @current_frame        = Trepan::Frame.new(self, 0, @vm_locations[0])
+      # @current_frame        = Trepan::Frame.new(context)
       @frames               = []
       # @restart_argv         = Rubinius::OS_STARTUP_DIR
 

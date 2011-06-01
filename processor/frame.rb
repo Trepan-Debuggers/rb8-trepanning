@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+b# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../app/complete'
 require_relative '../app/frame'
@@ -39,7 +39,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     frame, frame_num = get_frame(frame_num, absolute_pos)
     if frame 
       @frame = frame
-      @frame_index = frame_num
+      @frame.index = frame_num
       prefix = "--> ##{frame_num} " 
       unless @settings[:traceprint]
         msg("#{prefix}%s" %
@@ -56,8 +56,8 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   def frame_low_high(direction)
     if direction
-      low, high = [ @frame_index * -direction, 
-                    (@stack_size - 1 - @frame_index) * direction ]
+      low, high = [ @frame.index * -direction, 
+                    (@stack_size - 1 - @frame.index) * direction ]
       low, high = [high, low] if direction < 0
       [low, high]
     else
@@ -73,9 +73,8 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   # Initializes the thread and frame variables: @frame, @top_frame, 
   # @frame_index, @current_thread, and @threads2frames
-  def frame_setup(context, state)
-    @frame_index        = 0
-    @frame = @top_frame = Trepan::Frame.new(context, state)
+    @frame.index        = 0
+    @frame = @top_frame = Trepan::Frame.new(context)
     @current_thread     = @frame.thread
     @context            = context
     @state              = state
@@ -90,7 +89,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   # Remove access to thread and frame variables
   def frame_teardown
-    @top_frame = @frame = @frame_index = @current_thread = nil 
+    @top_frame = @frame = @frame.index = @current_thread = nil 
     @threads2frames = {}
   end
   
@@ -103,9 +102,9 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   def get_frame(frame_num, absolute_pos)
     if absolute_pos
-      frame_num += @stack_size if frame_num < 0
+      frame_num += @frame.stack_size if frame_num < 0
     else
-      frame_num += @frame_index
+      frame_num += @frame.index
     end
     
     if frame_num < 0
@@ -116,22 +115,21 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
       return [nil, nil]
     end
 
-    @state.frame_pos = frame_num
-    @frame = Trepan::Frame.new(@context, @state)
+    @frame.index = frame_num
     [@frame, frame_num]
   end
   
   def parent_frame
-    frame = @dbgr.frame(@frame.number + 1)
-    unless frame
-      errmsg "Unable to find parent frame at level #{@frame.number+1}"
+    unless @frame.index + 1 < @frame.stack_size
+      errmsg "Unable to find parent frame at level #{@frame.index+1}"
       return nil
     end
-    frame
+    @frame.index += 1
+    @frame
   end
   
   def set_hide_level
-    max_stack_size = @context.stack_size
+    max_stack_size = @frame.stack_size
     @hide_level = 
       if !@settings[:hidelevel] || @settings[:hidelevel] < 0
         @settings[:hidelevel] = @hidelevels[@current_thread] =  
