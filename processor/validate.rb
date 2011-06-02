@@ -335,13 +335,10 @@ if __FILE__ == $0
   # p ['breakpoint validate', pos]
 
   p cmdproc.breakpoint_position('foo', true)
-  p cmdproc.breakpoint_position('@0', true)
   p cmdproc.breakpoint_position("#{__LINE__}", true)
-  p cmdproc.breakpoint_position("#{__FILE__}   @0", false)
   p cmdproc.breakpoint_position("#{__FILE__}:#{__LINE__}", true)
   p cmdproc.breakpoint_position("#{__FILE__} #{__LINE__} if 1 == a", true)
   p cmdproc.breakpoint_position("cmdproc.errmsg", false)
-  p cmdproc.breakpoint_position("cmdproc.errmsg:@0", false)
   ### p cmdproc.breakpoint_position(%w(2 if a > b))
   p cmdproc.get_int_list(%w(1+0 3-1 3))
   p cmdproc.get_int_list(%w(a 2 3))
