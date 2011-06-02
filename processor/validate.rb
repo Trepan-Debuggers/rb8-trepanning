@@ -115,10 +115,10 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   def get_int_noerr(arg)
     b = @frame ? @frame.binding : nil
     val = Integer(eval(arg, b))
-  #rescue SyntaxError
-  #  nil
-  #rescue 
-  #  nil
+  rescue SyntaxError
+    nil
+  rescue 
+    nil
   end
   
   def get_thread_from_string(id_or_num_str)
@@ -296,6 +296,7 @@ if __FILE__ == $0
   cmdproc  = cmd.proc
   onoff = %w(1 0 on off)
   onoff.each { |val| puts "onoff(#{val}) = #{cmdproc.get_onoff(val)}" }
+  cmdproc.frame.instance_variable_set('@binding', binding)
   %w(1 1E bad 1+1 -5).each do |val| 
     puts "get_int_noerr(#{val}) = #{cmdproc.get_int_noerr(val).inspect}" 
   end
@@ -310,6 +311,9 @@ if __FILE__ == $0
   puts cmdproc.parse_position(__FILE__).inspect
   puts cmdproc.parse_position('8').inspect
   puts cmdproc.parse_position("#{__FILE__} #{__LINE__}").inspect
+
+  puts "To be continued...."
+  exit
   
   cmdproc.method?('cmdproc.errmsg')
   puts '=' * 40
@@ -338,7 +342,7 @@ if __FILE__ == $0
   p cmdproc.breakpoint_position("#{__LINE__}", true)
   p cmdproc.breakpoint_position("#{__FILE__}:#{__LINE__}", true)
   p cmdproc.breakpoint_position("#{__FILE__} #{__LINE__} if 1 == a", true)
-  p cmdproc.breakpoint_position("cmdproc.errmsg", false)
+  puts cmdproc.breakpoint_position("cmdproc.errmsg", false)
   ### p cmdproc.breakpoint_position(%w(2 if a > b))
   p cmdproc.get_int_list(%w(1+0 3-1 3))
   p cmdproc.get_int_list(%w(a 2 3))
