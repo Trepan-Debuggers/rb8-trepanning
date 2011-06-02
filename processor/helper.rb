@@ -6,7 +6,9 @@ module Trepan
   module_function :inside_emacs?
   
   module ParseFunctions
-    Position_regexp = '(?:(\d+)|(.+?)[:.#]([^.:\s]+))'
+    Position_regexp = '(?:(\d+)|(.+?)[:.#]([^.:\s]+))' unless 
+      defined? Position_regexp
+    
 
     # Parse 'str' of command 'cmd' as an integer between
     # min and max. If either min or max is nil, that

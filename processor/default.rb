@@ -42,7 +42,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     :tracebuffer   => false,     # save events to a trace buffer.
     :user_cmd_dir  => File.join(Trepan::HOME_DIR, 'trepan', 'command'),
                                  # User command directory
-  }
+  } unless defined? DEFAULT_SETTINGS
 end
 
 if __FILE__ == $0
