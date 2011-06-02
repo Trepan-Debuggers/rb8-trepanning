@@ -7,7 +7,7 @@ class Trepan::Subcommand::InfoBreakpoints < Trepan::Subcommand
   unless defined?(HELP)
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
     HELP         = <<-EOH
-#{PREFIX.join(' ')} [num1 ...] [verbose]
+#{PREFIX.join(' ')} [num1 ...]
 
 Show status of user-settable breakpoints. If no breakpoint numbers are
 given, the show all breakpoints. Otherwise only those breakpoints
