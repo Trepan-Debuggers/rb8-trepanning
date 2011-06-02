@@ -55,7 +55,7 @@ Use 'set max list' or 'show max list' to see or set the value.
       end
     else
       errmsg "No sourcefile available for %s\n" % file
-      return @state.previous_line
+      return @proc.state.previous_line
     end
     return b
   end
@@ -64,7 +64,7 @@ Use 'set max list' or 'show max list' to see or set the value.
     listsize = settings[:maxlist]
     if args.size == 1
       b = @proc.state.previous_line ? 
-      @proc.state.previous_line + listsize : @proc.state.line - (listsize/2)
+      @proc.state.previous_line + listsize : @proc.frame.line - (listsize/2)
       e = b + listsize - 1
     elsif args[1] == '-'
       b = if @proc.state.previous_line
@@ -82,7 +82,7 @@ Use 'set max list' or 'show max list' to see or set the value.
       b = @proc.state.line - (listsize/2)
       e = b + listsize -1
     else
-      b, e = @args[1].split(/[-,]/)
+      b, e = args[1].split(/[-,]/)
       if e
         b = b.to_i
         e = e.to_i
@@ -91,7 +91,8 @@ Use 'set max list' or 'show max list' to see or set the value.
         e = b + listsize - 1
       end
     end
-    @proc.state.previous_line = display_list(b, e, @proc.state.file, @proc.state.line)
+    @proc.state.previous_line = 
+      display_list(b, e, @proc.frame.file, @proc.frame.line)
   end
   
 end
@@ -99,5 +100,14 @@ end
 if __FILE__ == $0
   require_relative '../mock'
   dbgr, cmd = MockDebugger::setup
-  cmd.run [cmd.name] if ARGV.size > 0
+
+  def run_cmd(cmd, args)
+    cmd.proc.instance_variable_set('@cmd_argstr', args[1..-1].join(' '))
+    cmd.run(args)
+    puts '-' * 20
+  end
+  
+  LineCache::cache(__FILE__)
+  run_cmd(cmd, [cmd.name])
+  run_cmd(cmd, [cmd.name, __FILE__ + ':10'])
 end

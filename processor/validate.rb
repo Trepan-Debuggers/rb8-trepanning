@@ -115,10 +115,10 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   def get_int_noerr(arg)
     b = @frame ? @frame.binding : nil
     val = Integer(eval(arg, b))
-  rescue SyntaxError
-    nil
-  rescue 
-    nil
+  #rescue SyntaxError
+  #  nil
+  #rescue 
+  #  nil
   end
   
   def get_thread_from_string(id_or_num_str)

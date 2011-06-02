@@ -85,9 +85,6 @@ if __FILE__ == $0
   cmd.proc.instance_variable_set('@cmd_argstr', arg_str)
   puts "eval #{arg_str} is: #{cmd.run([cmd.name, arg_str])}"
   arg_str = 'return "foo"'
-  # def cmd.proc.current_source_text
-  #   'return "foo"'
-  # end
-  # cmd.proc.instance_variable_set('@cmd_argstr', arg_str)
-  # puts "eval? #{arg_str} is: #{cmd.run([cmd.name + '?'])}"
+  cmd.proc.instance_variable_set('@cmd_argstr', arg_str)
+  puts "eval? #{arg_str} is: #{cmd.run([cmd.name + '?'])}"
 end

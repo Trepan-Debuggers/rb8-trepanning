@@ -83,11 +83,15 @@ if __FILE__ == $0
   require_relative '../mock'
   dbgr, cmd = MockDebugger::setup
 
+  puts "To be continued..."
   # def sep ; puts '=' * 40 end
-  # %w(0 1 -2).each {|count| cmd.run([cmd.name, count]); sep }
-  # def foo(cmd, cmd.name)
-  #   cmd.proc.frame_setup(RubyVM::ThreadFrame::current)
-  #   %w(0 -1).each {|count| cmd.run([cmd.name, count]); sep }
+  # require 'ruby-debug'
+  # %w(0 1 -2).each {|count| 
+  #   cmd.run([cmd.name, count.to_s]); sep 
+  # }
+  # def foo(cmd, name)
+  #   cmd.proc.frame_setup(Debugger.current_context, nil)
+  #   %w(0 -1).each {|count| cmd.run([cmd.name, count.to_s]); sep }
   # end
   # foo(cmd, cmd.name)
 end

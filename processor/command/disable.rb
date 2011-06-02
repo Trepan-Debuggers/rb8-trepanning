@@ -76,11 +76,10 @@ if __FILE__ == $0
   dbgr, cmd = MockDebugger::setup
   cmd.run([cmd.name])
   cmd.run([cmd.name, '1'])
-  cmdproc = dbgr.core.processor
-  cmds = cmdproc.commands
-  break_cmd = cmds['break']
-  # break_cmd.run(['break', cmdproc.frame.source_location[0].to_s])
-  # require_relative '../../lib/trepanning'
-  # Trepan.debug
-  cmd.run([cmd.name, '1'])
+  cmds = cmd.proc.commands
+  puts "To be continued..."
+# 
+#  break_cmd = cmds['break']
+#  break_cmd.run(['break', cmdproc.frame.line])
+#  cmd.run([cmd.name, '1'])
 end

@@ -40,9 +40,9 @@ if __FILE__ == $0
   dbgr, cmd = MockDebugger::setup
   cmd.run([cmd.name])
   cmd.run([cmd.name, '1'])
-  cmdproc = cmd.proc
-  cmds = cmdproc.commands
+  cmds = cmd.proc.commands
   break_cmd = cmds['break']
+  puts "To be continued..."
   # break_cmd.run(['break', cmdproc.frame.source_location[0].to_s])
-  cmd.run([cmd.name, '1'])
+  # cmd.run([cmd.name, '1'])
 end

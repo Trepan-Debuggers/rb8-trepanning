@@ -44,8 +44,8 @@ new copy of the debugger is used.
       return
     end
     if not File.executable?(prog_script) and trepan8_script == prog_script
-      print "Ruby program #{prog_script} doesn't seem to be executable...\n"
-      print "We'll add a call to Ruby.\n"
+      msg "Ruby program #{prog_script} doesn't seem to be executable..."
+      msg "We'll add a call to Ruby.\n"
       ruby = begin defined?(Gem) ? Gem.ruby : "ruby" rescue "ruby" end
       trepan8_script = "#{ruby} -I#{$:.join(' -I')} #{prog_script}"
     else
@@ -76,8 +76,9 @@ if __FILE__ == $0
   exit if ARGV[-1] == 'exit'
   require_relative '../mock'
   dbgr, cmd = MockDebugger::setup
-  dbgr.restart_argv = []
-  cmd.run([cmd.name])
+  Trepan::PROG_SCRIPT = ''
+  Trepan::INITIAL_DIR = Dir.pwd
+  cmd.run([cmd.name, $0, 'exit'])
   dbgr.restart_argv = ARGV + ['exit']
   # require_relative '../../debugger'
   # Trepan.start

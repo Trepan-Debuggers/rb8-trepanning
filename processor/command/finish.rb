@@ -4,10 +4,11 @@ require_relative 'base/cmd'
 
 class Trepan::Command::FinishCommand < Trepan::Command
 
-  ALIASES      = %w(fin)
-  CATEGORY     = 'running'
-  NAME         = File.basename(__FILE__, '.rb')
-  HELP         = <<-HELP
+  unless defined?(HELP)
+    ALIASES      = %w(fin)
+    CATEGORY     = 'running'
+    NAME         = File.basename(__FILE__, '.rb')
+    HELP         = <<-HELP
 #{NAME} [FRAME_NUM]
 
 Execute until selected stack frame returns.
@@ -18,8 +19,9 @@ frame or 0 if no frame positioning (e.g "up", "down" or "frame") has
 been performed. If a frame number is given we run until that frame
 returns.
       HELP
-  NEED_RUNNING = true
-  SHORT_HELP   = 'Step into next method call or to next line'
+    NEED_RUNNING = true
+    SHORT_HELP   = 'Step into next method call or to next line'
+  end
 
   # self.allow_in_post_mortem = false
   # self.need_context         = true
@@ -47,4 +49,10 @@ returns.
     state.frame_pos = 0
     state.proceed
   end
+end
+
+if __FILE__ == $0
+  require_relative '../mock'
+  dbgr, cmd = MockDebugger::setup
+  cmd.run([cmd.name])
 end

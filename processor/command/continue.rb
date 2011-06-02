@@ -52,7 +52,5 @@ end
 if __FILE__ == $0
   require_relative '../mock'
   dbgr, cmd = MockDebugger::setup
-  puts "To be continued..."
-  exit
-  p cmd.run([cmd.name])
+  cmd.run([cmd.name])
 end

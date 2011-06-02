@@ -131,5 +131,7 @@ if __FILE__ == $0
   # Get an IRB session -- the hard way :-)
   if ARGV.size > 0
     cmd.run([cmd.name]) 
+  else
+    puts "Pass an arg to enter irb. e.g: #{$0} irb"
   end
 end
