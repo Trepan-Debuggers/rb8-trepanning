@@ -77,8 +77,10 @@ module Trepan
     end
 
     def describe(opts = {:maxwidth => 80})
-      str   = ''
-      call_str  = call_string(opts)
+      str       = ''
+      # FIXME There seem to be bugs in showing call if
+      # index != 0
+      call_str  = index == 0 ? call_string(opts) : ''
       file_line = "at line %s:%d\n" % [file, line]
       unless call_str.empty?
         str += call_str + ' '

@@ -152,9 +152,9 @@ module Trepan
   end
 
   # Implements debugger "where" or "backtrace" command.
-  class WhereCommand < OldCommand
+  class OldWhereCommand < OldCommand
     def regexp
-      /^\s*(?:w(?:here)?|bt|backtrace)$/
+      /^\s*(?:old\-where)$/
     end
 
     def execute
@@ -175,11 +175,11 @@ module Trepan
 
     class << self
       def help_command
-        %w|where backtrace|
+        %w|oldwhere|
       end
 
       def help(cmd)
-        s = if cmd == 'where'
+        s = if cmd == 'oldwhere'
           %{
             w[here]\tdisplay stack frames
             }
@@ -194,109 +194,6 @@ frame is 0. frame number can be referred to in the "frame" command;
 "up" and "down" add or subtract respectively to frame numbers shown.
 The position of the current frame is marked with -->.  } 
       end 
-    end
-  end
-
-  class UpCommand < OldCommand # :nodoc:
-    def regexp
-      /^\s* u(?:p)? (?:\s+(\S+))? $/x
-    end
-
-    def execute
-      pos = get_int(@match[1], "Up")
-      return unless pos
-      adjust_frame(pos, false)
-    end
-
-    class << self
-      def help_command
-        'up'
-      end
-
-      def help(cmd)
-        %{
-          up[count]\tmove to higher frame
-        }
-      end
-    end
-  end
-
-  class DownCommand < OldCommand # :nodoc:
-    def regexp
-      /^\s* down (?:\s+(\S+))? $/x
-    end
-
-    def execute
-      pos = get_int(@match[1], "Down")
-      return unless pos
-      adjust_frame(-pos, false)
-    end
-
-    class << self
-      def help_command
-        'down'
-      end
-
-      def help(cmd)
-        %{
-          down[count]\tmove to lower frame
-        }
-      end
-    end
-  end
-  
-  class FrameCommand < OldCommand # :nodoc:
-    def regexp
-      / ^\s* 
-        f(?:rame)? 
-        (?: \s+ (\S+))? \s*
-        (?: thread \s+ (.*))? \s*
-        $/x
-    end
-
-    def execute
-      if not @match[1]
-        pos = 0
-      else
-        pos = get_int(@match[1], "Frame")
-        return unless pos
-      end
-      if @match[2]
-        context = parse_thread_num('frame', @match[2])
-        unless context
-          errmsg "Thread #{@match[2]} doesn't exist.\n"
-          return
-        end
-      else
-        context = @state.context
-      end
-      adjust_frame(pos, true, context)
-    end
-
-    class << self
-      def help_command
-        'frame'
-      end
-
-      def help(cmd)
-        %{
-          f[rame] [frame-number [thread thread-number]]
-          Move the current frame to the specified frame number, or the
-          0 if no frame-number has been given.
-
-          A negative number indicates position from the other end.  So
-          'frame -1' moves to the oldest frame, and 'frame 0' moves to
-          the newest frame.
-
-          Without an argument, the command prints the current stack
-          frame. Since the current position is redisplayed, it may trigger a
-          resynchronization if there is a front end also watching over
-          things. 
-
-          If a thread number is given, then we set the context for evaluating
-          expressions to that frame of that thread. 
-        }
-      end
     end
   end
 end

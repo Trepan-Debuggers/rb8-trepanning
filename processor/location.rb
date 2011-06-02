@@ -21,20 +21,17 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     # For now we want resolved filenames 
     if @settings[:basename] 
       File.basename(filename)
-    elsif resolve
-      filename = LineCache::unmap_file(filename)
-      if File.exist?(filename) 
-        filename
-#        elsif (try_filename = find_load_path(filename))
-#          try_filename
-      elsif (try_filename = resolve_file_with_dir(filename))
-        try_filename
-      else
-        File.expand_path(Pathname.new(filename).cleanpath.to_s)
-      end
-    else
-      filename
+      return
     end
+    if resolve
+      filename = LineCache::unmap_file(filename)
+      if !File.exist?(filename) 
+        if (try_filename = resolve_file_with_dir(filename))
+          filename = try_filename if File.exist?(filename)
+        end
+      end
+    end
+    Pathname.new(File.expand_path(filename)).cleanpath.to_s
   end
   
   # Return the text to the current source line.
