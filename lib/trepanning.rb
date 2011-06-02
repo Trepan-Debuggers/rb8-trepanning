@@ -19,8 +19,9 @@ module Trepan
     # in remote mode, wait for the remote connection 
     attr_accessor :wait_connection
 
-    # If set, a string to look for in caller() and is used to see
-    # if the call stack is truncated.
+    # If start_sentinal is set, it is a string to look for in caller()
+    # and is used to see if the call stack is truncated. Is also
+    # defined in app/default.rb
     attr_accessor :start_sentinal 
     
     attr_reader :thread, :control_thread, :cmd_port, :ctrl_port

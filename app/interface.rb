@@ -65,7 +65,7 @@ module Trepan
     attr_accessor :restart_file
 
     unless defined?(FILE_HISTORY)
-      FILE_HISTORY = ".rdebug_hist"
+      FILE_HISTORY = ".trepan8_hist"
     end
     def initialize()
       super
@@ -103,6 +103,7 @@ module Trepan
     end
     
     def close
+      STDOUT.close
     end
 
     # Things to do before quitting
@@ -113,6 +114,7 @@ module Trepan
       if Trepan.respond_to?(:save_history)
         Trepan.save_history 
       end
+      close
     end
     
     def readline_support?
@@ -185,6 +187,7 @@ module Trepan
     end
     
     def close
+      p @socket.methods
       @socket.close
     rescue Exception
     end

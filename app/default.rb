@@ -52,7 +52,7 @@ module Trepan
   DEFAULT_CMDLINE_SETTINGS = {
     'annotate'           => 0,
     'client'             => false,
-    'control'            => true,
+    'control'            => false,
     'cport'              => PORT + 1,
     'frame_bind'         => false,
     'host'               => nil,
@@ -79,6 +79,13 @@ module Trepan
     ## Note that at most one of :server or :client can be true.
   } unless defined?(DEFAULT_CMDLINE_SETTINGS)
 
+  class << self
+    attr_accessor :start_sentinal
+    # If start_sentinal is set, it is a string to look for in caller()
+    # and is used to see if the call stack is truncated. Is also
+    # defined in lib/trepanning.rb
+    start_sentinal = nil;  
+  end
 end
 
 if __FILE__ == $0

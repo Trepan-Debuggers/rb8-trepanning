@@ -7,7 +7,7 @@ require_relative 'virtual'
 require_relative '../app/default'
 require_relative '../interface/user'  # user interface (includes I/O)
 
-require 'ruby-debug-base'; Debugger.start
+require 'ruby-debug-base'; Debugger.start(:init => true)
 require_relative 'processor'
 
 module MockDebugger
@@ -35,9 +35,7 @@ module MockDebugger
                                                          :history_save=>false)]
       # @current_frame        = Trepan::Frame.new(context)
       @frames               = []
-      # @restart_argv         = Rubinius::OS_STARTUP_DIR
 
-      ## @core                 = Trepan::Core.new(self)
       @trace_filter         = []
 
       @completion_proc = Proc.new{|str| str}

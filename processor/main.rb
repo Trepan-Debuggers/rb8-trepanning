@@ -141,8 +141,9 @@ module Trepan
     end
 
     def finalize
-      breakpoint_finalize
-      stepping_breakpoint_finalize
+      # breakpoint_finalize
+      # stepping_breakpoint_finalize
+      @intf.finalize
     end
 
     def canonic_container(container)

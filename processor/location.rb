@@ -1,5 +1,4 @@
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
-require 'pathname'  # For cleanpath
 require 'rubygems'; 
 require 'linecache'
 require 'require_relative'
@@ -20,8 +19,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   def canonic_file(filename, resolve=true)
     # For now we want resolved filenames 
     if @settings[:basename] 
-      File.basename(filename)
-      return
+      return File.basename(filename)
     end
     if resolve
       filename = LineCache::unmap_file(filename)
@@ -31,7 +29,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
         end
       end
     end
-    Pathname.new(File.expand_path(filename)).cleanpath.to_s
+    File.expand_path(filename)
   end
   
   # Return the text to the current source line.
@@ -164,17 +162,21 @@ if __FILE__ == $0 && caller.size == 0
   proc = Trepan::CmdProcessor.new([Trepan::UserInterface.new(nil, nil,
                                                             :history_save=>false)])
   proc.settings = {:directory => '$cdir:$cwd'}
-  # proc.frame_initialize
+
+  proc.frame_initialize
 
   proc.location_initialize
+  require 'ruby-debug'; Debugger.start
+  proc.frame_setup(Debugger.current_context, nil)
   puts proc.canonic_file(__FILE__)
   proc.settings[:basename] = true
   puts proc.canonic_file(__FILE__)
   puts proc.current_source_text
-  # xx = eval <<-END
-  #    proc.frame_initialize
-  #    ##proc.frame_setup(RubyVM::ThreadFrame.current)
-  #    proc.location_initialize
-  #    proc.current_source_text
-  # END
+  xx = eval <<-END
+     proc.frame_initialize
+     proc.frame_setup(Debugger.current_context, nil)
+     proc.location_initialize
+     proc.current_source_text
+  END
+  Debugger.stop
 end

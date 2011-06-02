@@ -2,11 +2,12 @@ require 'rubygems'; require 'require_relative'
 require_relative './base/cmd'
 
 class Trepan::Command::BacktraceCommand < Trepan::Command
-  ALIASES      = %w(bt where)
-  CATEGORY     = 'stack'
-  MAX_ARGS     = 2 # Need at most this many
-  NAME         = File.basename(__FILE__, '.rb')
-  HELP = <<-HELP
+  unless defined?(ALIASES)
+    ALIASES      = %w(bt where)
+    CATEGORY     = 'stack'
+    MAX_ARGS     = 2 # Need at most this many
+    NAME         = File.basename(__FILE__, '.rb')
+    HELP = <<-HELP
 #{NAME}
 
 Print the entire stack frame. Each frame is numbered, the most recent
@@ -16,8 +17,9 @@ The position of the current frame is marked with -->.
 
 See also 'set hidelevel'.
       HELP
-  NEED_STACK   = true
-  SHORT_HELP   =  'Show the current call stack'
+    NEED_STACK   = true
+    SHORT_HELP   =  'Show the current call stack'
+  end
   
   def complete(prefix)
     @proc.frame_complete(prefix, nil)
@@ -111,4 +113,11 @@ See also 'set hidelevel'.
       msg "compare debugger backtrace (bt) with Ruby caller(0)." 
     end
   end
+end
+
+if __FILE__ == $0
+  # Demo it.
+  require_relative '../mock'
+  dbgr, cmd = MockDebugger::setup
+  cmd.run([cmd.name])
 end

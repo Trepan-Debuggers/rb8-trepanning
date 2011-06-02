@@ -23,11 +23,6 @@ module Trepan
     self.allow_in_control = true
     Subcommands = 
       [
-       ['args', 1, 'Argument variables of current stack frame'],
-       ['breakpoints', 1, 'Status of user-settable breakpoints',
-        'Without argument, list info about all breakpoints.  With an
-integer argument, list info on that breakpoint.'],
-       ['catch', 3, 'Exceptions that can be caught in the current stack frame'],
        ['display', 2, 'Expressions to display when program stops'],
        ['file', 4, 'Info about a particular file read in',
 '
@@ -40,10 +35,7 @@ and "sha1".'],
        ['global_variables', 2, 'Global variables'],
        ['instance_variables', 2, 
         'Instance variables of the current stack frame'],
-       ['line', 2, 
-        'Line number and file name of current position in source file'],
        ['locals', 2, 'Local variables of the current stack frame'],
-       ['program', 2, 'Execution status of the program'],
        ['stack', 2, 'Backtrace of the stack'],
        ['thread', 6,  'List info about thread NUM', '
 If no thread number is given, we list info for all threads. \'terse\' and \'verbose\' 
@@ -106,60 +98,6 @@ item. If \'verbose\' is given then the entire stack frame is shown.'],
         else
           errmsg "Unknown info command #{param}\n"
         end
-      end
-    end
-    
-    def info_args(*args)
-      unless @state.context
-        print "No frame selected.\n"
-        return 
-      end
-      locals = @state.context.frame_locals(@state.frame_pos)
-      args = @state.context.frame_args(@state.frame_pos)
-      args.each do |name|
-        s = "#{name} = #{locals[name].inspect}"
-        if s.size > self.class.settings[:width]
-          s[self.class.settings[:width]-3 .. -1] = "..."
-        end
-        print "#{s}\n"
-      end
-    end
-    
-    def info_breakpoints(*args)
-      unless @state.context
-        print "info breakpoints not available here.\n"
-        return 
-      end
-      unless Debugger.breakpoints.empty?
-        brkpts = Debugger.breakpoints.sort_by{|b| b.id}
-        unless args.empty?
-          a = args.map{|a| a.to_i}
-          brkpts = brkpts.select{|b| a.member?(b.id)}
-          if brkpts.empty?
-            errmsg "No breakpoints found among list given.\n"
-            return
-          end
-        end
-        print "Num Enb What\n"
-        brkpts.each do |b|
-          fname = Command.settings[:basename] ? 
-             File.basename(b.source) : b.source
-            
-          if b.expr.nil?
-            print "%3d %s   at %s:%s\n", 
-            b.id, (b.enabled? ? 'y' : 'n'), fname, b.pos
-          else
-            print "%3d %s   at %s:%s if %s\n", 
-            b.id, (b.enabled? ? 'y' : 'n'), fname, b.pos, b.expr
-          end
-          hits = b.hit_count
-          if hits > 0
-            s = (hits > 1) ? 's' : ''
-            print "\tbreakpoint already hit #{hits} time#{s}\n"
-          end
-        end
-      else
-        print "No breakpoints.\n"
       end
     end
     
@@ -235,22 +173,6 @@ item. If \'verbose\' is given then the entire stack frame is shown.'],
       end
     end
     
-    def info_files(*args)
-      files = LineCache::cached_files
-      files += SCRIPT_LINES__.keys unless 'stat' == args[0] 
-      files.uniq.sort.each do |file|
-        stat = LineCache::stat(file)
-        path = LineCache::path(file)
-        print "File %s", file
-        if path and path != file
-          print " - %s\n", path 
-        else
-          print "\n"
-        end
-        print "\t%s\n", stat.mtime if stat
-      end
-    end
-    
     def info_instance_variables(*args)
       unless @state.context
         print "info instance_variables not available here.\n"
@@ -258,14 +180,6 @@ item. If \'verbose\' is given then the entire stack frame is shown.'],
       end
       obj = debug_eval('self')
       var_list(obj.instance_variables)
-    end
-    
-    def info_line(*args)
-      unless @state.context
-        errmsg "info line not available here.\n"
-        return 
-      end
-      print "Line %d of \"%s\"\n",  @state.line, @state.file
     end
     
     def info_locals(*args)
@@ -289,33 +203,6 @@ item. If \'verbose\' is given then the entire stack frame is shown.'],
           s[self.class.settings[:width]-3 .. -1] = "..."
         end
         print "#{s}\n"
-      end
-    end
-    
-    def info_program(*args)
-      if not @state.context
-        print "The program being debugged is not being run.\n"
-        return
-      elsif @state.context.dead? 
-        print "The program crashed.\n"
-        if Debugger.last_exception
-          print("Exception: #{Debugger.last_exception.inspect}\n")
-        end
-        return
-      end
-      
-      print "Program stopped. "
-      case @state.context.stop_reason
-      when :step
-        print "It stopped after stepping, next'ing or initial start.\n"
-      when :breakpoint
-        print("It stopped at a breakpoint.\n")
-      when :catchpoint
-        print("It stopped at a catchpoint.\n")
-      when :catchpoint
-        print("It stopped at a catchpoint.\n")
-      else
-        print "unknown reason: %s\n" % @state.context.stop_reason.to_s
       end
     end
     
