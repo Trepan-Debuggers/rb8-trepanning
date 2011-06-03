@@ -5,14 +5,59 @@ require 'socket'
 require 'thread'
 require 'ruby-debug-base'
 require 'require_relative'
-require_relative '../app/interface'
+# require_relative '../app/interface'
+require_relative '../interface/script'
+require_relative '../interface/user'
 require_relative '../processor/processor'
 
 module Trepan
   
   class << self
+    attr_accessor :completion_method
+
+    # The method is called when we want to do debugger command completion
+    # such as called from GNU Readline with <TAB>.
+    def self.completion_method(last_token, leading=nil)
+      if leading.nil? 
+          if Readline.respond_to?(:line_buffer)
+            completion = Debugger.handler.cmdproc.complete(leading, last_token)
+          else
+            completion = Debugger.handler.cmdproc.complete(last_token, '')
+          end
+      else
+        completion = Debugger.handler.cmdproc.complete(leading, last_token)
+      end
+      if 1 == completion.size 
+        completion_token = completion[0]
+        if last_token.end_with?(' ')
+          if last_token.rstrip == completion_token 
+            # There is nothing more to complete
+            []
+          else
+            []
+          end
+        else
+          [completion_token]
+        end
+      else
+        # We have multiple completions. Get the last token so that will
+        # be presented as a list of completions.
+        completion
+      end
+    end
+    completion_proc = method(:completion_method).to_proc
+
+    opts = {
+      :complete => completion_proc,
+      :readline => true
+    }
+
+    interface = Trepan::UserInterface.new(nil, nil, opts)
+    attr_accessor :completion_method
+
     attr_accessor :handler
-    Trepan.handler = Debugger.handler = CommandProcessor.new
+    Trepan.handler = Debugger.handler = CommandProcessor.new(interface)
+
     # gdb-style annotation mode. Used in GNU Emacs interface
     attr_accessor :annotate
 
@@ -27,7 +72,7 @@ module Trepan
     attr_reader :thread, :control_thread, :cmd_port, :ctrl_port
 
     def interface=(value) # :nodoc:
-      handler.interface = value
+      Debugger.handler.interface = value
     end
 
     # Trepan.start(options) -> bool

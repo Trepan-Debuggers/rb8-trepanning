@@ -82,19 +82,11 @@ module Trepan
 end
 
 def Trepan::GNU_readline?
+  @have_readline ||= nil
   begin
-    return @use_readline unless @use_readline.nil?
-    %w(rb-readline rb-readline.rb/readline).each do |gem_name|
-      @use_readline ||= require gem_name
-      break if @use_readline
-    end
-    if @use_readline
-      # Returns current line buffer
-      def Readline.line_buffer
-        RbReadline.rl_line_buffer
-      end
-      at_exit { Trepan::UserInput::finalize }
-    end
+    return @have_readline unless @have_readline.nil?
+    @have_readline = require 'readline'
+    at_exit { Trepan::UserInput::finalize }
     return true
   rescue LoadError
     return false

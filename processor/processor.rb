@@ -64,6 +64,7 @@ module Trepan
   class CommandProcessor < Processor 
     attr_reader   :display
     attr_accessor :frame
+    attr_reader   :cmdproc
 
     # FIXME: get from Command regexp method.
     @@Show_breakpoints_postcmd = [
