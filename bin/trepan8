@@ -345,19 +345,13 @@ else
     Trepan.start_control(options.host, options.cport) if options.control
 
     # load initrc script (e.g. .trepan8rc)
-    Trepan.run_init_script(StringIO.new) unless options.nx
+    Trepan.add_startup_files unless options.nx
     
     # run restore-settings startup script if specified
-    if options.restart_script
-      require 'fileutils'
-      Trepan.run_script(options.restart_script)
-      FileUtils.rm(options.restart_script)
-    end
+    Trepan.add_command_file(options.restart_script) if options.restart_script
 
     # run startup script if specified
-    if options.script
-      Trepan.run_script(options.script)
-    end
+    Trepan.add_command_file(options.script) if options.script
 
     # activate post-mortem
     Trepan.post_mortem if options.post_mortem

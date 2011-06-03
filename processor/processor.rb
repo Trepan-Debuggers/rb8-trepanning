@@ -88,8 +88,8 @@ module Trepan
                                   /^\s* u(?:p)? (?:\s+(.*))?$/x
                                  ]
     
-    def initialize(interface = Trepan::UserInterface.new)
-      @interface = interface
+    def initialize(interfaces = [Trepan::UserInterface.new])
+      @interface = interfaces.first
       @commands  = []
       @display   = []
       
@@ -100,7 +100,7 @@ module Trepan
       @debugger_breakpoints_were_empty = false # Show breakpoints 1st time
       @debugger_displays_were_empty = true # No display 1st time
       @debugger_context_was_dead = true # Assume we haven't started.
-      @cmdproc = CmdProcessor.new([interface])
+      @cmdproc = CmdProcessor.new(interfaces)
     end
     
     def interface=(interface)

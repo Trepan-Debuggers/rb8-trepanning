@@ -52,11 +52,11 @@ module Trepan
       :readline => true
     }
 
-    interface = Trepan::UserInterface.new(nil, nil, opts)
+    @@intf = [Trepan::UserInterface.new(nil, nil, opts)]
     attr_accessor :completion_method
 
     attr_accessor :handler
-    Trepan.handler = Debugger.handler = CommandProcessor.new(interface)
+    Trepan.handler = Debugger.handler = CommandProcessor.new(@@intf)
 
     # gdb-style annotation mode. Used in GNU Emacs interface
     attr_accessor :annotate
@@ -214,30 +214,42 @@ module Trepan
       end
       socket.close
     end
-    
-    # Runs normal debugger initialization scripts
-    # Reads and executes the commands from init file (if any) in the
-    # current working directory.  This is only done if the current
-    # directory is different from your home directory.  Thus, you can
-    # have more than one init file, one generic in your home directory,
-    #  and another, specific to the program you are debugging, in the
-    # directory where you invoke ruby-debug.
-    def run_init_script(out = handler.interface)
-      cwd_script_file  = File.expand_path(File.join(".", CMD_INITFILE_BASE))
-      run_script(cwd_script_file, out) if File.exists?(cwd_script_file)
 
-      home_script_file = File.expand_path(CMD_INITFILE)
-      run_script(home_script_file, out) if File.exists?(home_script_file) and 
-        cwd_script_file != home_script_file
+    def add_command_file(cmdfile, opts={}, stderr=$stderr)
+      unless File.readable?(cmdfile)
+        if File.exists?(cmdfile)
+          stderr.puts "Command file '#{cmdfile}' is not readable."
+          return
+        else
+          stderr.puts "Command file '#{cmdfile}' does not exist."
+          return
+        end
+      end
+      @@intf << Trepan::ScriptInterface.new(cmdfile, @output, opts)
+    end
+    
+    def add_startup_files()
+      seen = {}
+      cwd_initfile = File.join('.', Trepan::CMD_INITFILE_BASE)
+      [cwd_initfile, Trepan::CMD_INITFILE].each do |initfile|
+        full_initfile_path = File.expand_path(initfile)
+        next if seen[full_initfile_path]
+        add_command_file(full_initfile_path) if 
+          File.readable?(full_initfile_path)
+        seen[full_initfile_path] = true
+      end
     end
 
-    #
-    # Runs a script file
-    #
-    def run_script(file, out = handler.interface, verbose=false)
-      interface = Trepan::ScriptInterface.new(File.expand_path(file), out)
-      processor = Trepan::ControlCommandProcessor.new(interface)
-      processor.process_commands(verbose)
+    def process_cmdfile_setting(settings)
+      settings[:cmdfiles].each do |item|
+        cmdfile, opts = 
+          if item.kind_of?(Array)
+            item
+          else
+            [item, {}]
+          end
+        add_command_file(cmdfile, opts)
+      end if settings.member?(:cmdfiles)
     end
   end
 end

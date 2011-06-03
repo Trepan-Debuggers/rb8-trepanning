@@ -8,15 +8,15 @@ module Trepan
   # the base class. Subclasses inlcude Trepan::LocalInterface,
   # Trepan::RemoteInterface and Trepan::ScriptInterface.
   class OldInterface 
-    attr_writer :have_readline  # true if Readline is available
+    attr_writer :use_readline  # true if Readline is available
 
     def initialize
       begin
         require 'readline'
-        @have_readline = true
+        @use_readline = true
         @history_save = true
       rescue LoadError
-        @have_readline = false
+        @use_readline = false
         @history_save = false
       end
     end
@@ -72,7 +72,7 @@ module Trepan
       @command_queue = []
       @restart_file = nil
 
-      if @have_readline
+      if @use_readline
         # take gdb's default
         @history_length = ENV['HISTSIZE'] ? ENV['HISTSIZE'].to_i : 256  
         @histfile = File.join(ENV['HOME']||ENV['HOMEPATH']||'.', 
@@ -118,14 +118,14 @@ module Trepan
     end
     
     def readline_support?
-      @have_readline
+      @use_readline
     end
 
     private
     begin
       require 'readline'
       class << Trepan
-        @have_readline = true
+        @use_readline = true
         define_method(:save_history) do
           iface = self.handler.interface
           iface.histfile ||= File.join(ENV['HOME']||ENV['HOMEPATH']||'.', 

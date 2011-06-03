@@ -126,7 +126,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     @line_no  = @frame.line
     loc, @line_no, text = loc_and_text
     
-    msg "#{ev} (#{loc}"
+    msg "#{ev} (#{loc})"
     
     # if %w(return c-return).member?(@core.event)
     #   retval = Trepan::Frame.value_returned(@frame, @core.event)

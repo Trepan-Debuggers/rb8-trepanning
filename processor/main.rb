@@ -186,6 +186,10 @@ module Trepan
     # Run one debugger command. True is returned if we want to quit.
     def process_command_and_quit?()
       intf_size = @interfaces.size
+      if @interfaces.empty?
+        puts "FOO"
+        exit
+      end
       @intf  = @interfaces[-1]
       return true if @intf.input_eof? && intf_size == 1
       while intf_size > 1 || !@intf.input_eof?
@@ -208,9 +212,9 @@ module Trepan
           break
         rescue IOError, Errno::EPIPE => e
           if intf_size > 1
-            @dbgr.intf.pop
-            intf_size = @dbgr.intf.size
-            @intf = @dbgr.intf[-1]
+            @interfaces.pop
+            intf_size = @interfaces.size
+            @intf = @interfaces.last
             @last_command = nil
             print_location
           else
