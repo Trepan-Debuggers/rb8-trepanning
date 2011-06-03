@@ -65,7 +65,7 @@ See 'set buffer trace' for showing what may have already been run.
 
   def run(args)
     if args.size == 1
-      text  = @proc.current_source_text
+      text  = @proc.current_source_text.chomp
       ## FIXME turn into a subroutine and use in complete.
       if  '?' == args[0][-1..-1] 
         text = Trepan::Util::extract_expression(text)

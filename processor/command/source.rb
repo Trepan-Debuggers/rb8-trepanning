@@ -95,14 +95,15 @@ unless option -c or --continue is given.
 
   def run(args)
     options = parse_options(DEFAULT_OPTIONS.dup, args[1..-2])
-    intf = @proc.dbgr.intf
+    intf = @proc.interfaces
     output  = options[:quiet] ? Trepan::OutputNull.new(nil) : intf[-1].output
     
     filename = args[-1]
     
     expanded_file = File.expand_path(filename)
     unless File.readable?(expanded_file)
-      errmsg("Debugger command file '%s' is not a readable file" % filename)
+      errmsg("Debugger command file '%s' (%s) is not a readable file" % 
+             [filename, expanded_file])
       return false
     end
     

@@ -96,7 +96,7 @@ module Trepan
     ## def initialize(dbgr, settings={})
     def initialize(interfaces, settings={})
       @cmd_queue       = []
-      ### @dbgr            =  dbgr
+      @event           =  nil
       @interfaces      = interfaces
       @intf            = interfaces[-1]
       @debug_nest      = 1
