@@ -96,7 +96,7 @@ module Trepan
     ## def initialize(dbgr, settings={})
     def initialize(interfaces, settings={})
       @cmd_queue       = []
-      ### @dbgr            =  dbgr
+      @event           =  nil
       @interfaces      = interfaces
       @intf            = interfaces[-1]
       @debug_nest      = 1
@@ -208,9 +208,9 @@ module Trepan
           break
         rescue IOError, Errno::EPIPE => e
           if intf_size > 1
-            @dbgr.intf.pop
-            intf_size = @dbgr.intf.size
-            @intf = @dbgr.intf[-1]
+            @interfaces.pop
+            intf_size = @interfaces.size
+            @intf = @interfaces[-1]
             @last_command = nil
             print_location
           else
