@@ -46,6 +46,7 @@ See also 'step', 'next', 'finish', 'nexti' commands and "help location".
       @proc.state.context.set_breakpoint(filename, line_number)
     end
     @proc.continue
+    @proc.leave_cmd_loop = true
   end
 end
 

@@ -48,6 +48,7 @@ returns.
     context.stop_frame = frame_pos
     state.frame_pos = 0
     state.proceed
+    @proc.leave_cmd_loop = true
   end
 end
 

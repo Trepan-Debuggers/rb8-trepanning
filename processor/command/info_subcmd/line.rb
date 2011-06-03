@@ -18,7 +18,7 @@ class Trepan::Subcommand::InfoLine < Trepan::Subcommand
       return 
     end
     frame = @proc.frame
-    msg "Line %d of \"%s\"\n" %  [frame.line, @proc.canonic_file(frame.file)]
+    msg "Line %d of \"%s\"" %  [frame.line, @proc.canonic_file(frame.file)]
   end
 end
 

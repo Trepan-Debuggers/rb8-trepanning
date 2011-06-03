@@ -69,5 +69,6 @@ commands.
     @proc.context.step_over(step_count, @proc.state.frame_pos, 
                             opts[:different_pos])
     @proc.state.proceed
+    @proc.leave_cmd_loop = true
   end
 end

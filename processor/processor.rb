@@ -2,6 +2,7 @@ require 'rubygems'
 require 'ruby-debug-base'
 require 'require_relative'
 require_relative '../app/interface'
+require_relative '../interface/user'
 require_relative './command'
 require_relative './main'
 require_relative '../app/frame'
@@ -52,7 +53,7 @@ module Trepan
     # with "puts" or "print" in it, this print routine will give an
     # error saying it is looking for more arguments.
     def print(*args)
-      @interface.print(*args)
+      @interface.msg(*args)
     end
     
   end
@@ -86,7 +87,7 @@ module Trepan
                                   /^\s* u(?:p)? (?:\s+(.*))?$/x
                                  ]
     
-    def initialize(interface = LocalInterface.new)
+    def initialize(interface = Trepan::UserInterface.new)
       @interface = interface
       @commands  = []
       @display   = []
@@ -344,47 +345,49 @@ module Trepan
     def process_commands(context, file, line)
       @state, @commands = always_run(context, file, line, 1)
       $rdebug_state = state if @cmdproc.settings[:debuggertesting]
-      @cmdproc.frame_setup(context, @state)
-      splitter = lambda do |str|
-        str.split(/;/).inject([]) do |m, v|
-          if m.empty?
-            m << v
-          else
-            if m.last[-1] == ?\\
-              m.last[-1,1] = ''
-              m.last << ';' << v
-            else
-              m << v
-            end
-          end
-          m
-        end
-      end
+      @cmdproc.process_commands(context, @state)
+
+      # @cmdproc.frame_setup(context, @state)
+      # splitter = lambda do |str|
+      #   str.split(/;/).inject([]) do |m, v|
+      #     if m.empty?
+      #       m << v
+      #     else
+      #       if m.last[-1] == ?\\
+      #         m.last[-1,1] = ''
+      #         m.last << ';' << v
+      #       else
+      #         m << v
+      #       end
+      #     end
+      #     m
+      #   end
+      # end
       
-      preloop(@commands, context)
-      CommandProcessor.print_location_and_text(file, line)
-      while !@state.proceed? 
-        input = if @interface.command_queue.empty?
-                  @interface.read_command(prompt(context))
-                else
-                  @interface.command_queue.shift
-                end
-        break unless input
-        next if input =~ /^\s*#/
-        catch(:debug_error) do
-          if input == ""
-            next unless @last_cmd
-            input = @last_cmd
-          else
-            @last_cmd = input
-          end
-          splitter[input].each do |cmd|
-            one_cmd(@commands, context, cmd)
-            postcmd(@commands, context, cmd)
-          end
-        end
-      end
-      postloop(@commands, context)
+      # preloop(@commands, context)
+      # CommandProcessor.print_location_and_text(file, line)
+      # while !@state.proceed? 
+      #   input = if @interface.command_queue.empty?
+      #             @interface.read_command(prompt(context))
+      #           else
+      #             @interface.command_queue.shift
+      #           end
+      #   break unless input
+      #   next if input =~ /^\s*#/
+      #   catch(:debug_error) do
+      #     if input == ""
+      #       next unless @last_cmd
+      #       input = @last_cmd
+      #     else
+      #       @last_cmd = input
+      #     end
+      #     splitter[input].each do |cmd|
+      #       one_cmd(@commands, context, cmd)
+      #       postcmd(@commands, context, cmd)
+      #     end
+      #   end
+      # end
+      # postloop(@commands, context)
     end # process_commands
 
     # Things we do before entering the debugger command loop.

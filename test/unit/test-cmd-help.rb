@@ -99,6 +99,6 @@ class TestCommandHelp < Test::Unit::TestCase
 
   def test_help_complete
     assert_equal(%w(break breakpoints), @my_cmd.complete('br'))
-    assert_equal(%w(directory disable), @my_cmd.complete('di'))
+    assert_equal(%w(directory disable display), @my_cmd.complete('di'))
   end
 end

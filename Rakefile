@@ -195,7 +195,7 @@ task :clobber_rdoc do
 end
 
 task :rm_patch_residue do
-  FileUtils.rm_rf FileList['**/*.{rej,orig}'].to_a
+  FileUtils.rm_rf FileList['**/*.{rej,orig.rbc}'].to_a
 end
 
 desc "Remove built files"

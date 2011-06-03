@@ -71,5 +71,6 @@ See also the commands:
     ## @proc.state.context.step(step_count, force)
     @proc.context.step(step_count, opts[:different_pos])
     @proc.state.proceed
+    @proc.leave_cmd_loop = true
   end
 end

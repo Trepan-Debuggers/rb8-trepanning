@@ -9,7 +9,7 @@ require 'rubygems'; require 'require_relative'
 ##    validate).each do
 # %w(default breakpoint disassemble display eval eventbuf load_cmds location 
 #    frame hook msg running stepping validate).each do
-%w(default frame load_cmds location eval msg running validate).each do
+%w(default display eval eventbuf frame hook load_cmds location msg running validate).each do
   |mod_str|
   require_relative mod_str
 end
@@ -129,11 +129,11 @@ module Trepan
       ##   ).each do |submod|
       ## %w(load_cmds breakpoint display eventbuf frame running 
       ##    stepping validate).each do 
-      %w(load_cmds frame running).each do 
+      %w(load_cmds display eventbuf frame running validate).each do 
         |submod|
         self.send("#{submod}_initialize")
       end
-      ## hook_initialize(commands)
+      hook_initialize(commands)
     end
 
     def compute_prompt
@@ -185,8 +185,8 @@ module Trepan
 
     # Run one debugger command. True is returned if we want to quit.
     def process_command_and_quit?()
-      intf_size = @dbgr.intf.size
-      @intf  = @dbgr.intf[-1]
+      intf_size = @interfaces.size
+      @intf  = @interfaces[-1]
       return true if @intf.input_eof? && intf_size == 1
       while intf_size > 1 || !@intf.input_eof?
         begin
@@ -235,7 +235,7 @@ module Trepan
 
     def before_cmdloop
 
-      frame_setup
+      frame_setup(@context, @state)
 
       @unconditional_prehooks.run
       if breakpoint?
@@ -270,42 +270,52 @@ module Trepan
       return false
     end
 
+    # This is the main entry point.
+    def process_commands(context, state)
 
-    # # This is the main entry point.
-    # def process_commands
-    #   skip_command = before_cmdloop
-    #   while not @leave_cmd_loop do
-    #     begin
-    #       if !skip_command 
-    #         break if process_command_and_quit?()
-    #       end
-    #       if @return_to_program
-    #         after_cmdloop
-    #         if @step_count >= 0 && 'finish' != @return_to_program
-    #           @step_bp = step_over_by(1)
-    #           run_command('disassemble all') if settings[:debugstep]
-    #           dbgr.listen('step' == @return_to_program)
-    #         else
-    #           @step_bp = nil
-    #           dbgr.listen
-    #         end
-    #         skip_command = before_cmdloop
-    #       end
-    #     rescue SystemExit
-    #       @dbgr.stop
-    #       raise
-    #     rescue Exception => exc
-    #       # If we are inside the script interface errmsg may fail.
-    #       begin
-    #         errmsg("Internal debugger error: #{exc.inspect}")
-    #       rescue IOError
-    #         $stderr.puts "Internal debugger error: #{exc.inspect}"
-    #       end
-    #       exception_dump(exc, @settings[:debugexcept], $!.backtrace)
-    #     end
-    #   end
-    #   after_cmdloop
-    # end
+      @context = context
+      @state   = state
+      frame_setup(@context, @state)
+      # @event = @core.event
+
+      @unconditional_prehooks.run
+      # if breakpoint?
+      #   @last_pos = [@frame.source_container, frame_line,
+      #                @stack_size, @current_thread, @event, 
+      #                @frame.pc_offset]
+      # else
+      #   return if stepping_skip? || @stack_size <= @hide_level
+      # end
+
+      @prompt = compute_prompt
+
+      @leave_cmd_loop = false
+      print_location unless @settings[:traceprint]
+      # if 'trace-var' == @event 
+      #   msg "Note: we are stopped *after* the above location."
+      # end
+
+      @eventbuf.add_mark if @settings[:tracebuffer]
+
+      @cmdloop_prehooks.run
+      while not @leave_cmd_loop do
+        begin
+          break if process_command_and_quit?()
+        rescue SystemExit
+          @dbgr.stop
+          raise
+        rescue Exception => exc
+          # If we are inside the script interface errmsg may fail.
+          begin
+            errmsg("Internal debugger error: #{exc.inspect}")
+          rescue IOError
+            $stderr.puts "Internal debugger error: #{exc.inspect}"
+          end
+          exception_dump(exc, @settings[:debugexcept], $!.backtrace)
+        end
+      end
+      @cmdloop_posthooks.run
+    end
 
     # Run current_command, a String. @last_command is set after the
     # command is run if it is a command.

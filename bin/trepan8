@@ -109,6 +109,7 @@ require 'optparse'
 require 'ostruct'
 require 'require_relative'
 require_relative '../lib/trepanning'
+require_relative '../interface/user'
 
 module Trepan
 
@@ -378,7 +379,9 @@ else
       end
       print "The program finished.\n" unless 
         Debugger.annotate.to_i > 1 # annotate has its own way
-      interface = Debugger::LocalInterface.new
+      ## interface = Debugger::LocalInterface.new
+      interface = Trepan::UserInterface.new
+
       # Not sure if ControlCommandProcessor is really the right
       # thing to use. CommandProcessor requires a state.
       processor = Debugger::ControlCommandProcessor.new(interface)

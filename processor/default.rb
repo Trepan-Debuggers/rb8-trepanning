@@ -33,14 +33,14 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
                                  # will be truncated to this length when
                                  # printed
     :maxwidth       => (ENV['COLUMNS'] || '80').to_i,
-    :prompt         => 'trepan', # core part of prompt. Additional info like
+    :prompt         => 'trepan8', # core part of prompt. Additional info like
                                  # debug nesting and 
     :save_cmdfile  => nil,       # If set, debugger command file to be
                                  # used on restart
     :timer         => false,     # show elapsed time between events
     :traceprint    => false,     # event tracing printing
     :tracebuffer   => false,     # save events to a trace buffer.
-    :user_cmd_dir  => File.join(Trepan::HOME_DIR, 'trepan', 'command'),
+    :user_cmd_dir  => File.join(Trepan::HOME_DIR, 'trepan8', 'command'),
                                  # User command directory
   } unless defined? DEFAULT_SETTINGS
 end

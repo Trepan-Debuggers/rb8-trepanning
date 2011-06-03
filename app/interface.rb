@@ -222,7 +222,7 @@ module Trepan
   # from a command-file rather than an interactive user. Command files
   # appear in a users initialization script (e.g. .rdebugrc) and appear
   # when running the debugger command _source_ (Trepan::SourceCommand).
-  class ScriptInterface < OldInterface
+  class OldScriptInterface < OldInterface
     attr_accessor :command_queue
     attr_accessor :histfile
     attr_accessor :history_save
