@@ -4,7 +4,7 @@ require 'rubygems'; require 'require_relative'
 require_relative '../base/subcmd'
 require_relative '../../../app/complete'
 
-class Trepan::Subcommand::ShowMacro < Trepan::Subcommand
+class Trepan::Subcommand::InfoMacro < Trepan::Subcommand
   unless defined?(HELP)
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
     HELP = <<-HELP
@@ -19,7 +19,7 @@ In the second form, all macro names and their definitions are show.
 
 In the last form the only definitions of the given macro names is shown.
     HELP
-    SHORT_HELP = "Show defined macros"
+    SHORT_HELP = "Info defined macros"
     MIN_ABBREV = 'ma'.size
   end
 
@@ -57,6 +57,6 @@ if __FILE__ == $0
   # Demo it.
   $0 = __FILE__ + 'notagain' # So we don't run this agin
   require_relative '../../mock'
-  cmd = MockDebugger::sub_setup(Trepan::Subcommand::ShowMacro)
+  cmd = MockDebugger::sub_setup(Trepan::Subcommand::InfoMacro)
   cmd.run(cmd.prefix + %w(u foo))
 end
