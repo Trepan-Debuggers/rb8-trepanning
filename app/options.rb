@@ -93,19 +93,19 @@ EOB
         end
       end
       opts.on('--[no-]highlight',
-              "Use [no] syntax highlight output") do |v|
+              'Use [no] syntax highlight output') do |v|
         options[:highlight] = ((v) ? :term : nil)
       end
       opts.on('--[no-]readline',
               "Try [not] GNU Readline") do |v|
         options[:readline] = v
       end
-      opts.on_tail("-?", "--help", "Show this message") do
+      opts.on_tail('-?', '--help', 'Show this message') do
         options[:help] = true
         stdout.puts opts
       end
-      opts.on_tail("-v", "--version", 
-                   "print the version") do
+      opts.on_tail('-v', '--version', 
+                   'print the version') do
         options[:version] = true
         stdout.puts show_version
       end

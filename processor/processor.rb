@@ -4,6 +4,7 @@ require 'require_relative'
 require_relative '../app/interface'
 require_relative '../interface/user'
 require_relative './command'
+require_relative './default'
 require_relative './main'
 require_relative '../app/frame'
 
@@ -88,7 +89,7 @@ module Trepan
                                   /^\s* u(?:p)? (?:\s+(.*))?$/x
                                  ]
     
-    def initialize(interfaces = [Trepan::UserInterface.new])
+    def initialize(interfaces = [Trepan::UserInterface.new], settings={})
       @interface = interfaces.first
       @commands  = []
       @display   = []
@@ -100,7 +101,7 @@ module Trepan
       @debugger_breakpoints_were_empty = false # Show breakpoints 1st time
       @debugger_displays_were_empty = true # No display 1st time
       @debugger_context_was_dead = true # Assume we haven't started.
-      @cmdproc = CmdProcessor.new(interfaces)
+      @cmdproc = CmdProcessor.new(interfaces, settings)
     end
     
     def interface=(interface)

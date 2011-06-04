@@ -1,5 +1,5 @@
 require 'rubygems'; require 'require_relative'
-require_relative '../app/default'
+require_relative '../app/default' # for Trepan::HOME_DIR etc.
 require_relative 'virtual'
 class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
 

@@ -125,6 +125,9 @@ module Trepan
     end
     print "\032\032starting\n" if Trepan.annotate and Trepan.annotate > 2
 
+    Debugger.handler.cmdproc.settings[:highlight] = 
+      options.highlight
+
     # Record where we are we can know if the call stack has been
     # truncated or not.
     Trepan.start_sentinal=caller(0)[1]
@@ -155,6 +158,7 @@ module Trepan
     return prog_script
   end
 
+  ### FIXME: remove this and use app/options.rb instead.
   def process_options(options)
     program = File.basename($0)
     opts = OptionParser.new do |opts|
@@ -192,6 +196,9 @@ EOB
       opts.on('-h', '--host HOST', 'Host name used for remote debugging') do
         |host|
         options.host = host
+      end
+      opts.on('--[no-]highlight', 'Use [no] syntax highlight output') do |v|
+        options.highlight =  ((v) ? :term : nil)
       end
       opts.on('-I', '--include PATH', String, 'Add PATH to $LOAD_PATH') do |path|
         $LOAD_PATH.unshift(path)
