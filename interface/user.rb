@@ -36,7 +36,7 @@ class Trepan::UserInterface < Trepan::Interface
       Readline.completion_proc = @opts[:complete]
       read_history
     end
-    at_exit { finalize }
+    ## at_exit { finalize }
   end
 
   def closed?

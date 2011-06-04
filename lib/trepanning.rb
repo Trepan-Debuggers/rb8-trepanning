@@ -13,8 +13,8 @@ require_relative '../processor/processor'
 module Trepan
   
   class << self
-    attr_accessor :completion_method
 
+    ## FIXME: see if we can put this in app/complete.
     # The method is called when we want to do debugger command completion
     # such as called from GNU Readline with <TAB>.
     def self.completion_method(last_token, leading=nil)
@@ -46,6 +46,8 @@ module Trepan
       end
     end
     completion_proc = method(:completion_method).to_proc
+    ## FIXME: figure out how to get at this for testing.
+    $trepan8_completion_proc = completion_proc
 
     opts = {
       :complete => completion_proc,
@@ -53,7 +55,6 @@ module Trepan
     }
 
     @@intf = [Trepan::UserInterface.new(nil, nil, opts)]
-    attr_accessor :completion_method
 
     attr_accessor :handler
     Trepan.handler = Debugger.handler = CommandProcessor.new(@@intf)
