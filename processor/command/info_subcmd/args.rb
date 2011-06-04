@@ -35,5 +35,5 @@ if __FILE__ == $0
   $0 = __FILE__ + 'notagain' # So we don't run this again
   require_relative '../../mock'
   cmd = MockDebugger::sub_setup(Trepan::Subcommand::InfoArgs, false)
-  ## cmd.run(cmd.prefix)
+  cmd.run(cmd.prefix)
 end
