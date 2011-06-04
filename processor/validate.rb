@@ -150,7 +150,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
                       end
     return [nil] * 5 unless break_cmd_parse
     tail = [break_cmd_parse.condition, break_cmd_parse.negate]
-      cm, file, position, offset_type = 
+    cm, file, position, offset_type = 
       parse_position(break_cmd_parse.position)
     if cm
       return [cm, nil, nil] + tail

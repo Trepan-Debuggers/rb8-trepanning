@@ -51,9 +51,9 @@ Use 'set max list' or 'show max list' to see or set the value.
       [b, 1].max.upto(e) do |n|
         if n > 0 && lines[n-1]
           if n == current
-            msg "=> %3d  %s" % [n, lines[n-1].chomp]
+            msg "=> %3d  %s" % [n, lines[n-1].chomp], :unlimited => true
           else
-            msg "   %3d  %s" % [n, lines[n-1].chomp]
+            msg "   %3d  %s" % [n, lines[n-1].chomp], :unlimited => true
           end
         end
       end
