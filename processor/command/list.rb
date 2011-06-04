@@ -39,7 +39,11 @@ Use 'set max list' or 'show max list' to see or set the value.
   # If we can show from B to E then we return B, otherwise we return the
   # previous line @state.previous_line.
   def display_list(b, e, file, current)
-    lines = LineCache::getlines(file, settings[:reload_source_on_change])
+    opts = {
+      :reload_on_change => settings[:reload_source_on_change],
+      :output => settings[:highlight]
+    }
+    lines = LineCache::getlines(file, opts)
     if lines
       b = lines.size - (e - b) if b >= lines.size
       e = lines.size if lines.size < e

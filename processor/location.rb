@@ -9,11 +9,7 @@ require_relative 'msg'
 require_relative 'virtual'
 class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
-  # include Trepanning::FileName
-  attr_accessor :reload_on_change
-  
   def location_initialize
-    @reload_on_change = nil
   end
   
   def canonic_file(filename, resolve=true)
@@ -56,7 +52,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   # there was a problem. Leading blanks are stripped off.
   def line_at(filename, line_number, 
               opts = {
-                :reload_on_change => @reload_on_change,
+                :reload_on_change => @settings[:reload_on_change],
                 :output => @settings[:highlight]
               })
     # We use linecache first to give precidence to user-remapped
@@ -77,7 +73,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   end
   
   def loc_and_text(opts=
-                   {:reload_on_change => @reload_on_change,
+                   {:reload_on_change => @settings[:reload_on_change],
                      :output => @settings[:highlight]
                    })
   
