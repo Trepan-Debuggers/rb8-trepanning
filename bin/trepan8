@@ -335,7 +335,7 @@ else
     Debugger.start_remote(options.host, [options.port, options.cport], 
                           options.post_mortem) do
       # load initrc script
-      Debugger.run_init_script(StringIO.new) unless options.nx
+      Trepan.add_startup_files unless options.nx
     end
     debug_program(options)
   else

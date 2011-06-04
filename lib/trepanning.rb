@@ -267,7 +267,7 @@ module Kernel
   # step will take you out of some scope.
   def debugger(steps = 1)
     Trepan.start unless Trepan.started?
-    Trepan.run_init_script(StringIO.new)
+    Trepan.add_startup_files
     if 0 == steps
       Debugger.current_context.stop_frame = 0
     else
