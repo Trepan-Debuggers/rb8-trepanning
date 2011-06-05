@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require 'test/unit'
+require 'rubygems'; require 'require_relative'
+require_relative '../../app/run'
+
+class TestAppRun < Test::Unit::TestCase
+  include Trepan
+  def test_basic
+    assert_equal(true, File.executable?(whence_file('irb')))
+    ng = whence_file('probably-does-not-exist')
+    assert_equal(true, File.executable?(ng) || ng == 'probably-does-not-exist')
+  end
+
+end

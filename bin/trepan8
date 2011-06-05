@@ -108,55 +108,13 @@ require 'ruby-debug-base'
 require 'optparse'
 require 'ostruct'
 require 'require_relative'
+require_relative '../app/run'
 require_relative '../lib/trepanning'
 require_relative '../interface/user'
 
 module Trepan
 
   module_function 
-  def debug_program(options)
-    # Make sure Ruby script syntax checks okay.
-    # Otherwise we get a load message that looks like trepan8 has 
-    # a problem. 
-    output = `ruby -c #{Trepan::PROG_SCRIPT.inspect} 2>&1`
-    if $?.exitstatus != 0 and RUBY_PLATFORM !~ /mswin/
-      puts output
-      exit $?.exitstatus 
-    end
-    print "\032\032starting\n" if Trepan.annotate and Trepan.annotate > 2
-
-    Debugger.handler.cmdproc.settings[:highlight] = 
-      options.highlight
-
-    # Record where we are we can know if the call stack has been
-    # truncated or not.
-    Trepan.start_sentinal=caller(0)[1]
-
-    bt = Debugger.debug_load(Trepan::PROG_SCRIPT, options.stop, false)
-    if bt
-      if options.post_mortem
-        Debugger.handle_post_mortem(bt)
-      else
-        print bt.backtrace.map{|l| "\t#{l}"}.join("\n"), "\n"
-        print "Uncaught exception: #{bt}\n"
-      end
-    end
-  end
-
-  # Do a shell-like path lookup for prog_script and return the results.
-  # If we can't find anything return prog_script.
-  def whence_file(prog_script)
-    if prog_script.index(File::SEPARATOR)
-      # Don't search since this name has path separator components
-      return prog_script
-    end
-    for dirname in ENV['PATH'].split(File::PATH_SEPARATOR) do
-      prog_script_try = File.join(dirname, prog_script)
-      return prog_script_try if File.exist?(prog_script_try)
-    end
-    # Failure
-    return prog_script
-  end
 
   ### FIXME: remove this and use app/options.rb instead.
   def process_options(options)
@@ -344,7 +302,7 @@ else
       # load initrc script
       Trepan.add_startup_files unless options.nx
     end
-    debug_program(options)
+    debug_program(RbConfig.ruby, options)
   else
     # Set up trace hook for debugger
     Trepan.start
@@ -370,7 +328,7 @@ else
         until Debugger.stop do end
       end
       begin
-        debug_program(options)
+        debug_program(RbConfig.ruby, options)
       rescue SyntaxError
         puts $!.backtrace.map{|l| "\t#{l}"}.join("\n")
         puts "Uncaught Syntax Error\n"
@@ -388,7 +346,7 @@ else
       processor = Debugger::ControlCommandProcessor.new(interface)
       processor.process_commands
     else
-      Trepan::debug_program(options)
+      Trepan::debug_program(RbConfig.ruby, options)
     end
   end
 end
