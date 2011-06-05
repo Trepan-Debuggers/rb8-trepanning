@@ -23,15 +23,15 @@ module Trepan
     print "\032\032starting\n" if Trepan.annotate and Trepan.annotate > 2
 
     Debugger.handler.cmdproc.settings[:highlight] = 
-      options.highlight
+      options[:highlight]
 
     # Record where we are we can know if the call stack has been
     # truncated or not.
     Trepan.start_sentinal=caller(0)[1]
 
-    bt = Debugger.debug_load(Trepan::PROG_SCRIPT, options.stop, false)
+    bt = Debugger.debug_load(Trepan::PROG_SCRIPT, options[:stop], false)
     if bt
-      if options.post_mortem
+      if options[:post_mortem]
         Debugger.handle_post_mortem(bt)
       else
         print bt.backtrace.map{|l| "\t#{l}"}.join("\n"), "\n"

@@ -36,16 +36,18 @@ module Trepan
 #{show_version}
 Usage: #{PROGRAM} [options] <script.rb> -- <script.rb parameters>
 EOB
+      opts.separator ''
+      opts.separator 'Options:'
       opts.on('--client',
-              "Connect to out-of-process program") do
+              'Connect to out-of-process program') do
         if options[:server]
-          stderr.puts "--server option previously given. --client option ignored."
+          stderr.puts '--server option previously given. --client option ignored.'
         else
           options[:client] = true
         end
       end
       opts.on('-c', '--command FILE', String, 
-              "Execute debugger commands from FILE") do |cmdfile| 
+              'Execute debugger commands from FILE') do |cmdfile| 
         if File.readable?(cmdfile)
           options[:cmdfiles] << cmdfile
         elsif File.exists?(cmdfile)
@@ -54,14 +56,10 @@ EOB
           stderr.puts "Command file '#{cmdfile}' does not exist."
         end
       end
-      opts.on('--nx',
-              "Do not run debugger initialization file #{CMD_INITFILE}") do
-        options[:nx] = true
-      end
       # opts.on('--output FILE', String, "Name of file to record output") do |outfile| 
       #   options[:outfile] = outfile
       # end
-      opts.on("--cd DIR", String, "Change current directory to DIR") do |dir| 
+      opts.on('--cd DIR', String, 'Change current directory to DIR') do |dir| 
         if File.directory?(dir)
           if File.executable?(dir)
             options[:chdir] = dir
@@ -72,33 +70,90 @@ EOB
           stderr.puts "\"#{dir}\" is not a directory. Option --cd ignored."
         end
       end
-      opts.on("-h", "--host NAME", String, 
-              "Host or IP used in TCP connections for --server or --client. " + 
-              "Default is #{DEFAULT_CMDLINE_SETTINGS[:host].inspect}.") do 
-        |name_or_ip| 
-        options[:host] = name_or_ip
-      end
-      opts.on("-p", "--port NUMBER", Integer, 
-              "Port number used in TCP connections for --server or --client. " + 
-              "Default is #{DEFAULT_CMDLINE_SETTINGS[:port]}.") do 
-        |num| 
-        options[:port] = num
-      end
-      opts.on('--server',
-              "Set up for out-of-process debugging") do
-        if options[:client]
-          stderr.puts "--client option previously given. --server option ignored."
-        else
-          options[:server] = true
-        end
+      opts.on('-d', '--debug', "Set $DEBUG=true") {$DEBUG = true}
+      opts.on('--cport PORT', Integer, 'Port used for control commands') do 
+        |cport|
+        options[:cport] = cport
       end
       opts.on('--[no-]highlight',
               'Use [no] syntax highlight output') do |v|
         options[:highlight] = ((v) ? :term : nil)
       end
+      opts.on('-h', '--host NAME', String, 
+              'Host or IP used in TCP connections for --server or --client. ' + 
+              "Default is #{DEFAULT_SETTINGS[:host].inspect}.") do 
+        |name_or_ip| 
+        options[:host] = name_or_ip
+      end
+      opts.on('-I', '--include PATH', String, 'Add PATH to $LOAD_PATH') do |path|
+        $LOAD_PATH.unshift(path)
+      end
+      opts.on('--keep-frame-binding', 'Keep frame bindings') do 
+        options[:frame_bind] = true
+      end
+      opts.on('-m', '--post-mortem', 'Activate post-mortem mode') do 
+        options[:post_mortem] = true
+      end
+      opts.on('--nx',
+              "Do not run debugger initialization file #{CMD_INITFILE}") do
+        options[:nx] = true
+      end
+      opts.on('--[no-]control', 'Start [not] control thread') do |v|
+        options[:control] = v
+      end
+      opts.on('-p', '--port NUMBER', Integer, 
+              'Port number used in TCP connections for --server or --client. ' + 
+              "Default is #{DEFAULT_SETTINGS[:port]}.") do 
+        |num| 
+        options[:port] = num
+      end
+      opts.on('--[no-]quit', 'Do [not] quit when script finishes') do |v|
+        options[:quit] = v
+      end
       opts.on('--[no-]readline',
-              "Try [not] GNU Readline") do |v|
+              'Try [not] GNU Readline') do |v|
         options[:readline] = v
+      end
+      opts.on('-r', '--require SCRIPT', String,
+              'Require the library, before executing your script') do |name|
+        if name == 'debug'
+          stderr.puts "ruby-debug is not compatible with Ruby's 'debug' library. This option is ignored."
+        else
+          require name
+        end
+      end
+      opts.on('--[no-]rewrite-program',
+              'Do not set $0 to the program being debugged') do |v|
+        options[:rewrite_program] = v
+      end
+      opts.on('--[no-]stop', 'Do not stop when script is loaded') do |v|
+        options[:stop] = v
+      end
+      opts.on('--script FILE', String, 'Name of the script file to run') do 
+        |script|
+        options[:script] = script
+        unless File.exists?(options[:script])
+          stderr.puts "Script file '#{options[:script]}' is not found"
+          exit 10
+        end
+      end
+      opts.on('-s', '--server',
+              'Set up for out-of-process debugging') do
+        if options[:client]
+          stderr.puts '--client option previously given. --server option ignored.'
+        else
+          options[:server] = true
+        end
+      end
+      opts.on('-w', '--wait', 'Wait for a client connection; implies -s option') do
+        options[:wait] = true
+      end
+      opts.on('-x', '--trace', 'Turn on line tracing') {options[:tracing] = true}
+      opts.separator ''
+      opts.separator 'Common options:'
+      opts.on_tail('--help', 'Show this message') do
+        puts opts
+        exit
       end
       opts.on_tail('-?', '--help', 'Show this message') do
         options[:help] = true

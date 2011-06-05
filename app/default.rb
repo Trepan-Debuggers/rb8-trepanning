@@ -50,32 +50,27 @@ module Trepan
 
   # Default settings for Trepan run from the command line.
   DEFAULT_CMDLINE_SETTINGS = {
-    'annotate'           => 0,
-    'client'             => false,
-    'control'            => false,
-    'cport'              => PORT + 1,
-    'frame_bind'         => false,
-    'host'               => nil,
-    'quit'               => true,
-    'no_rewrite_program' => false,
-    'stop'               => true,
-    'nx'                 => false,
-    'port'               => PORT,
-    'post_mortem'        => false,
-    'restart_script'     => nil,
-    'script'             => nil,
-    'server'             => false,
-    'tracing'            => false,
-    'verbose_long'       => false,
-    'wait'               => false
-    ## :cmdfiles => [],  # initialization command files to run
-    ## :client   => false, # attach to out-of-process program?
-    ## :nx       => false, # don't run user startup file (e.g. .trepanrc)
+    :annotate           => 0,
+    :client             => false,
+    :control            => false,
+    :cport              => DEFAULT_SETTINGS[:port] + 1,
+    :frame_bind         => false,
+    :host               => DEFAULT_SETTINGS[:host],
+    :quit               => true,
+    :rewrite_program    => false,
+    :stop               => true,
+    :nx                 => false,
+    :port               => DEFAULT_SETTINGS[:port],
+    :post_mortem        => false,
+    :readline           => true,  # try to use GNU readline?
+    :restart_script     => nil,
+    :script             => nil,
+    :server             => false,
+    :tracing            => false,
+    :verbose_long       => false,
+    :wait               => false,
+    :cmdfiles           => [],  # initialization command files to run
     ## :output   => nil,
-    ## :port     => default_settings[:port],
-    ## :host     => default_settings[:host], 
-    ## :server   => false, # out-of-process debugging?
-    ## :readline => true,  # try to use gnu readline?
     ## Note that at most one of :server or :client can be true.
   } unless defined?(DEFAULT_CMDLINE_SETTINGS)
 
