@@ -1,57 +1,46 @@
-h1. rb8-trepanning a Ruby MRI 1.8 debugger using ruby-debug-base.
+h1. rb8-trepanning a Ruby MRI 1.8 debugger using _ruby-debug-base_.
 
-This is a rewrite of _ruby-debug_, but still using ruby-debug base. 
+This is a rewrite of _ruby-debug_, but still using _ruby-debug base_. 
 
-Right now, I've only tested on MRI 1.8, but since the code is pure
-Ruby, it probably will work on other Rubies that have ruby-debug-base
-installed.
+Right now, I've only tested on MRI 1.8, but since the code is pure Ruby, it probably will work on other Rubies that have _ruby-debug-base_ installed.
 
 h2. Features
 
 * Syntax highlighting (if "coderay":http://coderay.rubychan.de/ and term-ansicolor are installed)
 * tab completion of commands
 * expanded on-line help
+* easy evaluation of the statement or expression in a statement about to be run (eval and eval? with no arguments)
 * cleaner, more modular and more testable code
 
-I realize the last item may not be of importance to many, but it's
-_very_ important as a developer of the code. 
+I realize the last item may not be of importance to many, but it's _very_ important as a developer of the code. 
 
 There is a "google group mailing list":http://groups.google.com/group/ruby-debugger for Ruby debuggers.
 
 h2. Installing (from git)
 
-bq.
-   git://github.com/rocky/rb8-trepanning.git
+bq.   git://github.com/rocky/rb8-trepanning.git
    cd rb8-trepanning
    rake test
    rake install
 
 h2. Background
 
-_ruby-debug_ is cool, but it became getting harder to work on and to
-extend it while keeping compatibility. The code never started out
-from a test-driven development standpoint--tests were bolted on
-afterwards.
+_ruby-debug_ is cool, but it became getting harder to work on and to extend it while keeping compatibility. The code never started out from a test-driven development standpoint--tests were bolted on afterwards.
 
-Over time, I gained a better understanding of what was important (to
-me), and I learned how to do things better. So I decided to rewrite
+Over time, I gained a better understanding of what was important (to me), and I learned how to do things better. So I decided to rewrite
 the code. This code base is a backport of the "trepanning debugger for
 Rubinius":https://github.com/rocky/rbx-trepanning/wiki which in turn
 is a port of the "trepanning debugger for a patched MRI YARV
-1.9.2":https://github.com/rocky/rb-trepanning/wiki which is a port of
-code for "a debugger for Python":http://code.google.com/p/pydbgr/
-which is a port of ruby-debug)
+1.9.2":https://github.com/rocky/rb-trepanning/wiki which is a port of "a debugger for Python":http://code.google.com/p/pydbgr/ which is a port of ruby-debug)
 
 h2. Compatibility with ruby-debug
 
-Compatiblity between _ruby-debug_ and _trepanning_ is like
-compatibility between Ruby 1.8 and Ruby 1.9. 
+Compatiblity between _ruby-debug_ and _trepanning_ is like compatibility between Ruby 1.8 and Ruby 1.9. 
 
-Here are some incompatibilities. Depending on your point of view, I
-hope you will find as I do that these are improvements:
+Here are some incompatibilities. Depending on your point of view, I hope you will find as I do that these are improvements:
 
 * "set autoeval" is on by default
-* ;; rather than ; separates debugger commands. This way, ; can be used in a Ruby statement to evaluate.
+* ";;" rather than ";" separates debugger commands. This way, ";" can be used in a Ruby statement to evaluate.
 * Command names can be abbreviated if they are unique. For example "st" and "ste" are abbreviations of "step". To turn this off, "set abbrev off". 
 
 
