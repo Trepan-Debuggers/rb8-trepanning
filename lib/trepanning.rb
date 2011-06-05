@@ -242,6 +242,9 @@ module Trepan
     end
 
     def process_cmdfile_setting(settings)
+      p settings
+      puts caller
+      exit
       settings[:cmdfiles].each do |item|
         cmdfile, opts = 
           if item.kind_of?(Array)

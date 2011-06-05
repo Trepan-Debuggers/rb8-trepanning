@@ -29,8 +29,8 @@ module TestHelper
     # So turn off EMACS output processing.
     ENV['EMACS'] = ENV['INSIDE_EMACS'] = nil
 
-    cmd = "#{load_ruby} #{load_params} ../../bin/trepan8 #{args} > #{outfile}"
-    p cmd
+    cmd = "#{load_ruby} #{load_params} " + 
+      "../../bin/trepan8 #{args} >#{outfile}"
     puts "'#{cmd}'" if $DEBUG
     output = `#{cmd}`
     

@@ -311,7 +311,7 @@ module Trepan
         rescue Exception => exc
           # If we are inside the script interface errmsg may fail.
           begin
-            errmsg("Internal debugger error: #{exc.inspect}")
+            errmsg("Internal debugger error in cmdloop: #{exc.inspect}")
           rescue IOError
             $stderr.puts "Internal debugger error: #{exc.inspect}"
           end

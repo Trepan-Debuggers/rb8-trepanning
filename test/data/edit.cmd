@@ -4,9 +4,11 @@
 set debug testing
 # Edit using current line position.
 edit
-edit ../example/gcd.rb:5
+edit 7
+edit ../example/gcd.rb 5
 # File should not exist
 edit foo
 # Add space to the end of 'edit'
 edit 
-quit
+edit ../example/gcd.rb
+quit!

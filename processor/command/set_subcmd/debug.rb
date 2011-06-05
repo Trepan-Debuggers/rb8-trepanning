@@ -20,6 +20,7 @@ class Trepan::Subcommand::SetDebug < Trepan::SetBoolSubcommand
   def run(args)
     if args.size == 3 && 'testing' == args[2]
       @proc.settings[:debuggertesting] = true
+      @proc.settings[:basename] = true
       msg("debugger testing is on.")
     else
       super
