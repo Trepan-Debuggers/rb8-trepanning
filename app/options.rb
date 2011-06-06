@@ -34,7 +34,7 @@ module Trepan
     OptionParser.new do |opts|
       opts.banner = <<EOB
 #{show_version}
-Usage: #{PROGRAM} [options] <script.rb> -- <script.rb parameters>
+Usage: #{PROGRAM} [options] [[--] <script.rb> <script.rb parameters>]
 EOB
       opts.separator ''
       opts.separator 'Options:'
@@ -56,9 +56,6 @@ EOB
           stderr.puts "Command file '#{cmdfile}' does not exist."
         end
       end
-      # opts.on('--output FILE', String, "Name of file to record output") do |outfile| 
-      #   options[:outfile] = outfile
-      # end
       opts.on('--cd DIR', String, 'Change current directory to DIR') do |dir| 
         if File.directory?(dir)
           if File.executable?(dir)
@@ -154,16 +151,14 @@ EOB
       opts.on('-w', '--wait', 'Wait for a client connection; implies -s option') do
         options[:wait] = true
       end
-      opts.on('-x', '--trace', 'Turn on line tracing') {options[:tracing] = true}
-      opts.separator ''
-      opts.separator 'Common options:'
-      opts.on_tail('--help', 'Show this message') do
-        puts opts
-        exit
+      opts.on('-x', '--trace', 'Turn on line tracing') do 
+        options[:tracing] = true
       end
+      opts.separator ''
       opts.on_tail('-?', '--help', 'Show this message') do
         options[:help] = true
         stdout.puts opts
+        exit 
       end
       opts.on_tail('-v', '--version', 
                    'print the version') do
