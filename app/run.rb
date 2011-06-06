@@ -20,10 +20,11 @@ module Trepan
       puts output
       exit $?.exitstatus 
     end
-    print "\032\032starting\n" if Trepan.annotate and Trepan.annotate > 2
 
-    Debugger.handler.cmdproc.settings[:highlight] = 
-      options[:highlight]
+    %w(highlight basename).each do |opt|
+      opt = opt.to_sym
+      Debugger.handler.cmdproc.settings[opt] = options[opt]
+    end
 
     # Record where we are we can know if the call stack has been
     # truncated or not.

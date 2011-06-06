@@ -1,5 +1,24 @@
+   (gcd.rb:4)
+def gcd(a, b)
+debugger testing is on.
++ edit.cmd line 5: # Edit using current line position.
++ edit.cmd line 6: edit
+Running echo FAKE-EDITOR  +4 "gcd.rb"...
 FAKE-EDITOR +4 gcd.rb
++ edit.cmd line 7: edit 7
+Running echo FAKE-EDITOR  +7 "gcd.rb"...
 FAKE-EDITOR +7 gcd.rb
++ edit.cmd line 8: edit ../example/gcd.rb 5
+Running echo FAKE-EDITOR  +5 "gcd.rb"...
 FAKE-EDITOR +5 gcd.rb
++ edit.cmd line 9: # File should not exist
++ edit.cmd line 10: edit foo
+*** File "foo" is not readable.
++ edit.cmd line 11: # Add space to the end of 'edit'
++ edit.cmd line 12: edit 
+Running echo FAKE-EDITOR  +4 "gcd.rb"...
 FAKE-EDITOR +4 gcd.rb
++ edit.cmd line 13: edit ../example/gcd.rb
+Running echo FAKE-EDITOR  +1 "gcd.rb"...
 FAKE-EDITOR +1 gcd.rb
++ edit.cmd line 14: quit!

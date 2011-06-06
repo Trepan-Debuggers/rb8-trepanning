@@ -31,7 +31,7 @@ module TestHelper
 
     cmd = "#{load_ruby} #{load_params} " + 
       "../../bin/trepan8 #{args} >#{outfile}"
-    puts "'#{cmd}'" if $DEBUG
+    puts "'#{cmd}'" # if $DEBUG
     output = `#{cmd}`
     
     got_lines     = File.read(outfile).split(/\n/)

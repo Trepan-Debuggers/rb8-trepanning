@@ -77,7 +77,7 @@ end
 
 desc 'Test everything - unit tests for now.'
 task :test do
-  exceptions = %w(test:unit test:functional).collect do |task|
+  exceptions = %w(test:unit test:integration).collect do |task|
     begin
       Rake::Task[task].invoke
       nil

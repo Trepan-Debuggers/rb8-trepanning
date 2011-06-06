@@ -70,7 +70,13 @@ EOB
           stderr.puts "\"#{dir}\" is not a directory. Option --cd ignored."
         end
       end
-      opts.on('-d', '--debug', "Set $DEBUG=true") {$DEBUG = true}
+      opts.on('--basename', 
+              'Show only file basename in file locations') do 
+        options[:basename] = true
+      end
+      opts.on('-d', '--debug', 'Set $DEBUG=true') do 
+        $DEBUG = true
+      end
       opts.on('--cport PORT', Integer, 'Port used for control commands') do 
         |cport|
         options[:cport] = cport

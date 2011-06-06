@@ -29,7 +29,6 @@ begin
   Trepan::PROG_UNRESOLVED_SCRIPT = trepan8_path
   Trepan::TREPAN8_FILE = __FILE__
   Trepan::INITIAL_DIR = Dir.pwd
-  puts "parsing..."
   opts.parse! ARGV
 rescue StandardError => e
   puts opts

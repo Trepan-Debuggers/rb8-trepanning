@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'ruby-debug-base'
 require 'require_relative'
-require_relative '../app/interface'
 require_relative '../interface/user'
 require_relative './command'
 require_relative './default'
