@@ -1,4 +1,4 @@
-   (gcd.rb:4)
+-- (gcd.rb:4)
 def gcd(a, b)
 debugger testing is on.
 + edit.cmd line 5: # Edit using current line position.

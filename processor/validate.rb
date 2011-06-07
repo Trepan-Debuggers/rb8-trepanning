@@ -137,9 +137,9 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   end
   
   # Parse a breakpoint position. On success return:
-  #   - the CompileMethod the position is in
+  #   - the Method the position is in
+  #   - the file name - a Fixnum
   #   - the line number - a Fixnum
-  #   - vm_offset       - a Fixnum
   #   - the condition (by default 'true') to use for this breakpoint
   #   - true condition should be negated. Used in *condition* if/unless
   def breakpoint_position(position_str, allow_condition)
@@ -150,10 +150,11 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
                       end
     return [nil] * 5 unless break_cmd_parse
     tail = [break_cmd_parse.condition, break_cmd_parse.negate]
-    cm, file, position, offset_type = 
+    p ['+++2', tail]
+    cm, file, line, position_type = 
       parse_position(break_cmd_parse.position)
-    if cm
-      return [cm, nil, nil] + tail
+    if cm or file or line
+      return [cm, file, line, position_type] + tail
     end
     errmsg("Unable to get breakpoint position for #{position_str}")
     return [nil] * 5

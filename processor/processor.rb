@@ -164,6 +164,7 @@ module Trepan
     # breakpoint event. For example ruby-debug-base calls this.
     def at_breakpoint(context, breakpoint)
       @event_arg = breakpoint
+      @cmdproc.event = 'brkpt'
       aprint 'stopped' if Trepan.annotate.to_i > 2
       n = Debugger.breakpoints.index(breakpoint) + 1
       file = CommandProcessor.canonic_file(breakpoint.source)
@@ -171,7 +172,7 @@ module Trepan
       if Trepan.annotate.to_i > 2
         print afmt("source #{file}:#{line}")
       end
-      print "Breakpoint %d at %s:%s\n", n, file, line
+      @cmdproc.msg 'Breakpoint %d at %s:%s' % [n, file, line]
     end
     protect :at_breakpoint
     
@@ -179,6 +180,7 @@ module Trepan
     # catchpoint. For example ruby-debug-base calls this.
     def at_catchpoint(context, excpt)
       @event_arg = excpt
+      @cmdproc.event = 'catchpoint'
       aprint 'stopped' if Trepan.annotate.to_i > 2
       file = CommandProcessor.canonic_file(context.frame_file(0))
       line = context.frame_line(0)
@@ -195,6 +197,7 @@ module Trepan
     protect :at_catchpoint
     
     def at_tracing(context, file, line)
+      @cmdproc.event = 'tracing'
       return if defined?(Debugger::RDEBUG_FILE) && 
         Debugger::RDEBUG_FILE == file # Don't trace ourself
       @last_file = CommandProcessor.canonic_file(file)
@@ -214,6 +217,7 @@ module Trepan
     # "line" (or statement boundary) event. For example
     # ruby-debug-base calls this.
     def at_line(context, file, line)
+      @cmdproc.event = 'line'
       process_commands(context, file, line)
     end
     protect :at_line
@@ -223,6 +227,7 @@ module Trepan
     # Note: right now ruby-debug-base does not call this. Perhaps 
     # other bases routines such as the one in JRuby do.
     def at_return(context, file, line)
+      @cmdproc.event = 'return'
       context.stop_frame = -1
       process_commands(context, file, line)
     end

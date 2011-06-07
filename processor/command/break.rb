@@ -31,8 +31,8 @@ See also condition, continue and "help location".
   def run(args, temp=false)
 
     arg_str = args.size == 1 ? @proc.frame.line.to_s : @proc.cmd_argstr
-    cm, file, line, position_type = 
-      @proc.parse_position(arg_str)
+    cm, file, line, position_type, expr, negate = 
+      @proc.breakpoint_position(arg_str, true)
     if file.nil?
       unless @proc.context
         errmsg 'We are not in a state that has an associated file.'
@@ -45,6 +45,7 @@ See also condition, continue and "help location".
       end
     end
 
+    p ['+++1', expr]
     if line
       if LineCache.cache(file, settings[:reload_source_on_change])
         last_line = LineCache.size(file)
@@ -68,9 +69,9 @@ See also condition, continue and "help location".
         return 
       end
 
-      expr = nil
+      expr = "!(#{expr})" if negate
       if temp
-        @proc.state.context.set_breakpoint(file, line)
+        @proc.state.context.set_breakpoint(file, line, expr)
         msg("Temporary breakpoint set at file %s, line %d" % [file, line])
       else        
         b = Debugger.add_breakpoint file, line, expr
