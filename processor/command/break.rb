@@ -35,16 +35,16 @@ See also condition, continue and "help location".
       @proc.parse_position(arg_str)
     if file.nil?
       unless @proc.context
-        errmsg "We are not in a state that has an associated file.\n"
+        errmsg 'We are not in a state that has an associated file.'
         return 
       end
       file = @proc.frame.file
       if line.nil? 
         # Set breakpoint at current line
-        line = @proc.frame.line.to_s
+        line = @proc.frame.line
       end
     end
-    
+
     if line
       if LineCache.cache(file, settings[:reload_source_on_change])
         last_line = LineCache.size(file)
@@ -54,17 +54,17 @@ See also condition, continue and "help location".
           return
         end
         unless LineCache.trace_line_numbers(file).member?(line)
-          errmsg("Line %d is not a stopping point in file \"%s\"." % 
+          errmsg('Line %d is not a stopping point in file "%s".' % 
                  [line, @proc.canonic_file(file)])
           return
         end
       else
-        errmsg("No source file named %s\n" % @proc.canonic_file(file))
-        return unless confirm("Set breakpoint anyway? (y/n) ", false)
+        errmsg('No source file named %s' % @proc.canonic_file(file))
+        return unless confirm('Set breakpoint anyway?', false)
       end
       
       unless @proc.context
-        errmsg "We are not in a state we can add breakpoints.\n"
+        errmsg 'We are not in a state we can add breakpoints.'
         return 
       end
 
