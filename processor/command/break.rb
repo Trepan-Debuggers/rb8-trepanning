@@ -45,7 +45,6 @@ See also condition, continue and "help location".
       end
     end
 
-    p ['+++1', expr]
     if line
       if LineCache.cache(file, settings[:reload_source_on_change])
         last_line = LineCache.size(file)
