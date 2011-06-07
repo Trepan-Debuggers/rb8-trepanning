@@ -11,7 +11,7 @@ class Trepan::Subcommand::ShowCallstyle < Trepan::Subcommand
   end
 
   def run(args)
-    msg("Call style is #{settings[:callstyle]}.")
+    msg("Frame call-display style is #{settings[:callstyle]}.")
   end
 end
 
