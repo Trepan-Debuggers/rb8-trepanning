@@ -6,10 +6,11 @@ require_relative '../base/subcmd'
 class Trepan::Subcommand::SetDifferent < Trepan::SetBoolSubcommand
   unless defined?(HELP)
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
+    SHORT_HELP   = "Make sure 'next/step' moves to a new line number"
     HELP         = <<-EOH
 #{PREFIX.join(' ')} [on|off|nostack]
 
-Set to make sure 'next/step' move to a new position.
+Make sure 'next/step' moves to a new line number.
 
 Due to the interpretive, expression-oriented nature of the Ruby
 Language and implementation, each line often may contain many possible
@@ -35,7 +36,6 @@ override this setting.
 
     IN_LIST      = true
     MIN_ABBREV   = 'dif'.size
-    SHORT_HELP   = "Set to make sure 'next/step' move to a new position."
   end
 
   completion %w(on off nostack)

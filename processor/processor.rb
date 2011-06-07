@@ -345,7 +345,7 @@ module Trepan
     # are told to continue execution or terminate.
     def process_commands(context, file, line)
       @state, @commands = always_run(context, file, line, 1)
-      $rdebug_state = state if @cmdproc.settings[:debuggertesting]
+      $rdebug_state = @state if @cmdproc.settings[:debuggertesting]
       @cmdproc.process_commands(context, @state)
 
       # @cmdproc.frame_setup(context, @state)
