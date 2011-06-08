@@ -311,6 +311,8 @@ if __FILE__ == $0
   puts cmdproc.parse_position(__FILE__).inspect
   puts cmdproc.parse_position('8').inspect
   puts cmdproc.parse_position("#{__FILE__} #{__LINE__}").inspect
+  # require 'ruby-debug'; Debugger.start; debugger
+  p cmdproc.breakpoint_position('../app/display.rb:24', false)
 
   puts "To be continued...."
   exit
