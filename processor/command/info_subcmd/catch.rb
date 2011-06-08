@@ -19,7 +19,7 @@ class Trepan::Subcommand::InfoCatch < Trepan::Subcommand
       # print "Exception: is_a?(Class)\n"
       Debugger.catchpoints.each do |exception, hits|
         # print "#{exception}: #{exception.is_a?(Class)}\n"
-        msg "#{exception}\n"
+        msg "#{exception}"
       end
     else
       msg "No exceptions set to be caught."

@@ -8,4 +8,4 @@ catch ZeroDivisionError
 info catch
 catch 5
 step
-quit
+quit!

@@ -161,13 +161,13 @@ module Trepan
     end
 
     # This is a callback routine when the debugged program hits a 
-    # breakpoint event. For example ruby-debug-base calls this.
+    # breakpoint event. For example ruby-debug-base calls this method.
     def at_breakpoint(context, breakpoint)
       @event_arg = breakpoint
       @cmdproc.event = 'brkpt'
       aprint 'stopped' if Trepan.annotate.to_i > 2
       n = Debugger.breakpoints.index(breakpoint) + 1
-      file = CommandProcessor.canonic_file(breakpoint.source)
+      file = @cmdproc.canonic_file(breakpoint.source)
       line = breakpoint.pos
       if Trepan.annotate.to_i > 2
         print afmt("source #{file}:#{line}")
@@ -176,23 +176,17 @@ module Trepan
     end
     protect :at_breakpoint
     
-    # This is a callback routine when the debugged program hits a 
-    # catchpoint. For example ruby-debug-base calls this.
+    # This is a callback routine when the debugged program raises an
+    # unhandled exception that we have arranged to catch. 
+    # In particular, ruby-debug-base calls this method
     def at_catchpoint(context, excpt)
       @event_arg = excpt
-      @cmdproc.event = 'catchpoint'
-      aprint 'stopped' if Trepan.annotate.to_i > 2
-      file = CommandProcessor.canonic_file(context.frame_file(0))
+      @cmdproc.event = 'raise'
+      file = @cmdproc.canonic_file(context.frame_file(0))
       line = context.frame_line(0)
-      print afmt("%s:%d" % [file, line]) if Debugger.inside_emacs?
-      print "Catchpoint at %s:%d: `%s' (%s)\n", file, line, excpt, excpt.class
-      fs = context.stack_size
-      tb = caller(0)[-fs..-1]
-      if tb
-        for i in tb
-          print "\tfrom %s\n", i
-        end
-      end
+      @cmdproc.msg("Catchpoint at %s:%d: `%s' (%s)" % 
+                   [file, line, excpt, excpt.class])
+      process_commands(context, file, line)
     end
     protect :at_catchpoint
     
@@ -323,15 +317,13 @@ module Trepan
       # Remove some commands if we are post mortem.
       event_cmds = event_cmds.find_all do |cmd| 
         cmd.allow_in_post_mortem
-      end if context.dead?
+      end if !context || context.dead?
 
       state = State.new(self) do |s|
         s.context = context
         s.file    = file
         s.line    = line
-        s.binding = context.frame_binding(0)
         s.display = display
-        s.interface = interface
         s.commands = event_cmds
       end
       @interface.state = state if @interface.respond_to?('state=')

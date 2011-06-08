@@ -70,7 +70,6 @@ module Trepan
       EVENT2ICON = {
         'brkpt'          => 'xx',
         'tbrkpt'         => 'x1',
-        'catchpoint'    => '!>',
         'c-call'         => 'C>',
         'c-return'       => '<C',
         'step-call'      => '->',
