@@ -18,7 +18,7 @@ class Trepan::UserInterface < Trepan::Interface
     # The below are only used if we want and have readline support.
     # See method Trepan::GNU_readline? below.
     :histsize => 256,                   # Use gdb's default setting
-    :file_history   => '.trepanx_hist', # where history file lives
+    :file_history   => '.trepan8_hist', # where history file lives
                                         # Note a directory will 
                                         # be appended
     :history_save   => true             # do we save the history?
