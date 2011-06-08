@@ -3,7 +3,7 @@
 require 'rubygems'; require 'require_relative'
 require 'pp'
 require_relative 'base/cmd'
-class Trepan::Command::PrCommand < Trepan::Command
+class Trepan::Command::PPCommand < Trepan::Command
 
   unless defined?(HELP)
     NAME = File.basename(__FILE__, '.rb')
