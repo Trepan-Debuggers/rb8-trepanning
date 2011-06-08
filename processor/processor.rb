@@ -161,40 +161,37 @@ module Trepan
     end
 
     # This is a callback routine when the debugged program hits a 
-    # breakpoint event. For example ruby-debug-base calls this.
+    # breakpoint event. For example ruby-debug-base calls this method.
     def at_breakpoint(context, breakpoint)
       @event_arg = breakpoint
+      @cmdproc.event = 'brkpt'
       aprint 'stopped' if Trepan.annotate.to_i > 2
       n = Debugger.breakpoints.index(breakpoint) + 1
-      file = CommandProcessor.canonic_file(breakpoint.source)
+      file = @cmdproc.canonic_file(breakpoint.source)
       line = breakpoint.pos
       if Trepan.annotate.to_i > 2
         print afmt("source #{file}:#{line}")
       end
-      print "Breakpoint %d at %s:%s\n", n, file, line
+      @cmdproc.msg 'Breakpoint %d at %s:%s' % [n, file, line]
     end
     protect :at_breakpoint
     
-    # This is a callback routine when the debugged program hits a 
-    # catchpoint. For example ruby-debug-base calls this.
+    # This is a callback routine when the debugged program raises an
+    # unhandled exception that we have arranged to catch. 
+    # In particular, ruby-debug-base calls this method
     def at_catchpoint(context, excpt)
       @event_arg = excpt
-      aprint 'stopped' if Trepan.annotate.to_i > 2
-      file = CommandProcessor.canonic_file(context.frame_file(0))
+      @cmdproc.event = 'raise'
+      file = @cmdproc.canonic_file(context.frame_file(0))
       line = context.frame_line(0)
-      print afmt("%s:%d" % [file, line]) if Debugger.inside_emacs?
-      print "Catchpoint at %s:%d: `%s' (%s)\n", file, line, excpt, excpt.class
-      fs = context.stack_size
-      tb = caller(0)[-fs..-1]
-      if tb
-        for i in tb
-          print "\tfrom %s\n", i
-        end
-      end
+      @cmdproc.msg("Catchpoint at %s:%d: `%s' (%s)" % 
+                   [file, line, excpt, excpt.class])
+      process_commands(context, file, line)
     end
     protect :at_catchpoint
     
     def at_tracing(context, file, line)
+      @cmdproc.event = 'tracing'
       return if defined?(Debugger::RDEBUG_FILE) && 
         Debugger::RDEBUG_FILE == file # Don't trace ourself
       @last_file = CommandProcessor.canonic_file(file)
@@ -214,6 +211,7 @@ module Trepan
     # "line" (or statement boundary) event. For example
     # ruby-debug-base calls this.
     def at_line(context, file, line)
+      @cmdproc.event = 'line'
       process_commands(context, file, line)
     end
     protect :at_line
@@ -223,6 +221,7 @@ module Trepan
     # Note: right now ruby-debug-base does not call this. Perhaps 
     # other bases routines such as the one in JRuby do.
     def at_return(context, file, line)
+      @cmdproc.event = 'return'
       context.stop_frame = -1
       process_commands(context, file, line)
     end
@@ -318,15 +317,13 @@ module Trepan
       # Remove some commands if we are post mortem.
       event_cmds = event_cmds.find_all do |cmd| 
         cmd.allow_in_post_mortem
-      end if context.dead?
+      end if !context || context.dead?
 
       state = State.new(self) do |s|
         s.context = context
         s.file    = file
         s.line    = line
-        s.binding = context.frame_binding(0)
         s.display = display
-        s.interface = interface
         s.commands = event_cmds
       end
       @interface.state = state if @interface.respond_to?('state=')
@@ -345,7 +342,7 @@ module Trepan
     # are told to continue execution or terminate.
     def process_commands(context, file, line)
       @state, @commands = always_run(context, file, line, 1)
-      $rdebug_state = state if @cmdproc.settings[:debuggertesting]
+      $rdebug_state = @state if @cmdproc.settings[:debuggertesting]
       @cmdproc.process_commands(context, @state)
 
       # @cmdproc.frame_setup(context, @state)

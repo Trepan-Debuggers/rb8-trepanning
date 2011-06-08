@@ -31,20 +31,20 @@ See also condition, continue and "help location".
   def run(args, temp=false)
 
     arg_str = args.size == 1 ? @proc.frame.line.to_s : @proc.cmd_argstr
-    cm, file, line, position_type = 
-      @proc.parse_position(arg_str)
+    cm, file, line, position_type, expr, negate = 
+      @proc.breakpoint_position(arg_str, true)
     if file.nil?
       unless @proc.context
-        errmsg "We are not in a state that has an associated file.\n"
+        errmsg 'We are not in a state that has an associated file.'
         return 
       end
       file = @proc.frame.file
       if line.nil? 
         # Set breakpoint at current line
-        line = @proc.frame.line.to_s
+        line = @proc.frame.line
       end
     end
-    
+
     if line
       if LineCache.cache(file, settings[:reload_source_on_change])
         last_line = LineCache.size(file)
@@ -54,27 +54,28 @@ See also condition, continue and "help location".
           return
         end
         unless LineCache.trace_line_numbers(file).member?(line)
-          errmsg("Line %d is not a stopping point in file \"%s\"." % 
+          errmsg('Line %d is not a stopping point in file "%s".' % 
                  [line, @proc.canonic_file(file)])
           return
         end
       else
-        errmsg("No source file named %s\n" % @proc.canonic_file(file))
-        return unless confirm("Set breakpoint anyway? (y/n) ", false)
+        errmsg('No source file named %s' % @proc.canonic_file(file))
+        return unless confirm('Set breakpoint anyway?', false)
       end
       
       unless @proc.context
-        errmsg "We are not in a state we can add breakpoints.\n"
+        errmsg 'We are not in a state we can add breakpoints.'
         return 
       end
 
-      expr = nil
+      expr = "!(#{expr})" if negate
       if temp
-        @proc.state.context.set_breakpoint(file, line)
+        @proc.state.context.set_breakpoint(file, line, expr)
         msg("Temporary breakpoint set at file %s, line %d" % [file, line])
       else        
         b = Debugger.add_breakpoint file, line, expr
-        msg("Breakpoint %d file %s, line %d" % [b.id, file, line])
+        msg("Breakpoint %d file %s, line %d" % 
+            [b.id, @proc.canonic_file(file), line])
       end
     #   unless syntax_valid?(expr)
     #     errmsg("Expression \"#{expr}\" syntactically incorrect; breakpoint disabled.\n")

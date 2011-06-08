@@ -17,15 +17,15 @@ class Trepan::Subcommand::InfoProgram < Trepan::Subcommand
     if not @proc.context
       errmsg 'The program being debugged is not being run.'
       return
-    elsif @proc.context.dead? 
-      print "The program crashed.\n"
-      if Debugger.last_exception
-        msg "Exception: #{Debugger.last_exception.inspect}"
-      end
-      return
     end
-    
-    msg "Program stopped. "
+    case @proc.event 
+    when :raise
+      status = 'crashed'
+    else
+      status = 'stopped'
+    end
+
+    msg "Program #{status}."
     event_arg = @proc.state.processor.event_arg
     case @proc.context.stop_reason
     when :step
@@ -34,10 +34,10 @@ class Trepan::Subcommand::InfoProgram < Trepan::Subcommand
       msg("It stopped at breakpoint %d.\n" %
             (Debugger.breakpoints.index(event_arg)+1))
     when :catchpoint
-      msg("It stopped at catchpoint `%s' (%s) .\n", event_arg,  
-            event_arg.class)
+      msg("Handling an uncaught exception `%s' (%s)." % [event_arg,  
+            event_arg.class])
     else
-      msg "unknown reason: %s\n" % @proc.context.stop_reason.to_s
+      msg "unknown reason: %s" % @proc.context.stop_reason.to_s
     end
   end
 end

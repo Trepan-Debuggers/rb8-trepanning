@@ -33,10 +33,10 @@ class TestCompletion < Test::Unit::TestCase
      ['set basename o', 'o', ['off', 'on']],
     ].each do |line, token, expect_completion|
       assert_equal(expect_completion, 
-                   $trepan8_completion_proc.call(token, line),
+                   $trepan_completion_proc.call(token, line),
                    "Bad completion on #{line.inspect} with #{token.inspect}")
     end
-    assert($trepan8_completion_proc.call('', '').size > 30, 
+    assert($trepan_completion_proc.call('', '').size > 30, 
            'Initial completion should return more than 30 commands')
   end
 end

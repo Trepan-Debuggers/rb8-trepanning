@@ -46,7 +46,7 @@ module Trepan
     end
     completion_proc = method(:completion_method).to_proc
     ## FIXME: figure out how to get at this for testing.
-    $trepan8_completion_proc = completion_proc
+    $trepan_completion_proc = completion_proc
 
     opts = {
       :complete => completion_proc,

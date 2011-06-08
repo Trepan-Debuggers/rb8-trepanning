@@ -50,16 +50,16 @@ EOH
             [b.id, (b.enabled? ? 'y' : 'n'), fname, b.pos]
         else
           msg "%3d %s   at %s:%s if %s" %  
-            b.id, (b.enabled? ? 'y' : 'n'), fname, b.pos, b.expr
+            [b.id, (b.enabled? ? 'y' : 'n'), fname, b.pos, b.expr]
         end
         hits = b.hit_count
         if hits > 0
           s = (hits > 1) ? 's' : ''
-          msg "\tbreakpoint already hit #{hits} time#{s}\n"
+          msg "\tbreakpoint already hit #{hits} time#{s}"
         end
       end
     else
-      msg "No breakpoints.\n"
+      msg "No breakpoints."
     end
   end
 end
