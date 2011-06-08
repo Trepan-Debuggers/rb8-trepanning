@@ -19,7 +19,7 @@ shown and ... indicates it has been truncated.
 See 'set max string' to change the string truncation limit.
 "
     CATEGORY      = 'data'
-    SHORT_HELP    = 'print expression truncating long output'
+    SHORT_HELP    = 'pretty print expression truncating long output'
   end
   
   def run(args)
