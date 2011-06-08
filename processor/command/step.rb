@@ -74,3 +74,8 @@ See also the commands:
     @proc.leave_cmd_loop = true
   end
 end
+
+if __FILE__ == $0
+  require_relative '../mock'
+  dbgr, cmd = MockDebugger::setup
+end
