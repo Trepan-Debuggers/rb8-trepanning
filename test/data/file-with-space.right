@@ -1,0 +1,4 @@
+-- (file with space.rb:1)
+puts 'Ha!'
+debugger testing is on.
++ file-with-space.cmd line 5: quit!
