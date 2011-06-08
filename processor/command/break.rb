@@ -74,7 +74,8 @@ See also condition, continue and "help location".
         msg("Temporary breakpoint set at file %s, line %d" % [file, line])
       else        
         b = Debugger.add_breakpoint file, line, expr
-        msg("Breakpoint %d file %s, line %d" % [b.id, file, line])
+        msg("Breakpoint %d file %s, line %d" % 
+            [b.id, @proc.canonic_file(file), line])
       end
     #   unless syntax_valid?(expr)
     #     errmsg("Expression \"#{expr}\" syntactically incorrect; breakpoint disabled.\n")

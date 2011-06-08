@@ -1,0 +1,29 @@
+-- (gcd.rb:4)
+def gcd(a, b)
+debugger testing is on.
++ break_bad.cmd line 6: set callstyle last
+Frame call-display style is last.
++ break_bad.cmd line 7: set autoeval off
+Evaluation of unrecognized debugger commands is off.
++ break_bad.cmd line 8: set basename on
+basename is on.
++ break_bad.cmd line 9: # There aren't 100 lines in gcd.rb.
++ break_bad.cmd line 10: break 100
+*** There are only 18 lines in file "gcd.rb".
++ break_bad.cmd line 11: break ../example/gcd.rb:100
+*** There are only 18 lines in file "gcd.rb".
++ break_bad.cmd line 12: # Line one isn't a valid stopping point.
++ break_bad.cmd line 13: # It is a comment.
++ break_bad.cmd line 14: break example/gcd.rb:1
+*** Can't evaluate example to get a method
+*** Unable to get breakpoint position for example/gcd.rb:1
+Breakpoint 1 file gcd.rb, line 4
++ break_bad.cmd line 15: # This line is okay
++ break_bad.cmd line 16: break ../example/gcd.rb:4
+Breakpoint 2 file gcd.rb, line 4
++ break_bad.cmd line 17: # No class Foo.
++ break_bad.cmd line 18: break Foo.bar
+*** Can't evaluate Foo.bar to get a method
+*** Unable to get breakpoint position for Foo.bar
+Breakpoint 3 file gcd.rb, line 4
++ break_bad.cmd line 19: q!

@@ -4,8 +4,8 @@ require 'test/unit'
 # begin require 'rubygems' rescue LoadError end
 # require 'ruby-debug'; Debugger.start
 
-# Test that step commands
-class TestStepping < Test::Unit::TestCase
+# Test (mostly) invalid breakpoint commands
+class TestBadBreak < Test::Unit::TestCase
 
   @@SRC_DIR = File.dirname(__FILE__) unless 
     defined?(@@SRC_DIR)
@@ -13,9 +13,8 @@ class TestStepping < Test::Unit::TestCase
   require File.join(@@SRC_DIR, 'helper')
   include TestHelper
 
-  # Test commands in stepping.rb
   def test_basic
-    testname='stepping'
+    testname='break_bad'
     Dir.chdir(@@SRC_DIR) do 
       script = File.join(%W(.. data #{testname}.cmd))
       assert_equal(true, 
@@ -24,4 +23,16 @@ class TestStepping < Test::Unit::TestCase
                                 '../example/gcd.rb 3 5'))
     end
   end
+  
+  def test_break_loop
+    testname='break_loop_bug'
+    Dir.chdir(@@SRC_DIR) do 
+      script = File.join(%W(.. data #{testname}.cmd))
+      assert_equal(true, 
+        run_debugger(testname,
+                     "--script #{script} --nx --basename -- " +
+                     '../example/bp_loop_issue.rb'))
+    end
+  end
+
 end
