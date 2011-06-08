@@ -26,18 +26,19 @@ class TestDollar0 < Test::Unit::TestCase
 
       assert_equal(true, 
                    run_debugger('dollar-0', 
-                                '--nx --basename --no-stop ../example/dollar-0.rb',
-                                nil, filter, false, '../bin/rdebug'))
+                                '--nx --basename --no-stop ' + 
+                                File.join(%w(.. example dollar-0.rb)),
+                                nil, filter, false, '../bin/trepan8'))
       # Ruby's __FILE__ seems to prepend ./ when no directory was added.
       assert_equal(true, 
                    run_debugger('dollar-0a', 
                                 '--nx --basename --no-stop ../example/dollar-0.rb',
-                                nil, filter, false, '../bin/rdebug'))
+                                nil, filter, false, '../bin/trepan8'))
       # Ruby's __FILE__ seems to prepend ./ when no directory was added.
       assert_equal(true, 
                    run_debugger('dollar-0b', 
                                 '--nx --basename --no-stop ' + 
-                                File.join(%w(example dollar-0.rb)),
+                                File.join(%w(.. example dollar-0.rb)),
                                 nil, filter, false, '../bin/trepan8'))
       ENV['HOME'] = home_save
     end
