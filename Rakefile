@@ -31,6 +31,12 @@ end
 require 'rake/testtask'
 require 'rbconfig'
 
+def RbConfig.ruby
+  File.join(RbConfig::CONFIG['bindir'],  
+            RbConfig::CONFIG['RUBY_INSTALL_NAME'] + 
+            RbConfig::CONFIG['EXEEXT'])
+end unless defined? RbConfig.ruby
+
 def run_standalone_ruby_files(list)
   puts '*' * 40
   list.each do |ruby_file|

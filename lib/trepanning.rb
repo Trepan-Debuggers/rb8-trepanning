@@ -10,7 +10,7 @@ require_relative '../interface/user'
 require_relative '../processor/processor'
 
 module Trepan
-  
+
   class << self
 
     ## FIXME: see if we can put this in app/complete.
@@ -19,7 +19,9 @@ module Trepan
     def self.completion_method(last_token, leading=nil)
       if leading.nil? 
           if Readline.respond_to?(:line_buffer)
-            completion = Debugger.handler.cmdproc.complete(leading, last_token)
+            completion = 
+              Debugger.handler.cmdproc.complete(Readline.line_buffer, 
+                                                last_token)
           else
             completion = Debugger.handler.cmdproc.complete(last_token, '')
           end

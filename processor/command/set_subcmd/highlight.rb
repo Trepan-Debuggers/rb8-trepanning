@@ -10,6 +10,11 @@ class Trepan::Subcommand::SetHighlight < Trepan::SetBoolSubcommand
     IN_LIST    = true
     MIN_ABBREV = 'hi'.size
   end
+
+  def complete(prefix)
+    Trepan::Complete.complete_token(%w(on off reset), prefix)
+  end
+
   def run(args)
     if args.size == 3 && 'reset' == args[2]
       LineCache::clear_file_format_cache

@@ -81,16 +81,26 @@ module Trepan
   end
 end
 
+module Trepan
+  def suppress_warnings
+    original_verbosity = $VERBOSE
+    $VERBOSE = nil
+    result = yield
+    $VERBOSE = original_verbosity
+    return result
+  end  
+  module_function :suppress_warnings
+end
+
 def Trepan::GNU_readline?
   return @use_readline unless @use_readline.nil?
   begin
     require 'rubygems'
-    ## require 'rb-readline'
-    raise LoadError
+    suppress_warnings { require 'rb-readline' }
     @use_readline = true
   rescue LoadError
     begin
-      require 'readline'
+      suppress_warnings { require 'readline' }
       @use_readline = true
     rescue LoadError
       @use_readline = false

@@ -30,7 +30,7 @@ See also "info catch" and post-mortem debugging.
     CATEGORY     = 'running'
     MAX_ARGS     = 2  # Need at most this many
     NEED_RUNNING = true
-    SHORT_HELP   = 'Catch execution of the debugged program'
+    SHORT_HELP   = 'Catch unhandled exceptions'
   end
 
   # This is the method that runs the command

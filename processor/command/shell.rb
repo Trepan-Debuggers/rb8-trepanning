@@ -1,9 +1,9 @@
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
-require 'irb'
 require 'rubygems'; require 'require_relative'
+require_relative '../../io/input' # For GNU_readline?
+Trepan.suppress_warnings { require 'irb' }
 require_relative 'base/cmd'
 require_relative '../../app/irb'
-require_relative '../../io/input' # For GNU_readline?
 
 class Trepan::Command::IRBCommand < Trepan::Command
 

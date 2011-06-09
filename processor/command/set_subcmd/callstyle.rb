@@ -16,6 +16,10 @@ Set how you want call parameters displayed in a backtrace.
     EOH
   end
 
+  def complete(prefix)
+    Trepan::Complete.complete_token(%w(short last tracked), prefix)
+  end
+
   def run(args)
     arg = args[2].downcase.to_sym
     case arg
