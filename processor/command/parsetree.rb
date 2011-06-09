@@ -37,6 +37,7 @@ HELP
       end
       meth = Trepan::CmdParser.meth_for_string(method_name, @proc.frame.binding)
       if meth and meth.kind_of?(Method)
+        section "ParseTree for method: #{method_name}"
         msg ParseTree.translate(meth.owner, meth.name.to_sym).pretty_inspect
       end
     end
