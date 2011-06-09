@@ -81,6 +81,7 @@ module Trepan
       # FIXME There seem to be bugs in showing call if
       # index != 0
       call_str  = index == 0 ? call_string(opts) : ''
+      file = opts[:basename] ? File.basename(self.file) : self.file
       file_line = "at line %s:%d\n" % [file, line]
       unless call_str.empty?
         str += call_str + ' '

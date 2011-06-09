@@ -1,0 +1,31 @@
+-- (gcd.rb:4)
+def gcd(a, b)
+debugger testing is on.
++ printvar.cmd line 6: set callstyle last
+Frame call-display style is last.
++ printvar.cmd line 7: set autoeval off
+Evaluation of unrecognized debugger commands is off.
++ printvar.cmd line 8: set basename on
+basename is on.
++ printvar.cmd line 9: break ../example/gcd.rb:6
+Breakpoint 1 file gcd.rb, line 6
++ printvar.cmd line 10: continue
+Breakpoint 1 at gcd.rb:6
+-- (gcd.rb:6)
+if a > b
++ printvar.cmd line 11: pr a 
+3
++ printvar.cmd line 12: eval [a,b]
+[3, 5]
++ printvar.cmd line 13: continue
+Breakpoint 1 at gcd.rb:6
+-- (gcd.rb:6)
+if a > b
++ printvar.cmd line 14: eval [a,b]
+[2, 3]
++ printvar.cmd line 15: up
+--> #1 at line gcd.rb:15
+
++ printvar.cmd line 16: eval [a,b]
+[3, 5]
++ printvar.cmd line 17: q!

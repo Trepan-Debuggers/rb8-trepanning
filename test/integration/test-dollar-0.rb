@@ -1,21 +1,14 @@
 #!/usr/bin/env ruby
-require 'test/unit'
-
-# begin require 'rubygems' rescue LoadError end
-# require 'ruby-debug'; Debugger.start
+require 'rubygems'; require 'require_relative'
+# require_relative '../../lib/trepanning'
+require_relative 'helper'
 
 # Test --no-stop and $0 setting.
 class TestDollar0 < Test::Unit::TestCase
-  
-  @@SRC_DIR = File.dirname(__FILE__) unless 
-    defined?(@@SRC_DIR)
-
-  require File.join(@@SRC_DIR, 'helper')
   include TestHelper
-
   def test_basic
-    testname='breakpoints'
-    Dir.chdir(@@SRC_DIR) do 
+    common_setup(__FILE__)
+    Dir.chdir(@srcdir) do 
       home_save = ENV['HOME']
       ENV['HOME'] = '.'
       filter = Proc.new{|got_lines, correct_lines|
@@ -24,22 +17,14 @@ class TestDollar0 < Test::Unit::TestCase
         end
       }
 
-      assert_equal(true, 
-                   run_debugger('dollar-0', 
-                                '--nx --basename --no-stop ' + 
-                                File.join(%w(.. example dollar-0.rb)),
-                                nil, filter, false, '../bin/trepan8'))
-      # Ruby's __FILE__ seems to prepend ./ when no directory was added.
-      assert_equal(true, 
-                   run_debugger('dollar-0a', 
-                                '--nx --basename --no-stop ../example/dollar-0.rb',
-                                nil, filter, false, '../bin/trepan8'))
-      # Ruby's __FILE__ seems to prepend ./ when no directory was added.
-      assert_equal(true, 
-                   run_debugger('dollar-0b', 
-                                '--nx --basename --no-stop ' + 
-                                File.join(%w(.. example dollar-0.rb)),
-                                nil, filter, false, '../bin/trepan8'))
+      @prefix = '--nx --basename --no-stop '
+      %w(dollar-0 dollar-0a dollar-0b).each do |testname|
+        assert_equal(true, 
+                     run_debugger(testname,
+                                  @prefix + 
+                                  File.join(%w(.. example dollar-0.rb)),
+                                  nil, filter, false, '../bin/trepan8'))
+      end
       ENV['HOME'] = home_save
     end
   end

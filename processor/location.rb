@@ -30,7 +30,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   
   # Return the text to the current source line.
   def current_source_text
-    LineCache::getline(@frame.file, @frame.line)
+    LineCache::getline(@frame.file, @frame.line).chomp
   end
   
   def resolve_file_with_dir(path_suffix)

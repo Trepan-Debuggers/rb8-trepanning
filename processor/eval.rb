@@ -62,9 +62,9 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   def get_binding_and_filename(str, maxlen)
     b = 
       begin
-        @proc.frame.binding
+        @frame.binding
       rescue
-        binding
+        TOPLEVEL_BINDING
       end
     filename = fake_eval_filename(str, maxlen)
     return [filename, b]

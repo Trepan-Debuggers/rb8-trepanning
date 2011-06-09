@@ -54,7 +54,7 @@ See 'set buffer trace' for showing what may have already been run.
   def complete(prefix)
     if prefix.empty? 
       if @proc.leading_str.start_with?('eval?')
-        Trepan::Util.extract_expression @proc.current_source_text
+        Trepan::Util.extract_expression(@proc.current_source_text)
       else
         @proc.current_source_text 
       end

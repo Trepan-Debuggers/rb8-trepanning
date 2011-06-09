@@ -3,14 +3,14 @@ require 'rubygems'; require 'require_relative'
 # require_relative '../../lib/trepanning'
 require_relative 'helper'
 
-# Test 'edit' command handling.
-class TestEdit < Test::Unit::TestCase
+# Test printing (evaluation) of variables
+class TestPrintVar < Test::Unit::TestCase
   include TestHelper
+  # Test commands in stepping.rb
   def test_basic
     common_setup(__FILE__)
     Dir.chdir(@srcdir) do 
-      ENV['EDITOR']='echo FAKE-EDITOR '
-      assert_equal(true,  
+      assert_equal(true, 
                    run_debugger(@testname, @prefix + '../example/gcd.rb 3 5'))
     end
   end

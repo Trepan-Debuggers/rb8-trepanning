@@ -1,5 +1,5 @@
 # Some common routines used in testing.
-
+require 'test/unit'
 require 'fileutils'
 require 'yaml'
 # require 'diff/lcs'
@@ -9,6 +9,14 @@ require 'yaml'
 # require 'ruby-debug'; Debugger.start
 
 module TestHelper
+
+  module_function
+  def common_setup(file, testname=nil)
+    @srcdir   = File.dirname(file)
+    @testname = testname || File.basename(file, '.rb').split(/-/)[1]
+    @script   = File.join(%W(.. data #{@testname}.cmd))
+    @prefix   = "--script #{@script} --nx --basename -- "
+  end
 
   # FIXME: turn args into a hash.
   def run_debugger(testname, args='', outfile=nil, filter=nil, old_code=false,
@@ -142,6 +150,5 @@ module TestHelper
     config_load('ruby_params', true)
   end
   module_function :load_params
-  
 end
 
