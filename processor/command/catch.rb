@@ -12,11 +12,10 @@ class Trepan::Command::CatchCommand < Trepan::Command
 #{NAME} 
 #{NAME} off
 
-The first form intercepts EXCEPTION-NAME when there would otherwise be
-no handler.
-The second form removes the debugger handling EXCEPTION-NAME.
+The first form intercepts EXCEPTION-NAME when.
+The second form removes the debugger handling for EXCEPTION-NAME.
 The third form is the the same as "info catch".  
-The last form deletes all catchpoints.
+The last form deletes all debugger catchpoints.
 
 Examples:
    #{NAME}       # same as "info catch"
@@ -30,7 +29,7 @@ See also "info catch" and post-mortem debugging.
     CATEGORY     = 'running'
     MAX_ARGS     = 2  # Need at most this many
     NEED_RUNNING = true
-    SHORT_HELP   = 'Catch unhandled exceptions'
+    SHORT_HELP   = 'Catch exceptions'
   end
 
   # This is the method that runs the command
