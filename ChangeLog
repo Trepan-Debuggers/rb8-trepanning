@@ -1,0 +1,735 @@
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* README.textile: Consistency
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* README.textile: Consistency
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* : commit 18abe668f1fbe70156c5cb6a544c9a33bc6c959f Author: rocky
+	<rockyb@rubyforge.org> Date:   Thu Jun 9 10:51:45 2011 -0400
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* interface/user.rb, lib/trepanning.rb, processor/command/source.rb: 
+	More complete completion for "source". Deal with Readline completion
+	proc wars and rb-readline bug.
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* processor/command/catch.rb: catch Docstring. I think I got it
+	right this time.
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* Rakefile, io/input.rb, lib/trepanning.rb,
+	processor/command/catch.rb,
+	processor/command/set_subcmd/callstyle.rb,
+	processor/command/set_subcmd/highlight.rb,
+	processor/command/shell.rb: Part of last commit. See that.
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* test/unit/test-app-options.rb: Allow rb-readline which does
+	command completion better.  Silence multiple constant initialization
+	warnings via require irb and require readline.  highlight,
+	callstyle: add completion args Rakefile: fix standalone by getting
+	Ruby location.  test-app-options: remove --help test until we deal
+	with the fact --help exits
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* processor/command/parsetree.rb: Add section header on parsetree.
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* processor/command/pp.rb: Got class name wrong on PP command
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* processor/command/pp.rb: Got class name wrong on PP command
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* processor/command/pp.rb,
+	processor/command/show_subcmd/max_subcmd/stack.rbc,
+	test/integration/.gitignore: Add rudimentary "pp" (pretty print)
+	command.
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* README.textile, processor/command/parsetree.rb: add $ promts
+	README example
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* app/cmd_parse.rb, processor/command/next.rb,
+	processor/command/parsetree.rb, processor/command/pr.rb,
+	processor/command/step.rb: Add a "parsetree" debugger command.
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* : commit 8d69811c15836fb4725454f2b5168662066d6093 Author: rocky
+	<rockyb@rubyforge.org> Date:   Wed Jun 8 14:08:46 2011 -0400
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* : commit a213642f6f58371268d3610a1641df2aacb88749 Author: rocky
+	<rockyb@rubyforge.org> Date:   Wed Jun 8 14:04:09 2011 -0400
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* : commit fa5291ae097f48b39dafa280183cf07c273a6fff Author: rocky
+	<rockyb@rubyforge.org> Date:   Wed Jun 8 07:00:08 2011 -0400
+
+2011-06-07  rocky <rockyb@rubyforge.org>
+
+	* processor/command/break.rb, test/data/break_bad.cmd,
+	test/data/break_bad.right, test/data/break_loop_bug.cmd,
+	test/data/break_loop_bug.right, test/data/source.right,
+	test/integration/test-break-bad.rb,
+	test/integration/test-stepping.rb: Convert test-break-bad
+	integration test from ruby-debug
+
+2011-06-07  rocky <rockyb@rubyforge.org>
+
+	* test/data/dollar-0.right, test/data/dollar-0a.right,
+	test/data/dollar-0b.right, test/integration/test-dollar-0.rb,
+	test/integration/test-dollar-0.rb.try,
+	test/integration/test-raise.rb: Convert test-dollar0.rb integration
+	test from ruby-debug.
+
+2011-06-07  rocky <rockyb@rubyforge.org>
+
+	* processor/validate.rb, test/data/source.cmd,
+	test/data/source.right, test/data/trepan8-save.1,
+	test/integration/test-source.rb: Convert source test from ruby-debug
+
+2011-06-07  rocky <rockyb@rubyforge.org>
+
+	* data/irbrc, lib/trepanning.rb, processor/command/catch.rb,
+	processor/command/info_subcmd/catch.rb,
+	processor/command/info_subcmd/program.rb,
+	processor/command/shell.rb, processor/main.rb,
+	processor/processor.rb, test/data/raise.cmd, test/data/raise.right,
+	test/integration/test-raise.rb, test/integration/test-raise.rb.try,
+	test/unit/test-completion.rb: Add ruby-debug "catch" command.
+
+2011-06-07  rocky <rockyb@rubyforge.org>
+
+	* processor/command/break.rb, processor/validate.rb,
+	test/integration/test-raise.rb.try,
+	test/integration/test-stepping.rb: Remove some debug code.
+
+2011-06-07  rocky <rockyb@rubyforge.org>
+
+	* processor/command/break.rb,
+	processor/command/info_subcmd/breakpoints.rb, processor/main.rb,
+	processor/processor.rb, processor/validate.rb,
+	test/data/edit.right, test/data/stepping.right: Allow breakpoint
+	conditions. Set CmdProcessor event names.
+
+2011-06-07  rocky <rockyb@rubyforge.org>
+
+	* processor/command/show_subcmd/callstyle.rb,
+	test/data/stepping.cmd, test/data/stepping.right,
+	test/integration/test-stepping.rb: Add stepping integration test
+	from ruby-debug.
+
+2011-06-06  rocky <rockyb@rubyforge.org>
+
+	* processor/command/set_subcmd/callstyle.rb,
+	processor/command/set_subcmd/different.rb,
+	processor/command/show_subcmd/callstyle.rb, processor/processor.rb: 
+	Add set/show callstyle like ruby-debug has. processor.rb: bug in
+	running from "source"'d file.
+
+2011-06-06  rocky <rockyb@rubyforge.org>
+
+	* processor/command/set_subcmd/max.rb,
+	processor/command/set_subcmd/max_subcmd/list.rb,
+	processor/command/set_subcmd/max_subcmd/stack.rb,
+	processor/command/set_subcmd/max_subcmd/string.rb,
+	processor/command/set_subcmd/max_subcmd/width.rb,
+	processor/command/show_subcmd/max.rb,
+	processor/command/show_subcmd/max_subcmd/list.rb,
+	processor/command/show_subcmd/max_subcmd/stack.rb,
+	processor/command/show_subcmd/max_subcmd/stack.rbc,
+	processor/command/show_subcmd/max_subcmd/string.rb,
+	processor/command/show_subcmd/max_subcmd/width.rb: Add trepanning
+	"set max" commands.
+
+2011-06-06  rocky <rockyb@rubyforge.org>
+
+	* processor/command/break.rb: Remove \n's which were left-over from
+	ruby-debug.
+
+2011-06-06  rocky <rockyb@rubyforge.org>
+
+	* app/options.rb: Small options processing changes
+
+2011-06-05  rocky <rockyb@rubyforge.org>
+
+	* test/integration/helper.rb: More stray debug output
+
+2011-06-05  rocky <rockyb@rubyforge.org>
+
+	* Rakefile, app/options.rb, app/run.rb, bin/trepan8,
+	interface/script.rb, processor/command/set_subcmd/debug.rb,
+	processor/processor.rb, test/data/edit.right,
+	test/integration/helper.rb, test/integration/test-dollar-0.rb,
+	test/integration/test-dollar-0.rb.try,
+	test/integration/test-edit.rb, test/integration/test-raise.rb,
+	test/integration/test-raise.rb.try: Get first integration test
+	working. "set debug testing" beefed up for the task.  Add --basename option. Remove --annotate remnant and some debug
+	output.
+
+2011-06-05  rocky <rockyb@rubyforge.org>
+
+	* README.textile: README format tweaking
+
+2011-06-05  rocky <rockyb@rubyforge.org>
+
+	* README.textile: Github likes README's.
+
+2011-06-05  rocky <rockyb@rubyforge.org>
+
+	* app/default.rb, app/interface.rb, app/options.rb, app/run.rb,
+	bin/.gitignore, bin/trepan8, lib/trepanning.rb,
+	processor/command/set_subcmd/highlight.rb: options processing done
+	in app/processing rather than bin/trepan8 as other trepanning
+	debugger do.  Options processing is I think a little less convoluted
+	now with the replacement of an ostruct for a hash.  "set highlight reset" sets highight on in addition to resetting.
+
+2011-06-05  rocky <rockyb@rubyforge.org>
+
+	* app/run.rb, bin/trepan8, test/unit/test-app-run.rb: Move
+	debug_program() from debugger invocation script (bin/trepan8 here)
+	to app/run.rb as trepan and trepanx have it.
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* interface/script.rb, lib/trepanning.rb,
+	processor/command/edit.rb, processor/command/set_subcmd/debug.rb,
+	processor/main.rb, test/data/edit.cmd, test/data/edit.right,
+	test/integration/helper.rb, test/integration/test-edit.rb: Improve
+	"edit" command. Closer to having integration testing working.
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* processor/command/help/command.txt: command syntax help yet again.
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* test/unit/test-proc-load_cmds.rb: Add load_cmds unit test.
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* interface/user.rb, lib/trepanning.rb,
+	test/unit/test-completion.rb: Fix up complete unit test. Need to
+	remove global variable down the line...
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* app/util.rb, processor/command/help/command.txt,
+	processor/command/list.rb, processor/command/set_subcmd/abbrev.rb,
+	processor/command/show_subcmd/abbrev.rb, processor/default.rb,
+	processor/main.rb, processor/validate.rb,
+	test/unit/test-app-util.rb: Allow unique abbreviations of commands.
+	See set/show abbrev. Sync with rbx-trepanning
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/macro.rb,
+	processor/command/show_subcmd/macro.rb: show macro -> info macro as
+	gdb has it.
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/args.rb,
+	processor/command/info_subcmd/locals.rb: Add info locals
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* app/options.rb, bin/trepan8, processor/default.rb,
+	processor/processor.rb: Add trepan8 --highlight option.
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* processor/command/list.rb, processor/default.rb,
+	processor/location.rb, trepan8.gemspec: list.rb, repan8.gemspec:
+	support for syntax highlighting.  default.rb, location.rb: move
+	reload_on_change to be a setting.
+
+2011-06-04  rocky <rockyb@rubyforge.org>
+
+	* bin/trepan8, lib/trepanning.rb: Change more uses of the newer way
+	to call debugger init scripts.
+
+2011-06-03  rocky <rockyb@rubyforge.org>
+
+	* : commit db4eb72715abd212b8056579357e11bf3109cb12 Author: rocky
+	<rockyb@rubyforge.org> Date:   Fri Jun 3 19:21:05 2011 -0400
+
+2011-06-03  rocky <rockyb@rubyforge.org>
+
+	* interface/client.rb, interface/server.rb, interface/user.rb,
+	processor/command/eval.rb, processor/command/source.rb,
+	processor/location.rb, processor/main.rb,
+	test/unit/test-cmd-source.rb, test/unit/test-proc-eval.rb,
+	test/unit/test-proc-hook.rb, test/unit/test-subcmd-help.rb: Fix up
+	"source" command. More unit tests. Add closed? to interfaces.
+
+2011-06-03  rocky <rockyb@rubyforge.org>
+
+	* app/display.rb, app/eventbuffer.rb: Forgot the "display" and
+	"eventbuffer" helper modules
+
+2011-06-03  rocky <rockyb@rubyforge.org>
+
+	* io/input.rb, lib/trepanning.rb,
+	processor/command/set_subcmd/auto_subcmd/eval.rb,
+	processor/processor.rb: Start readline tab completion.
+	auto_subcmd/eval.rb: DRY code.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* Rakefile, app/interface.rb, bin/trepan8, io/null_output.rb,
+	processor/command/continue.rb, processor/command/display.rb,
+	processor/command/finish.rb, processor/command/info_subcmd/line.rb,
+	processor/command/next.rb, processor/command/pr.rb,
+	processor/command/ps.rb,
+	processor/command/set_subcmd/auto_subcmd/irb.rb,
+	processor/command/set_subcmd/auto_subcmd/list.rb,
+	processor/command/show_subcmd/auto_subcmd/irb.rb,
+	processor/command/show_subcmd/auto_subcmd/list.rb,
+	processor/command/source.rb, processor/command/step.rb,
+	processor/command/undisplay.rb, processor/default.rb,
+	processor/display.rb, processor/eventbuf.rb, processor/hook.rb,
+	processor/main.rb, processor/processor.rb,
+	test/unit/test-cmd-help.rb: Cut over to new-style interfaces. Add
+	display/undisplay "source", set/show autoirb/list "pr" "ps "
+	commands.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/command/tbreak.rb: tbreak: Remove alias. Improve
+	docstring. Sync with rb-trepanning and rbx-trepanning.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/command/break.rb, processor/command/tbreak.rb,
+	processor/validate.rb, test/unit/test-cmd-help.rb: Add "break" and
+	"tbreak" debugger commands.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/validate.rb: Remove some breakpoint parsing examples
+	that are not relevant here
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/default.rb, processor/helper.rb: Remove constant already
+	defined message when requiring twice.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* test/unit/mock-helper.rb, test/unit/test-cmd-alias.rb,
+	test/unit/test-cmd-exit.rb, test/unit/test-cmd-help.rb,
+	test/unit/test-cmd-kill.rb: More unit tests from rbx-trepanning.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/command/continue.rb, processor/command/disable.rb,
+	processor/command/enable.rb, processor/command/eval.rb,
+	processor/command/finish.rb, processor/command/frame.rb,
+	processor/command/list.rb, processor/command/restart.rb,
+	processor/command/shell.rb, processor/validate.rb: Beef up demo code
+	for standalone routines.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* app/default.rb, app/interface.rb, lib/trepanning.rb,
+	processor/command-ruby-debug/info.rb,
+	processor/command/backtrace.rb,
+	processor/command/info_subcmd/line.rb,
+	processor/command/info_subcmd/stack.rb,
+	processor/command/restart.rb, processor/command/up.rb,
+	processor/location.rb, processor/main.rb, processor/mock.rb,
+	test/unit/test-proc-location.rb: Add proc/location test which finds
+	bugs and code to improve.  add "restart" and "info stack" commands.
+	Demo code now for "backtrace" and "up".
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/command-ruby-debug/control.rb: Cut over "restart".
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/breakpoints.rb: See above.
+
+2011-06-02  rocky <rockyb@rubyforge.org>
+
+	* processor/command/disable.rb, processor/command/enable.rb,
+	processor/command/info_subcmd/breakpoints.rb: Cut over commands
+	"enable", "disable", and "info breakpoints".
+
+2011-06-01  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, processor/command-ruby-debug/frame.rb,
+	processor/command-ruby-debug/list.rb,
+	processor/command/backtrace.rb, processor/command/list.rb,
+	processor/location.rb: Cut over "backtrace" and "list" commands. Use
+	ruby-debug's better path cleaning.
+
+2011-06-01  rocky <rockyb@rubyforge.org>
+
+	* Rakefile, app/cmd_parser.rb, app/frame.rb,
+	processor/command-ruby-debug/list.rb, processor/command/finish.rb,
+	processor/command/show_subcmd/.gitignore,
+	processor/command/show_subcmd/args.rb,
+	processor/command/show_subcmd/debug.rb,
+	processor/command/show_subcmd/debug_subcmd/dbgr.rb,
+	processor/command/show_subcmd/debug_subcmd/skip.rb,
+	processor/command/show_subcmd/debug_subcmd/step.rb,
+	processor/frame.rb, processor/virtual.rb, test/unit/cmd-helper.rb,
+	test/unit/test-app-frame.rb, test/unit/test-base-cmd.rb,
+	test/unit/test-base-subcmd.rb, test/unit/test-base-submgr.rb,
+	test/unit/test-base-subsubcmd.rb: Add more unit tests which means
+	adding more code and fixing some. Add "show debug" Fix "list".
+	Describe what's up with virtual.
+
+2011-06-01  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, processor/eval.rb, processor/frame.rb,
+	processor/location.rb, processor/mock.rb: Redo Frame class to
+	simplify: no longer use messy state, but attr_accessor :frame.index
+	.
+
+2011-06-01  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb: frame fixes.
+
+2011-06-01  rocky <rockyb@rubyforge.org>
+
+	* app/interface.rb, processor/command/show_subcmd/auto.rb,
+	processor/processor.rb, test/data/edit.cmd: Script processing
+	running - sort of (frame is messed up). Closer to having some sort
+	of integration testing working.
+
+2011-06-01  rocky <rockyb@rubyforge.org>
+
+	* .gitignore, bin/trepan8, processor/command/info_subcmd/catch.rb,
+	processor/command/set_subcmd/.gitignore,
+	processor/command/set_subcmd/auto.rb,
+	processor/command/set_subcmd/auto_subcmd/.gitignore,
+	processor/command/set_subcmd/auto_subcmd/eval.rb,
+	processor/command/set_subcmd/debug.rb,
+	processor/command/show_subcmd/auto.rb,
+	processor/command/show_subcmd/auto_subcmd/eval.rb,
+	processor/help.rb, processor/processor.rb, test/data/.gitignore,
+	test/data/edit.cmd, test/data/edit.right, test/data/raise.cmd,
+	test/data/raise.right, test/example/raise.rb,
+	test/integration/.gitignore, test/integration/config.yaml,
+	test/integration/helper.rb, test/integration/test-dollar-0.rb,
+	test/integration/test-edit.rb, test/integration/test-raise.rb: Push
+	towards getting integration tests working. Add "set/show autoeval"
+	and "set debug test".  processor.rb: handle  # comments and
+	autoeval. help.rb: remove extraneous \n.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, processor/frame.rb: frame fixes.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* processor/command/shell.rb, processor/mock.rb: Fix up mock enough
+	to get shell.rb standalone working -- with a little limping.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* app/interface.rb, processor/command/shell.rb, processor/mock.rb,
+	processor/virtual.rb: Trepan::Interface -> Trepan::OldInterface when
+	old. Simplify and move a little bit forward in mock.rb
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* processor/command-ruby-debug/continue.rb,
+	processor/command-ruby-debug/edit.rb,
+	processor/command-ruby-debug/eval.rb,
+	processor/command-ruby-debug/finish.rb,
+	processor/command-ruby-debug/irb.rb,
+	processor/command-ruby-debug/kill.rb,
+	processor/command-ruby-debug/quit.rb,
+	processor/command/continue.rb, processor/running.rb: Cut over
+	"continue" command to new-style commands. Remove some older style
+	commands.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* app/irb.rb, app/options.rb, data/.gitignore, data/irbrc,
+	processor/command/shell.rb, processor/location.rb,
+	processor/main.rb, processor/running.rb: Add "shell" command to go
+	into irb. Use processor/location.rb for loc_and_text code.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* processor/command/help/.gitignore, processor/command/help/README,
+	processor/command/help/command.txt,
+	processor/command/help/filename.txt,
+	processor/command/help/location.txt: Add syntax help.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, app/options.rb, processor/default.rb,
+	processor/frame.rb: Wasn't updating position on frame commands.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* app/interface.rb: errmsg needs to add newlines
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, processor/command-ruby-debug/frame.rb,
+	processor/command/down.rb, processor/command/frame.rb,
+	processor/command/up.rb, processor/frame.rb, processor/help.rb,
+	processor/processor.rb: Add "up", "down" and "frame" commands.
+
+2011-05-31  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, processor/command-ruby-debug/breakpoints.rb,
+	processor/command/edit.rb,
+	processor/command/info_subcmd/.gitignore,
+	processor/command/info_subcmd/program.rb, processor/frame.rb,
+	processor/main.rb, processor/processor.rb: Add processor/frame.rb
+	and start using it. Add "info program". breakpoints.rb: bug caused
+	by name conflict and conversion.
+
+2011-05-30  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, processor/command/edit.rb,
+	processor/command/info_subcmd/args.rb, processor/eval.rb,
+	processor/location.rb, processor/main.rb, processor/processor.rb: 
+	Start a Frame object which simplfies access code.
+
+2011-05-30  rocky <rockyb@rubyforge.org>
+
+	* processor/command/base/submgr.rb, processor/default.rb: Smal
+	changes
+
+2011-05-30  rocky <rockyb@rubyforge.org>
+
+	* lib/trepanning.rb, processor/command/base/submgr.rb,
+	processor/command/info_subcmd/args.rb,
+	processor/command/info_subcmd/files.rb,
+	processor/command/info_subcmd/ruby.rb, processor/default.rb,
+	processor/eval.rb, processor/load_cmds.rb, processor/location.rb,
+	processor/running.rb, processor/validate.rb, processor/virtual.rb: 
+	module Trepan; class CmdProcessor -> class Trepan::CmdProcessor
+	which should make things more cross-implementation portable.  Add
+	processor.location.rb.
+
+2011-05-29  rocky <rockyb@rubyforge.org>
+
+	* processor/command/finish.rb,
+	processor/command/info_subcmd/args.rb,
+	processor/command/info_subcmd/files.rb: Add "info args" and "info
+	files" and "finish". "finish" might be buggy.
+
+2011-05-29  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/args.rb,
+	processor/command/info_subcmd/ruby.rb: Add "info args" correct help
+	for "info ruby".
+
+2011-05-29  rocky <rockyb@rubyforge.org>
+
+	* processor/command-ruby-debug/stepping.rb,
+	processor/command/edit.rb, processor/command/next.rb,
+	processor/command/step.rb, processor/eval.rb, processor/main.rb,
+	processor/processor.rb, processor/virtual.rb: Fix up "edit", "eval"
+	and "step". Add "next".
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* processor/command/directory.rb, processor/command/edit.rb,
+	processor/command/eval.rb, processor/command/info.rb,
+	processor/command/info_subcmd/ruby.rb, processor/command/save.rb,
+	processor/command/set.rb, processor/command/set_subcmd/basename.rb,
+	processor/command/set_subcmd/confirm.rb,
+	processor/command/set_subcmd/different.rb,
+	processor/command/set_subcmd/highlight.rb,
+	processor/command/show_subcmd/auto.rb,
+	processor/command/show_subcmd/basename.rb,
+	processor/command/show_subcmd/confirm.rb,
+	processor/command/show_subcmd/different.rb,
+	processor/command/show_subcmd/directories.rb,
+	processor/command/show_subcmd/highlight.rb,
+	processor/command/show_subcmd/macro.rb,
+	processor/command/show_subcmd/version.rb: Add more easy commands and
+	some set/show/info subcommands.
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* test/unit/test-app-cmd_parse.rb,
+	test/unit/test-app-cmd_parser.rb, test/unit/test-app-util.rb: More
+	unit tests from rbx-trepanning
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* app/interface.rb, processor/command/step.rb,
+	processor/load_cmds.rb, processor/main.rb, processor/mock.rb,
+	processor/processor.rb, processor/running.rb,
+	processor/validate.rb, processor/virtual.rb: Added first new-style
+	command - step.
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* app/default.rb, processor/command.rb, processor/default.rb,
+	processor/processor.rb: More new/old coexistence.
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* processor/command-ruby-debug/breakpoints.rb,
+	processor/command-ruby-debug/catchpoint.rb,
+	processor/command-ruby-debug/condition.rb,
+	processor/command-ruby-debug/continue.rb,
+	processor/command-ruby-debug/control.rb,
+	processor/command-ruby-debug/display.rb,
+	processor/command-ruby-debug/edit.rb,
+	processor/command-ruby-debug/enable.rb,
+	processor/command-ruby-debug/eval.rb,
+	processor/command-ruby-debug/finish.rb,
+	processor/command-ruby-debug/frame.rb,
+	processor/command-ruby-debug/help.rb,
+	processor/command-ruby-debug/info.rb,
+	processor/command-ruby-debug/irb.rb,
+	processor/command-ruby-debug/kill.rb,
+	processor/command-ruby-debug/list.rb,
+	processor/command-ruby-debug/method.rb,
+	processor/command-ruby-debug/quit.rb,
+	processor/command-ruby-debug/reload.rb,
+	processor/command-ruby-debug/save.rb,
+	processor/command-ruby-debug/set.rb,
+	processor/command-ruby-debug/show.rb,
+	processor/command-ruby-debug/source.rb,
+	processor/command-ruby-debug/stepping.rb,
+	processor/command-ruby-debug/threads.rb,
+	processor/command-ruby-debug/trace.rb,
+	processor/command-ruby-debug/variables.rb, processor/command.rb,
+	processor/eval.rb, processor/help.rb, processor/load_cmds.rb,
+	processor/main.rb, processor/processor.rb, processor/virtual.rb: 
+	Coexistance of old Commands with new. Split into OldCommand and
+	Command.
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* app/cmd_parse.kpeg, app/cmd_parse.rb, app/cmd_parser.rb,
+	processor/command/base/submgr.rb, processor/command/step.rb,
+	processor/eval.rb, processor/load_cmds.rb, processor/main.rb,
+	processor/msg.rb, processor/processor.rb, processor/stepping.rb,
+	processor/validate.rb, processor/virtual.rb: Port more code over.
+	Main driver is "step" and "validate".
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* processor/main.rb: Add "eval" to list of processor/main-required
+	files.
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* processor/command/complete.rb, processor/command/help.rb,
+	processor/command/macro.rb, processor/eval.rb, processor/main.rb,
+	processor/msg.rb: Port over more "support"-class commands: help,
+	macro, and complete.
+
+2011-05-28  rocky <rockyb@rubyforge.org>
+
+	* app/interface.rb, app/util.rb,
+	processor/command-ruby-debug/breakpoints.rb,
+	processor/command-ruby-debug/catchpoint.rb,
+	processor/command-ruby-debug/condition.rb,
+	processor/command-ruby-debug/continue.rb,
+	processor/command-ruby-debug/control.rb,
+	processor/command-ruby-debug/display.rb,
+	processor/command-ruby-debug/edit.rb,
+	processor/command-ruby-debug/enable.rb,
+	processor/command-ruby-debug/eval.rb,
+	processor/command-ruby-debug/finish.rb,
+	processor/command-ruby-debug/frame.rb,
+	processor/command-ruby-debug/help.rb,
+	processor/command-ruby-debug/info.rb,
+	processor/command-ruby-debug/irb.rb,
+	processor/command-ruby-debug/kill.rb,
+	processor/command-ruby-debug/list.rb,
+	processor/command-ruby-debug/method.rb,
+	processor/command-ruby-debug/quit.rb,
+	processor/command-ruby-debug/reload.rb,
+	processor/command-ruby-debug/save.rb,
+	processor/command-ruby-debug/set.rb,
+	processor/command-ruby-debug/show.rb,
+	processor/command-ruby-debug/source.rb,
+	processor/command-ruby-debug/stepping.rb,
+	processor/command-ruby-debug/threads.rb,
+	processor/command-ruby-debug/trace.rb,
+	processor/command-ruby-debug/variables.rb,
+	processor/command/.gitignore, processor/command/alias.rb,
+	processor/command/base/cmd.rb, processor/command/base/subsubcmd.rb,
+	processor/command/breakpoints.rb, processor/command/catchpoint.rb,
+	processor/command/condition.rb, processor/command/continue.rb,
+	processor/command/control.rb, processor/command/display.rb,
+	processor/command/edit.rb, processor/command/enable.rb,
+	processor/command/eval.rb, processor/command/exit.rb,
+	processor/command/finish.rb, processor/command/frame.rb,
+	processor/command/help.rb, processor/command/info.rb,
+	processor/command/irb.rb, processor/command/kill.rb,
+	processor/command/list.rb, processor/command/method.rb,
+	processor/command/quit.rb, processor/command/reload.rb,
+	processor/command/save.rb, processor/command/set.rb,
+	processor/command/show.rb, processor/command/show_subcmd/alias.rb,
+	processor/command/source.rb, processor/command/stepping.rb,
+	processor/command/threads.rb, processor/command/trace.rb,
+	processor/command/unalias.rb, processor/command/variables.rb,
+	processor/load_cmds.rb, processor/main.rb, processor/mock.rb,
+	processor/msg.rb: Start adding new-style Trepan::Command class.
+
+2011-05-27  rocky <rockyb@rubyforge.org>
+
+	* app/.gitignore, app/complete.rb, app/default.rb,
+	interface/.gitignore, interface/base_intf.rb, interface/client.rb,
+	interface/comcodes.rb, interface/script.rb, interface/server.rb,
+	interface/user.rb, io/base_io.rb, io/input.rb, io/null_output.rb,
+	io/string_array.rb, io/tcpclient.rb, io/tcpfns.rb, io/tcpserver.rb,
+	processor/.gitignore, processor/command/base/cmd.rb,
+	processor/command/base/subcmd.rb, processor/command/base/submgr.rb,
+	processor/command/base/subsubcmd.rb,
+	processor/command/base/subsubmgr.rb, processor/help.rb,
+	processor/mock.rb, processor/subcmd.rb,
+	test/unit/test-app-complete.rb, test/unit/test-intf-user.rb,
+	test/unit/test-io-input.rb, test/unit/test-io-tcp.rb,
+	test/unit/test-io-tcpclient.rb, test/unit/test-io-tcpfns.rb,
+	test/unit/test-io-tcpserver.rb: Start moving/converting code from
+	rbx-trepanning. For now "class Trepan" => "module Trepan". Will
+	probably undo this later...
+
+2011-05-27  rocky <rockyb@rubyforge.org>
+
+	* trepan8.gemspec: Correct dependency version number for linecache
+
+2011-05-27  rocky <rockyb@rubyforge.org>
+
+	* .gitignore, Rakefile, app/default.rb, app/options.rb,
+	bin/trepan8, lib/debugger.rb, lib/trepanning.rb,
+	test/unit/.gitignore, test/unit/test-app-options.rb,
+	trepan8.gemspec: Port over Rakefile from rb-trepanning. Add first
+	unit test (from rb-trepanning).
+
+2011-05-26  rvm <rocky-rvm@static-71-183-236-17.nycmny.fios.verizon.net>
+
+	* First attempt to backport trepanning. Right now it's mostly
+	ruby-debug w/o ruby-debug-base and separated from the main code in
+	git.  There are some small changes towards the trepanning file
+	system organization. Also module Debugger is now module Trepan.
+

@@ -1,4 +1,24 @@
+June 12, 2011 Fleetwood release
+
 First attempt at backport from trepanning.
 
+New features
+ - Syntax highlighting (if coderay, term-ansicolor and newer linecache)
+ - tab completion (more complete if rb-readline gem used)
+ - parsetree (if ParseTree installed)
+
+New from trepanning: 
+- eval and eval? without args to run parts of the current source line
+- macros
+- aliases
+- help system
+- unique command abbrev (or not if "set abbrev off")
+
+Incompatibilities: 
+- autoeval is on by default
+- ";;" separates debugger commands so you can use ";" in eval
+- some possibliy lesser-used commands have been dropped. If people notice,
+  they can be reinstated.
+- dropped support for annotations and ruby-debug emacs. Use newer emacs-dbgr
 
 See ruby-debug's CHANGES for older changes
