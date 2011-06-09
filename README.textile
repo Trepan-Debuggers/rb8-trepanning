@@ -44,3 +44,16 @@ Here are some incompatibilities. Depending on your point of view, I hope you wil
 * Command names can be abbreviated if they are unique. For example "st" and "ste" are abbreviations of "step". To turn this off, "set abbrev off". 
 
 
+h2. Dependencies
+
+The debugger needs to work in more limited environments, so there are a number packages which are _optional_ but not required. They are:
+
+* _coderay_ and _term-ansicolor_ for syntax and terminal highlighting
+* rb-readline (>= 0.4.0) for better tab completion.
+* ParseTree (>= 3.0.7) and its dependencies for showing method S-expressions 
+* linecache (>= 0.45dev) for syntax highlighting
+
+Required dependencies are the same as ruby-debug:
+* ruby-debug-base -- for run-time debugging support
+* linecache -- for caching source-code lines and figuring out breakpont lines)
+* columnize -- for showing commands in columns
