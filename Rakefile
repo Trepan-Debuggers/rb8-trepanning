@@ -11,7 +11,7 @@ def gemspec
 end
 
 require 'rake/gempackagetask'
-desc "Build the gem"
+desc 'Build the gem'
 task :package=>:gem
 task :gem=>:gemspec do
   Dir.chdir(ROOT_DIR) do
@@ -21,7 +21,7 @@ task :gem=>:gemspec do
   end
 end
 
-desc "Install the gem locally"
+desc 'Install the gem locally'
 task :install => :gem do
   Dir.chdir(ROOT_DIR) do
     sh %{gem install --local pkg/#{gemspec.file_name}}
@@ -37,7 +37,7 @@ def RbConfig.ruby
             RbConfig::CONFIG['EXEEXT'])
 end unless defined? RbConfig.ruby
 
-def run_standalone_ruby_files(list)
+def run_standalone_ruby_files(list, opts={})
   puts '*' * 40
   list.each do |ruby_file|
     system(RbConfig.ruby, ruby_file)
@@ -93,20 +93,20 @@ task :test do
   end.compact
   
   exceptions.each {|e| puts e;puts e.backtrace }
-  raise "Test failures" unless exceptions.empty?
+  raise 'Test failures' unless exceptions.empty?
 end
 
-desc "Run each Ruby app file in standalone mode."
+desc 'Run each Ruby app file in standalone mode.'
 task :'check:app' do
   run_standalone_ruby_file(File.join(%W(#{ROOT_DIR} app)))
 end
 
-desc "Run each command in standalone mode."
+desc 'Run each command in standalone mode.'
 task :'check:commands' do
   run_standalone_ruby_file(File.join(%W(#{ROOT_DIR} processor command)))
 end
 
-desc "Run each of the sub-sub commands in standalone mode."
+desc 'Run each of the sub-sub commands in standalone mode.'
 task :'check:sub:commands' do
   p "#{ROOT_DIR}/processor/command/*_subcmd/*_subcmd/*.rb"
   Dir.glob("#{ROOT_DIR}/processor/command/*_subcmd").each do |sub_dir|
@@ -114,45 +114,45 @@ task :'check:sub:commands' do
   end
 end
 
-desc "Run each of the sub-sub commands in standalone mode."
+desc 'Run each of the sub-sub commands in standalone mode.'
 task :'check:subsub:commands' do
   subsub_files = FileList["#{ROOT_DIR}/processor/command/*_subcmd/*_subcmd/*.rb"]
   run_standalone_ruby_files(subsub_files)
 end
 
-desc "Run each processor Ruby file in standalone mode."
+desc 'Run each processor Ruby file in standalone mode.'
 task :'check:lib' do
   run_standalone_ruby_file(File.join(%W(#{ROOT_DIR} lib)))
 end
 
-desc "Run each processor Ruby file in standalone mode."
+desc 'Run each processor Ruby file in standalone mode.'
 task :'check:processor' do
   run_standalone_ruby_file(File.join(%W(#{ROOT_DIR} processor)))
 end
 
-desc "Run each processor Ruby file in standalone mode."
+desc 'Run each processor Ruby file in standalone mode.'
 task :'check:unit' do
   run_standalone_ruby_file(File.join(%W(#{ROOT_DIR} test unit)))
 end
 
-desc "Run functional tests in standalone mode."
+desc 'Run functional tests in standalone mode.'
 task :'check:functional' do
   run_standalone_ruby_file(File.join(%W(#{ROOT_DIR} test functional)))
 end
 
-desc "Run command parser grammar."
+desc 'Run command parser grammar.'
 task :'check:cmd_parse' do
   sh "kpeg --test --debug #{File.join(ROOT_DIR, %w(app cmd_parse.kpeg))}"
 end
 
-desc "Generate command parser."
+desc 'Generate command parser.'
 task :'cmd_parse' do
   require 'tmpdir'
   temp_file = 
     File.join(Dir.tmpdir, 
               Dir::Tmpname.make_tmpname(['cmd_parser_', '.rb'], nil))
 
-  sh("kpeg --name CmdParse --verbose --stand-alone  " + 
+  sh('kpeg --name CmdParse --verbose --stand-alone  ' + 
      "#{File.join(ROOT_DIR, %w(app cmd_parse.kpeg))} " + 
      "--output #{temp_file}")
 end
@@ -166,20 +166,20 @@ task :check => %w(check:lib check:processor check:commands).map{|c| c.to_sym}
 desc "Default action is same as 'test'."
 task :default => :test
 
-desc "Generate the gemspec"
+desc 'Generate the gemspec'
 task :generate do
   puts gemspec.to_ruby
 end
 
-desc "Validate the gemspec"
+desc 'Validate the gemspec'
 task :gemspec do
   gemspec.validate
 end
 
 # ---------  RDoc Documentation ------
 require 'rake/rdoctask'
-desc "Generate rdoc documentation"
-Rake::RDocTask.new("rdoc") do |rdoc|
+desc 'Generate rdoc documentation'
+Rake::RDocTask.new('rdoc') do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = "Trepanning #{Trepan::VERSION} Documentation"
 
@@ -189,7 +189,7 @@ Rake::RDocTask.new("rdoc") do |rdoc|
                          ))
 end
 
-desc "Same as rdoc"
+desc 'Same as rdoc'
 task :doc => :rdoc
 
 task :clobber_package do
@@ -200,9 +200,15 @@ task :clobber_rdoc do
   FileUtils.rm_rf File.join(ROOT_DIR, 'doc')
 end
 
+desc 'Remove residue from running patch'
 task :rm_patch_residue do
-  FileUtils.rm_rf FileList['**/*.{rej,orig.rbc}'].to_a
+  FileUtils.rm_rf FileList['**/*.{rej,orig.rbc}'].to_a, :verbose => true
 end
 
-desc "Remove built files"
-task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue]
+desc 'Remove ~ backup files'
+task :rm_tilde_backups do
+  FileUtils.rm_rf Dir.glob('**/*~'), :verbose => true
+end
+
+desc 'Remove built files'
+task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue, :rm_tilde_backups]
