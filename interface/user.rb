@@ -121,7 +121,16 @@ class Trepan::UserInterface < Trepan::Interface
   def readline(prompt='')
     @output.flush
     if @input.line_edit && @opts[:readline]
-      @input.readline(prompt)
+      if Trepan::GNU_readline? && @opts[:complete]
+        Readline.completion_proc = @opts[:complete]
+      end
+      # rb-readline 0.4.0 has bugs
+      begin
+        @input.readline(prompt)
+      rescue Exception => e
+        @output.write("Exception: #{e} in readline\n")
+        ''
+      end
     else
       @output.write(prompt) if prompt and prompt.size > 0
       @input.readline

@@ -50,10 +50,10 @@ unless option -c or --continue is given.
   end
 
   def complete(prefix)
-    # opts = %w(-c --continue --no-continue -N --no -y --yes
-    #           --verbose --no-verbose)
-    # return Trepan::Complete.complete_token(opts, prefix) if prefix.empty?
-    Readline::FILENAME_COMPLETION_PROC.call(prefix) || []
+    files = Readline::FILENAME_COMPLETION_PROC.call(prefix) || []
+    opts = %w(-c --continue --no-continue -N --no -y --yes
+              --verbose --no-verbose) + files
+    Trepan::Complete.complete_token(opts, prefix) 
   end
     
   def parse_options(options, args) # :nodoc

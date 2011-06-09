@@ -20,13 +20,13 @@ module Trepan
       if leading.nil? 
           if Readline.respond_to?(:line_buffer)
             completion = 
-              Debugger.handler.cmdproc.complete(Readline.line_buffer, 
+              Trepan.handler.cmdproc.complete(Readline.line_buffer, 
                                                 last_token)
           else
-            completion = Debugger.handler.cmdproc.complete(last_token, '')
+            completion = Trepan.handler.cmdproc.complete(last_token, '')
           end
       else
-        completion = Debugger.handler.cmdproc.complete(leading, last_token)
+        completion = Trepan.handler.cmdproc.complete(leading, last_token)
       end
       if 1 == completion.size 
         completion_token = completion[0]
