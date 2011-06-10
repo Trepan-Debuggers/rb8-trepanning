@@ -26,7 +26,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     end
   end
 
-  def eval_code(str, max_fake_filename)
+  def eval_code(str, max_fake_filename=nil)
     obj = debug_eval(str, max_fake_filename)
     
     # idx = @user_variables
