@@ -6,6 +6,7 @@ New features
  - Syntax highlighting (if coderay, term-ansicolor and newer linecache)
  - tab completion (more complete if rb-readline gem used)
  - parsetree (if ParseTree installed)
+ - gdb-like "confirm" to turn on/off prompting of dangerous commands
 
 New commands from trepanning: 
 - "eval" and "eval?" without args to run parts of the current source line
@@ -13,12 +14,18 @@ New commands from trepanning:
 - aliases
 - help system
 - unique command abbrev (or not if "set abbrev off")
+- new "!" suffix on "quit" and "kill" command, e.g. "q!", to avoid prompting.
 
 Incompatibilities: 
 - autoeval is on by default
 - ";;" separates debugger commands so you can use ";" in eval
 - some possibliy lesser-used commands have been dropped. If people notice,
   they can be reinstated.
+- p is now pr to avoid eval confusion with Ruby's "p" method
 - dropped support for annotations and ruby-debug emacs. Use newer emacs-dbgr
+- some commands have been moved to closer match gdb: 
+   * threads -> info threads
+   * reload  -> set reload 
+   * trace   -> set trace
 
 See ruby-debug's CHANGES for older changes
