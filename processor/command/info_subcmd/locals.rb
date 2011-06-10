@@ -36,7 +36,7 @@ EOH
         else
           section "Local variable names:"
           width = settings[:maxwidth]
-          mess = Columnize::columnize(local_names.sort, 
+          mess = Columnize::columnize(local_names, 
                                       @proc.settings[:maxwidth], '  ',
                                       false, true, ' ' * 2).chomp
           msg mess
