@@ -7,8 +7,8 @@ New features
  - tab completion (more complete if rb-readline gem used)
  - parsetree (if ParseTree installed)
 
-New from trepanning: 
-- eval and eval? without args to run parts of the current source line
+New commands from trepanning: 
+- "eval" and "eval?" without args to run parts of the current source line
 - macros
 - aliases
 - help system

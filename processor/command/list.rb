@@ -40,7 +40,7 @@ Use 'set max list' or 'show max list' to see or set the value.
   # previous line @state.previous_line.
   def display_list(b, e, file, current)
     opts = {
-      :reload_on_change => settings[:reload_source_on_change],
+      :reload_on_change => settings[:reload],
       :output => settings[:highlight]
     }
     lines = LineCache::getlines(file, opts)
