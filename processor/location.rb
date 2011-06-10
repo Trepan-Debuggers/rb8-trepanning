@@ -8,10 +8,7 @@ require_relative 'msg'
 # require_relative '../app/file'
 require_relative 'virtual'
 class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
-  
-  def location_initialize
-  end
-  
+
   def canonic_file(filename, resolve=true)
     # For now we want resolved filenames 
     if @settings[:basename] 
@@ -27,7 +24,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     end
     File.expand_path(filename)
   end
-  
+
   # Return the text to the current source line.
   def current_source_text
     LineCache::getline(@frame.file, @frame.line).chomp
@@ -92,12 +89,10 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
         loc += " remapped #{canonic_file(map_file)}:#{map_line}"
       end
 #    end
-  
     [loc, line_no, text]
   end
   
   def format_location(event=@event, frame=@frame, frame_index=@frame.index)
-    puts 'format location called'
     text      = nil
     ev        = if event.nil? || 0 != frame_index
                   '  ' 
@@ -159,10 +154,7 @@ if __FILE__ == $0 && caller.size == 0
   proc = Trepan::CmdProcessor.new([Trepan::UserInterface.new(nil, nil,
                                                             :history_save=>false)])
   proc.settings = {:directory => '$cdir:$cwd'}
-
   proc.frame_initialize
-
-  proc.location_initialize
   require 'ruby-debug'; Debugger.start
   proc.frame_setup(Debugger.current_context, nil)
   puts proc.canonic_file(__FILE__)
@@ -172,8 +164,7 @@ if __FILE__ == $0 && caller.size == 0
   xx = eval <<-END
      proc.frame_initialize
      proc.frame_setup(Debugger.current_context, nil)
-     proc.location_initialize
-     proc.current_source_text
+     puts proc.current_source_text
   END
   Debugger.stop
 end
