@@ -1,4 +1,4 @@
-June 12, 2011 Fleetwood release
+June 12, 2011 (0.1.3) Fleetwood release
 
 First attempt at backport from trepanning.
 
@@ -6,13 +6,13 @@ New features
  - Syntax highlighting (if coderay, term-ansicolor and newer linecache)
  - tab completion (more complete if rb-readline gem used)
  - parsetree (if ParseTree installed)
- - gdb-like "confirm" to turn on/off prompting of dangerous commands
 
 New commands from trepanning: 
+ - gdb-like "confirm" to turn on/off prompting of dangerous commands
 - "eval" and "eval?" without args to run parts of the current source line
 - macros
 - aliases
-- help system
+- new help system
 - unique command abbrev (or not if "set abbrev off")
 - new "!" suffix on "quit" and "kill" command, e.g. "q!", to avoid prompting.
 

@@ -16,15 +16,19 @@ class Trepan::Subcommand::SetHighlight < Trepan::SetBoolSubcommand
   end
 
   def run(args)
-    if args.size == 3 && 'reset' == args[2]
-      LineCache::clear_file_format_cache
-      @proc.settings[:highlight] = :term 
+    if LineCache.respond_to?(:clear_file_format_cache)
+      if args.size == 3 && 'reset' == args[2]
+        LineCache::clear_file_format_cache
+        @proc.settings[:highlight] = :term 
+      else
+        super
+        @proc.settings[:highlight] = :term if @proc.settings[:highlight]
+      end
     else
-      super
-      @proc.settings[:highlight] = :term if @proc.settings[:highlight]
+      errmsg "Your version of LineCache doesn't support terminal highlight"
+      @proc.settings[:highlight] = nil
     end
   end
-
 end
 
 if __FILE__ == $0

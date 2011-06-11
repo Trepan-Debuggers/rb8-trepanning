@@ -19,7 +19,8 @@ See also rb-trepanning and rbx-trepanning versions that works with Rubinius.
 and a patched YARV 1.9.2.
 EOF
   # spec.add_dependency('rb-trace', '>= 0.5')
-  spec.add_dependency('linecache', '~>0.45dev')
+  spec.add_dependency('linecache', '>= 0.43')
+  spec.add_dependency('rbx-require-relative', '> 0.0.4')
   spec.add_dependency('columnize')
   spec.add_dependency('diff-lcs') # For testing only
   spec.author       = 'R. Bernstein'
@@ -37,7 +38,6 @@ EOF
   spec.version      = Trepan::VERSION
 
   # Make the readme file the start page for the generated html
-  spec.rdoc_options += %w(--main README)
   spec.rdoc_options += ['--title', "Trepan #{Trepan::VERSION} Documentation"]
 
 end

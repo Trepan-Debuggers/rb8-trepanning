@@ -81,6 +81,13 @@ EOB
       opts.on('--[no-]highlight',
               'Use [no] syntax highlight output') do |v|
         options[:highlight] = ((v) ? :term : nil)
+        if options[:highlight]
+          require 'linecache'
+          unless LineCache.respond_to?(:clear_file_format_cache)
+            stderr.puts "Your version of LineCache doesn't support terminal highlight"
+            options[:higlight] = false 
+          end
+        end
       end
       opts.on('-h', '--host NAME', String, 
               'Host or IP used in TCP connections for --server or --client. ' + 
@@ -120,7 +127,7 @@ EOB
       opts.on('-r', '--require SCRIPT', String,
               'Require the library, before executing your script') do |name|
         if name == 'debug'
-          stderr.puts "ruby-debug is not compatible with Ruby's 'debug' library. This option is ignored."
+          stderr.puts "trepan8 is not compatible with Ruby's 'debug' library. This option is ignored."
         else
           require name
         end
