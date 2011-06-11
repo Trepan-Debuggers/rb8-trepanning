@@ -28,12 +28,11 @@ EOF
   if RUBY_VERSION.start_with?('1.8')
     spec.add_dependency('linecache', '>= 0.43')
   elsif RUBY_VERSION.start_with?('1.9') 
-    spec.add_dependency('linecache', '>= 0.5.12')
+    spec.add_dependency('linecache19', '>= 0.5.12')
   end
 
   spec.add_dependency('rbx-require-relative', '> 0.0.4')
   spec.add_dependency('columnize')
-  spec.add_dependency('diff-lcs') # For testing only
   spec.author       = 'R. Bernstein'
   spec.bindir       = 'bin'
   spec.email        = 'rockyb@rubyforge.net'
