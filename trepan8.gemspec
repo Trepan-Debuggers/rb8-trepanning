@@ -1,9 +1,14 @@
 # -*- Ruby -*-
 # -*- encoding: utf-8 -*-
 require 'rake'
-require 'rubygems'; require 'require_relative'
-require_relative './app/options' unless 
-  Object.const_defined?(:'Trepan')
+unless Object.const_defined?(:'Trepan')
+  if RUBY_VERSION =~ /^1.9.2/
+    require File.expand_path(File.dirname(__FILE__) + '/app/options')
+  else
+    require 'rubygems'; require 'require_relative'
+    require_relative './app/options' 
+  end
+end
 
 Gem::Specification.new do |spec|
   spec.authors      = ['R. Bernstein']
@@ -13,7 +18,7 @@ A modular, testable, Ruby debugger using some of the best ideas from ruby-debug,
 
 Some of the core debugger concepts have been rethought. As a result, some of this may be experimental.
 
-This version works only with a MRI 1.8 and 1.9'
+This version works only with a MRI 1.8 and 1.9.2'
 
 See also rb-trepanning and rbx-trepanning versions that works with Rubinius.
 and a patched YARV 1.9.2.
@@ -38,9 +43,15 @@ EOF
   spec.homepage     = 'http://wiki.github.com/rocky/rb8-trepanning'
   spec.name         = 'trepan8'
   spec.license      = 'MIT'
-  spec.platform     = Gem::Platform::RUBY
+  if RUBY_VERSION =~ /^1.8.7/
+    spec.platform = Gem::Platform::new ['universal', 'ruby', '1.8.7']
+  elsif RUBY_VERSION =~ /^1.9.2/
+    spec.platform = Gem::Platform::new ['universal', 'ruby', '1.9.2']
+  else
+    STDERR.puts "Have only tested on MRI 1.8.7 and 1.9.2"
+  end
   spec.require_path = 'lib'
-  spec.summary      = 'Ruby MRI 1.8.7 and 1.9 Trepanning Debugger'
+  spec.summary      = 'Ruby MRI 1.8.7 and 1.9.2 Trepanning Debugger'
   spec.version      = Trepan::VERSION
 
   spec.rdoc_options += ['--title', "Trepan #{Trepan::VERSION} Documentation"]
