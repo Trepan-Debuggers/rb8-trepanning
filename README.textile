@@ -1,8 +1,8 @@
-h1. rb8-trepanning a Ruby MRI 1.8 debugger using _ruby-debug-base_.
+h1. rb8-trepanning a Ruby MRI 1.8 and 1.9 debugger using _ruby-debug-base_.
 
 This is a rewrite of _ruby-debug_, but still using _ruby-debug base_. 
 
-Right now, I've only tested on MRI 1.8, but since the code is pure Ruby, it probably will work on other Rubies that have _ruby-debug-base_ installed.
+Right now, I've mostly tested on MRI 1.8, it sort of works on MRI 1.9.2 Ruby. Since the code is pure Ruby, it probably will work on other Rubies that have _ruby-debug-base_ installed to some degree.
 
 h2. Features
 
@@ -49,11 +49,11 @@ h2. Dependencies
 The debugger needs to work in more limited environments, so there are a number packages which are _optional_ but not required. They are:
 
 * _coderay_ and _term-ansicolor_ for syntax and terminal highlighting
-* _rb-readline_ (>= 0.4.0) for better tab completion.
+* _rb-readline_ (>= 0.4.0) on MRI 1.8 for better tab completion.
 * _ParseTree_ (>= 3.0.7) and its dependencies for showing method S-expressions 
 * _linecache_ (>= 0.45dev) for syntax highlighting
 
 Required dependencies are the same as ruby-debug:
 * _ruby-debug-base_ -- for run-time debugging support
-* _linecache_ -- for caching source-code lines and figuring out breakpont lines)
+* _linecache_ or _linecache19_ -- for caching source-code lines and figuring out breakpoint lines)
 * _columnize_ -- for showing commands in columns

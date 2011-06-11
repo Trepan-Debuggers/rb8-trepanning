@@ -61,13 +61,15 @@ class Trepan::SubcommandMgr < Trepan::Command
 
     subcommands = {}
     cmd_names.each do |name|
-      next unless Trepan::Subcommand.constants.member?(name)
+      next unless Trepan::Subcommand.constants.member?(name) or
+        Trepan::Subcommand.constants.member?(name.to_sym)
       klass = Trepan::Subcommand.const_get(name)
       cmd = klass.send(:new, self)
       @subcmds.add(cmd)
     end
     subcmd_names.each do |name|
-      next unless Trepan::SubSubcommand.constants.member?(name)
+      next unless Trepan::SubSubcommand.constants.member?(name) or
+        Trepan::SubSubcommand.constants.member?(name.to_sym)
       subcmd_class = Trepan::SubSubcommand.const_get(name)
       begin
         cmd = subcmd_class.send(:new, self, parent)

@@ -39,9 +39,11 @@ class Trepan::SubSubcommandMgr < Trepan::Subcommand
     # we are the super class but want to set the subclass's constant.
     # defined? didn't seem to work here.
     c = self.class.constants
-    self.class.const_set('SHORT_HELP', 
-                         self.class.const_get('HELP')) if
-      c.member?('HELP') and !c.member?('SHORT_HELP')
+    self.class.const_set(:SHORT_HELP, 
+                         self.class.const_get('HELP') || 
+                         self.class.const_get(:HELP)) if
+      (c.member?('HELP') || c.member?(:HELP)) and
+      !(c.member?('SHORT_HELP') || c.member?(:SHORT_HELP))
     
     load_debugger_subsubcommands(name, self)
   end
@@ -69,8 +71,9 @@ class Trepan::SubSubcommandMgr < Trepan::Subcommand
     cmd_names.each do |subname|
       cmd_name = "#{pname}#{subname.downcase}"
       subclass_name = "#{@pname.capitalize}#{subname}"
-      next unless 
-        Trepan::SubSubcommand.constants.member?(subclass_name)
+      next if 
+        not (Trepan::SubSubcommand.constants.member?(subclass_name) or
+             Trepan::SubSubcommand.constants.member?(subclass_name.to_sym))
       cmd = self.instance_eval("Trepan::SubSubcommand::" + subclass_name + 
                                ".new(self, @parent, '#{cmd_name}')")
       @subcmds.add(cmd, cmd_name)

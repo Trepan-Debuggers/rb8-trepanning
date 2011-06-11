@@ -1,6 +1,10 @@
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; 
-require 'linecache'
+begin
+  require 'linecache'
+rescue LoadError
+  require 'linecache19'
+end
 require 'require_relative'
 # require_relative 'disassemble'
 require_relative 'msg'

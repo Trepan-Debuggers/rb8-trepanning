@@ -11,14 +11,14 @@ require_relative 'virtual'
 class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
 
   attr_reader   :aliases         # Hash[String] of command names
-  # indexed by alias name
+                                 # indexed by alias name
   attr_reader   :commands        # Hash[String] of command objects
-  # indexed by name
+                                 # indexed by name
   attr_reader   :macros          # Hash[String] of Proc objects 
-  # indexed by macro name.
+                                 # indexed by macro name.
   attr_reader   :leading_str     # leading part of string. Used in 
-  # command completion
-  
+                                 # command completion
+
   # "initialize" for multi-file class. Called from main.rb's "initialize".
   def load_cmds_initialize
     @commands = {}
@@ -26,7 +26,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     @macros = {}
 
     cmd_dirs = [ File.join(File.dirname(__FILE__), 'command') ]
-    ## cmd_dirs <<  @settings[:user_cmd_dir] if @settings[:user_cmd_dir]
+    cmd_dirs <<  @settings[:user_cmd_dir] if @settings[:user_cmd_dir]
     cmd_dirs.each do |cmd_dir| 
       load_debugger_commands(cmd_dir) if File.directory?(cmd_dir)
     end
@@ -61,29 +61,22 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
 
       # Add to list of commands and aliases.
       cmd_name = klass.const_get(:NAME)
-      if klass.constants.member?('ALIASES')
-        aliases= klass.const_get('ALIASES')
+      if klass.constants.member?('ALIASES') || 
+          klass.constants.member?(:ALIASES)
+        aliases= klass.const_get('ALIASES') || klass.const_get(:ALIASES)
         aliases.each {|a| @aliases[a] = cmd_name}
       end
       @commands[cmd_name] = cmd
     end
+    return true
   end
 
-  # Instantiate a Trepan::Command and extract info: the NAME, ALIASES
-  # and store the command in @commands.
-  def setup_command(command)
-    # Note: there is probably a non-eval way to instantiate the
-    # command, but I don't know it. And eval works.
-    klass = self.instance_eval("Trepan::Command::#{command}")
-    cmd = klass.send(:new, self)
-    
-    # Add to list of commands and aliases.
-    cmd_name = klass.const_get(:NAME)
-    if klass.constants.member?(:ALIASES)
-      aliases= klass.const_get(:ALIASES)  
-      aliases.each {|a| @aliases[a] = cmd_name}
+  def load_debugger_command(command_file)
+    return unless File.readable?(command_file)
+    load command_file
+    Trepan::Command.constants.grep(/.Command$/).each do |command|
+      setup_command(command)
     end
-    @commands[cmd_name] = cmd
   end
 
   # Looks up cmd_array[0] in @commands and runs that. We do lots of 
@@ -140,6 +133,23 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     return save_filename
   end
 
+  # Instantiate a Trepan::Command and extract info: the NAME, ALIASES
+  # and store the command in @commands.
+  def setup_command(command)
+    # Note: there is probably a non-eval way to instantiate the
+    # command, but I don't know it. And eval works.
+    klass = self.instance_eval("Trepan::Command::#{command}")
+    cmd = klass.send(:new, self)
+    
+    # Add to list of commands and aliases.
+    cmd_name = klass.const_get(:NAME)
+    if klass.constants.member?(:ALIASES)
+      aliases= klass.const_get(:ALIASES)  
+      aliases.each {|a| @aliases[a] = cmd_name}
+    end
+    @commands[cmd_name] = cmd
+  end
+
   # Handle initial completion. We draw from the commands, aliases,
   # and macros for completion. However we won't include aliases which
   # are prefixes of other commands.
@@ -173,7 +183,7 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
       #   ["#{name} #{args[1..-1].join(' ')}"]
       # end
     end
-    # match_pairs.size <= 1
+    # match_pairs.size == 1
     next_complete(str, next_blank_pos, match_pairs[0][1], last_token)
   end
 
@@ -242,6 +252,7 @@ if __FILE__ == $0
   cmdproc.run_cmd([])     # Invalid - empty Array
   cmdproc.run_cmd(['list', 5])  # Invalid - nonstring arg
   p cmdproc.complete("d", 'd')
-  # p cmdproc.complete("sho d", 'd')
+  require 'ruby-debug'; Debugger.start; debugger
+  p cmdproc.complete("sho d", 'd')
   p cmdproc.complete('', '')
 end

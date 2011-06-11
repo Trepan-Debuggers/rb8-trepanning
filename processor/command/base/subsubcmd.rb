@@ -96,13 +96,13 @@ module Trepanning
       dirname = File.basename(full_dirname)
       parent_dirname = File.basename(full_parent_dirname)
       name = File.basename(__file__, '.rb')
-      klass.const_set('NAME', name)
+      klass.const_set(:NAME, name)
 
       short_dirname = dirname[0...-'_subcmd'.size]
       short_parent_dirname = parent_dirname[0...-'_subcmd'.size]
-      prefix = klass.const_set('PREFIX', %W(#{short_parent_dirname} 
+      prefix = klass.const_set(:PREFIX, %W(#{short_parent_dirname} 
                                             #{short_dirname} #{name}))
-      klass.const_set('CMD', prefix.join(' '))
+      klass.const_set(:CMD, prefix.join(' '))
     end
   end
 end

@@ -27,11 +27,14 @@ module IRB # :nodoc:
       end
     end
 
-    class Continue < DebuggerResumeCommand ; end
-    class Finish   < DebuggerResumeCommand ; end
-    class Next     < DebuggerResumeCommand ; end
-    class Quit     < DebuggerResumeCommand ; end
-    class Step     < DebuggerResumeCommand ; end
+    # FIXME: figure out why superclass type mismatch problem on 1.9
+    if RUBY_VERSION !~ /^1.9/
+      class Continue < DebuggerResumeCommand ; end
+      class Finish   < DebuggerResumeCommand ; end
+      class Next     < DebuggerResumeCommand ; end
+      class Quit     < DebuggerResumeCommand ; end
+      class Step     < DebuggerResumeCommand ; end
+    end
 
     # Issues a comamnd to the debugger without continuing
     # execution. 

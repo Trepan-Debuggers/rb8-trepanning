@@ -82,7 +82,11 @@ EOB
               'Use [no] syntax highlight output') do |v|
         options[:highlight] = ((v) ? :term : nil)
         if options[:highlight]
-          require 'linecache'
+          begin
+            require 'linecache'
+          rescue LoadError
+            require 'linecache19'
+          end
           unless LineCache.respond_to?(:clear_file_format_cache)
             stderr.puts "Your version of LineCache doesn't support terminal highlight"
             options[:higlight] = false 

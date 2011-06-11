@@ -2,7 +2,11 @@
 # Copyright (C) 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require 'pp'
-require 'linecache'
+begin
+  require 'linecache'
+rescue LoadError
+  require 'linecache19'
+end
 require 'columnize'
 require_relative '../base/subcmd'
 require_relative '../../../app/complete'

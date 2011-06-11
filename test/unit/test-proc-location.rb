@@ -2,7 +2,11 @@
 require 'test/unit'
 require 'rubygems'; require 'require_relative'
 require 'ruby-debug'; 
-require 'linecache'
+begin
+  require 'linecache'
+rescue LoadError
+  require 'linecache19'
+end
 require_relative '../../processor/location'
 require_relative '../../processor/mock'
 

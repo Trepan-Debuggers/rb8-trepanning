@@ -28,4 +28,7 @@ Incompatibilities:
    * reload  -> set reload 
    * trace   -> set trace
 
+This sort of works for an unpatched MRI 1.9. If you can patch the runtime,
+use rb-threadframe and rb-trepanning.
+
 See ruby-debug's CHANGES for older changes

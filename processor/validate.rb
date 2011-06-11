@@ -5,7 +5,11 @@
 
 require 'rubygems'
 require 'require_relative'
-require 'linecache'
+begin
+  require 'linecache'
+rescue LoadError
+  require 'linecache19'
+end
 
 require_relative '../app/cmd_parse'
 # require_relative '../app/condition'

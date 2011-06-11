@@ -3,7 +3,11 @@
 # Trace::Buffer for this prupose.
 
 require 'rubygems'; require 'require_relative'
-require 'linecache'
+begin
+  require 'linecache'
+rescue LoadError
+  require 'linecache19'
+end
 require_relative '../app/eventbuffer'
 require_relative 'virtual'
 
