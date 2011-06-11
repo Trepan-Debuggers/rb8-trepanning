@@ -28,10 +28,13 @@ module Trepan
     end
 
     def string_in_show
-      help_constant_sym = if self.class.constants.member?('SHORT_HELP') 
-                            :SHORT_HELP 
-                          else :HELP
-                          end
+      help_constant_sym = 
+        if (self.class.constants.member?('SHORT_HELP') ||
+            self.class.constants.member?(:SHORT_HELP))
+          :SHORT_HELP 
+        else
+          :HELP
+        end
       str = my_const(help_constant_sym)
       %w(Show Set).each do |word|
         if 0 == str.index(word)

@@ -24,5 +24,4 @@ if __FILE__ == $0
   require_relative '../auto'
   cmd = MockDebugger::subsub_setup(Trepan::SubSubcommand::ShowAuto,
                                    Trepan::SubSubcommand::ShowAutoEval)
-
 end

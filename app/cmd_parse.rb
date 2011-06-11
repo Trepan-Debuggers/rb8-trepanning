@@ -68,8 +68,10 @@ module Trepan
                 errmsg << "in #{parent}"
                 lookup_name = m.chain && m.chain[1] ? m.chain[1].name : name
                 if parent.respond_to?('instance_methods') && 
-                    parent.instance_methods.member?(lookup_name)
-                  parent.instance_method(lookup_name)
+                    (parent.instance_methods.member?(lookup_name) ||
+                     parent.instance_methods.member?(lookup_name.to_sym))
+                  parent.instance_method(lookup_name) || 
+                    parent.instance_method(lookup_name.to_sym)
                 elsif parent.respond_to?('methods')
                   parent.method(lookup_name)
                 end
