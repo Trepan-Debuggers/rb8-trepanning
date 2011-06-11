@@ -20,8 +20,8 @@ module TestHelper
 
   # FIXME: turn args into a hash.
   def run_debugger(testname, args='', outfile=nil, filter=nil, old_code=false,
-                   debug_pgm='tdebug.rb')
-    rightfile = File.join(%W(.. data #{testname}.right))
+                   debug_pgm='tdebug.rb', rightfile=nil)
+    rightfile ||= File.join(%W(.. data #{testname}.right))
     
     outfile = "#{testname}.out" unless outfile
 

@@ -1,0 +1,50 @@
+-- (gcd.rb:4)
+def gcd(a, b)
+debugger testing is on.
++ stepping.cmd line 5: set callstyle last
+Frame call-display style is last.
++ stepping.cmd line 6: next
+-- (gcd.rb:18)
+gcd(3,5)
++ stepping.cmd line 7: where
+--> #0 at line gcd.rb:18
++ stepping.cmd line 8: step a
+*** The step command argument must eval to an integer. Got: a
++ stepping.cmd line 9: set different on
+different is on.
++ stepping.cmd line 10: step- ;; step-
+-- (gcd.rb:6)
+if a > b
+-- (gcd.rb:10)
+return nil if a <= 0
++ stepping.cmd line 11: set diff off
+different is off.
++ stepping.cmd line 12: where
+--> #0 Object.gcd(a#Fixnum, b#Fixnum) at line gcd.rb:10
+    #1 at line gcd.rb:18
++ stepping.cmd line 13: n 2
+-- (gcd.rb:15)
+return gcd(b-a, a)
++ stepping.cmd line 14: step+
+-- (gcd.rb:6)
+if a > b
++ stepping.cmd line 15: where
+--> #0 Object.gcd(a#Fixnum, b#Fixnum) at line gcd.rb:6
+    #1 at line gcd.rb:15
+    #2 at line gcd.rb:18
++ stepping.cmd line 16: step 3
+-- (gcd.rb:15)
+return gcd(b-a, a)
++ stepping.cmd line 17: step+
+-- (gcd.rb:6)
+if a > b
++ stepping.cmd line 18: where
+--> #0 Object.gcd(a#Fixnum, b#Fixnum) at line gcd.rb:6
+    #1 at line gcd.rb:15
+    #2 at line gcd.rb:15
+    #3 at line gcd.rb:18
++ stepping.cmd line 19: next+	
+-- (gcd.rb:10)
+return nil if a <= 0
++ stepping.cmd line 20: # finish
++ stepping.cmd line 21: quit!

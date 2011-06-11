@@ -85,13 +85,13 @@ class TestCmdParse < Test::Unit::TestCase
       meth = meth_for_string(str, binding)
       assert meth.kind_of?(Method), "#{str} method's class should be Method, not #{meth.class}"
     end
-    %w(Array.map).each do |str|
+    %w(Array.collect).each do |str|
       meth = meth_for_string(str, binding)
       assert meth.kind_of?(UnboundMethod), "#{meth.class}"
     end
     %w(O5).each do |str|
       meth = meth_for_string(str, binding)
-      assert_equal nil, meth, "should have found a method for #{str}"
+      assert_equal nil, meth, "should not have found a method for #{str}"
     end
   end
 end
