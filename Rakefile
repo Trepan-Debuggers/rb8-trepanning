@@ -208,6 +208,7 @@ end
 desc 'Remove ~ backup files'
 task :rm_tilde_backups do
   FileUtils.rm_rf Dir.glob('**/*~'), :verbose => true
+  FileUtils.rm_rf Dir.glob('**/*.rbc'), :verbose => true
 end
 
 desc 'Remove built files'
