@@ -4,7 +4,7 @@ First attempt at backport from trepanning.
 
 New features
  - Syntax highlighting (if coderay, term-ansicolor and newer linecache)
- - tab completion (more complete if rb-readline gem used)
+ - tab completion (more complete on MRI 1.8.7 rb-readline gem used)
  - parsetree (if ParseTree installed)
 
 New commands from trepanning: 
@@ -28,7 +28,7 @@ Incompatibilities:
    * reload  -> set reload 
    * trace   -> set trace
 
-This sort of works for an unpatched MRI 1.9. If you can patch the runtime,
-use rb-threadframe and rb-trepanning.
+This sort of works for an unpatched MRI 1.9. Better is a patched MRI
+1.9.2 to use rb-threadframe and rb-trepanning.
 
 See ruby-debug's CHANGES for older changes
