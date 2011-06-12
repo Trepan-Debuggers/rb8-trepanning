@@ -40,7 +40,7 @@ EOF
   spec.files        = `git ls-files`.split("\n")
   spec.has_rdoc     = true
   spec.homepage     = 'http://wiki.github.com/rocky/rb8-trepanning'
-  spec.name         = 'trepan8'
+  spec.name         = 'rb8-trepanning'
   spec.license      = 'MIT'
   if RUBY_VERSION =~ /^1.8.7/
     spec.platform = Gem::Platform::new ['universal', 'ruby', '1.8.7']
