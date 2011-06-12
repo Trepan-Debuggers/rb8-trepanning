@@ -7,12 +7,11 @@ require_relative 'helper'
 class TestStepping < Test::Unit::TestCase
   include TestHelper
   def test_basic
-    testname='stepping'
     common_setup(__FILE__)
     Dir.chdir(@srcdir) do 
       if RUBY_VERSION =~ /1.9/      
       else
-        rightfile = File.join(%W(.. data #{testname}-1.9.right))
+        rightfile = File.join(%W(.. data #{@testname}-1.9.right))
         assert_equal(true,  
                      run_debugger(@testname, 
                                   @prefix + '../example/gcd.rb 3 5',
