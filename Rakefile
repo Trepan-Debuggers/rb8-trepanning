@@ -202,7 +202,7 @@ end
 
 desc 'Remove residue from running patch'
 task :rm_patch_residue do
-  FileUtils.rm_rf FileList['**/*.{rej,orig.rbc}'].to_a, :verbose => true
+  FileUtils.rm_rf FileList['**/*.{rej,orig}'].to_a, :verbose => true
 end
 
 desc 'Remove ~ backup files'

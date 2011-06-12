@@ -1,3 +1,119 @@
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* Rakefile: I run rubinius on this too often.
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* CHANGES: Update NEWS
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* test/integration/test-file-with-space.rb,
+	test/integration/test-stepping.rb: Work on a couple of integration
+	tests.
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* trepan8.gemspec: Package administrivia
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* trepan8.gemspec: Build special for 1.8.7 versus 1.9.2. The
+	linecache dependency is different.
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* app/cmd_parse.rb, processor/command/base/subsubcmd.rb,
+	processor/command/show_subcmd/auto_subcmd/eval.rb: See above. Meant
+	to commit along with the other..
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* test/data/stepping-1.9.right, test/integration/helper.rb,
+	test/integration/test-raise.rb, test/integration/test-stepping.rb,
+	test/unit/test-app-cmd_parse.rb, test/unit/test-app-frame.rb: More
+	tolerance for unpatched 1.9.2
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* CHANGES, README.textile, app/irb.rb, app/options.rb,
+	processor/command/base/cmd.rb, processor/command/base/subcmd.rb,
+	processor/command/base/submgr.rb,
+	processor/command/base/subsubcmd.rb,
+	processor/command/base/subsubmgr.rb,
+	processor/command/info_subcmd/source.rb, processor/eventbuf.rb,
+	processor/load_cmds.rb, processor/location.rb,
+	processor/validate.rb, test/unit/test-base-subcmd.rb,
+	test/unit/test-base-submgr.rb, test/unit/test-proc-location.rb,
+	trepan8.gemspec: Add MRI 1.9 tolerance although rb-threadframe and
+	rb-trepanning do a much better job.
+
+2011-06-10  rocky <rockyb@rubyforge.org>
+
+	* CHANGES, app/options.rb,
+	processor/command/set_subcmd/highlight.rb, trepan8.gemspec: Add
+	tests to see if linecahe is late enough for terminal highlighting.
+
+2011-06-10  rocky <rockyb@rubyforge.org>
+
+	* CHANGES, processor/command/info_subcmd/threads.rb: Add "info
+	threads" from ruby-debug.
+
+2011-06-10  rocky <rockyb@rubyforge.org>
+
+	* processor/location.rb: location.rb in better sync with
+	rbx-trepanning.
+
+2011-06-10  rocky <rockyb@rubyforge.org>
+
+	* CHANGES, processor/command/help/suffixes.txt,
+	processor/command/list.rb, processor/command/set_subcmd/reload.rb,
+	processor/command/show_subcmd/reload.rb, processor/default.rb,
+	processor/location.rb: Add set/show reload.
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/locals.rb,
+	processor/command/info_subcmd/source.rb: Add gdb "info source"
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/globals.rb,
+	processor/command/info_subcmd/locals.rb, processor/eval.rb: Add
+	"info globals".
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* app/frame.rb, processor/command/eval.rb, processor/eval.rb,
+	processor/location.rb, test/data/printvar.cmd,
+	test/data/printvar.right, test/integration/helper.rb,
+	test/integration/test-break-bad.rb,
+	test/integration/test-break_bad.rb,
+	test/integration/test-dollar-0.rb, test/integration/test-edit.rb,
+	test/integration/test-printvar.rb, test/integration/test-source.rb,
+	test/integration/test-stepping.rb: Fix bug in debugger eval. DRY
+	integration tests. frame.describe now respects basename setting.
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* processor/command/help/command.txt,
+	processor/command/help/examples.txt,
+	processor/command/help/suffixes.txt: Add more syntax help.
+	Specifically break out examples and describe suffixes.
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* Rakefile: Better file cleanup. Sync with rbx-trepanning.
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* processor/command/set_subcmd/timer.rb,
+	processor/command/show_subcmd/timer.rb: Add set/show timer hook
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* CHANGES, ChangeLog: What's up.
+
 2011-06-09  rocky <rockyb@rubyforge.org>
 
 	* README.textile: Consistency
@@ -8,8 +124,11 @@
 
 2011-06-09  rocky <rockyb@rubyforge.org>
 
-	* : commit 18abe668f1fbe70156c5cb6a544c9a33bc6c959f Author: rocky
-	<rockyb@rubyforge.org> Date:   Thu Jun 9 10:51:45 2011 -0400
+	Merge branch 'master' of github.com:rocky/rb8-trepanning
+
+2011-06-09  rocky <rockyb@rubyforge.org>
+
+	* README.textile: List optional dependencies
 
 2011-06-09  rocky <rockyb@rubyforge.org>
 
@@ -33,11 +152,11 @@
 2011-06-08  rocky <rockyb@rubyforge.org>
 
 	* test/unit/test-app-options.rb: Allow rb-readline which does
-	command completion better.  Silence multiple constant initialization
-	warnings via require irb and require readline.  highlight,
-	callstyle: add completion args Rakefile: fix standalone by getting
-	Ruby location.  test-app-options: remove --help test until we deal
-	with the fact --help exits
+	command completion better. Silence multiple constant initialization
+	warnings via require irb and require readline. highlight, callstyle:
+	add completion args Rakefile: fix standalone by getting Ruby
+	location. test-app-options: remove --help test until we deal with
+	the fact --help exits
 
 2011-06-08  rocky <rockyb@rubyforge.org>
 
@@ -71,18 +190,29 @@
 
 2011-06-08  rocky <rockyb@rubyforge.org>
 
-	* : commit 8d69811c15836fb4725454f2b5168662066d6093 Author: rocky
-	<rockyb@rubyforge.org> Date:   Wed Jun 8 14:08:46 2011 -0400
+	Merge branch 'master' of github.com:rocky/rb8-trepanning
 
 2011-06-08  rocky <rockyb@rubyforge.org>
 
-	* : commit a213642f6f58371268d3610a1641df2aacb88749 Author: rocky
-	<rockyb@rubyforge.org> Date:   Wed Jun 8 14:04:09 2011 -0400
+	* interface/user.rb: History file is in .trepan8_hist
 
 2011-06-08  rocky <rockyb@rubyforge.org>
 
-	* : commit fa5291ae097f48b39dafa280183cf07c273a6fff Author: rocky
-	<rockyb@rubyforge.org> Date:   Wed Jun 8 07:00:08 2011 -0400
+	Merge branch 'master' of github.com:rocky/rb8-trepanning
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* test/data/file-with-space.cmd, test/data/file-with-space.right: 
+	Forgot to add file
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	Merge branch 'master' of github.com:rocky/rb8-trepanning
+
+2011-06-08  rocky <rockyb@rubyforge.org>
+
+	* test/integration/test-file-with-space.rb: Convert
+	test-file-with-spaces from ruby-debug.
 
 2011-06-07  rocky <rockyb@rubyforge.org>
 
@@ -106,6 +236,7 @@
 	* processor/validate.rb, test/data/source.cmd,
 	test/data/source.right, test/data/trepan8-save.1,
 	test/integration/test-source.rb: Convert source test from ruby-debug
+
 
 2011-06-07  rocky <rockyb@rubyforge.org>
 
@@ -183,8 +314,8 @@
 	test/integration/test-dollar-0.rb.try,
 	test/integration/test-edit.rb, test/integration/test-raise.rb,
 	test/integration/test-raise.rb.try: Get first integration test
-	working. "set debug testing" beefed up for the task.  Add --basename option. Remove --annotate remnant and some debug
-	output.
+	working. "set debug testing" beefed up for the task.  Add --basename
+	option. Remove --annotate remnant and some debug output.
 
 2011-06-05  rocky <rockyb@rubyforge.org>
 
@@ -200,8 +331,9 @@
 	bin/.gitignore, bin/trepan8, lib/trepanning.rb,
 	processor/command/set_subcmd/highlight.rb: options processing done
 	in app/processing rather than bin/trepan8 as other trepanning
-	debugger do.  Options processing is I think a little less convoluted
-	now with the replacement of an ostruct for a hash.  "set highlight reset" sets highight on in addition to resetting.
+	debugger do. Options processing is I think a little less convoluted
+	now with the replacement of an ostruct for a hash.  "set highlight
+	reset" sets highight on in addition to resetting.
 
 2011-06-05  rocky <rockyb@rubyforge.org>
 
@@ -220,6 +352,7 @@
 2011-06-04  rocky <rockyb@rubyforge.org>
 
 	* processor/command/help/command.txt: command syntax help yet again.
+
 
 2011-06-04  rocky <rockyb@rubyforge.org>
 
@@ -260,7 +393,7 @@
 
 	* processor/command/list.rb, processor/default.rb,
 	processor/location.rb, trepan8.gemspec: list.rb, repan8.gemspec:
-	support for syntax highlighting.  default.rb, location.rb: move
+	support for syntax highlighting. default.rb, location.rb: move
 	reload_on_change to be a setting.
 
 2011-06-04  rocky <rockyb@rubyforge.org>
@@ -270,8 +403,15 @@
 
 2011-06-03  rocky <rockyb@rubyforge.org>
 
-	* : commit db4eb72715abd212b8056579357e11bf3109cb12 Author: rocky
-	<rockyb@rubyforge.org> Date:   Fri Jun 3 19:21:05 2011 -0400
+	Merge branch 'master' of
+	/srv/gitosis/repositories/rb8-trepanning  Conflicts:
+	processor/main.rb
+
+2011-06-03  rocky <rockyb@rubyforge.org>
+
+	* app/interface.rb, bin/trepan8, io/input.rb, lib/trepanning.rb,
+	processor/location.rb, processor/main.rb, processor/processor.rb: 
+	Use newer style inteface stack for startup scripts.
 
 2011-06-03  rocky <rockyb@rubyforge.org>
 
@@ -359,7 +499,7 @@
 	processor/command/restart.rb, processor/command/up.rb,
 	processor/location.rb, processor/main.rb, processor/mock.rb,
 	test/unit/test-proc-location.rb: Add proc/location test which finds
-	bugs and code to improve.  add "restart" and "info stack" commands.
+	bugs and code to improve. add "restart" and "info stack" commands.
 	Demo code now for "backtrace" and "up".
 
 2011-06-02  rocky <rockyb@rubyforge.org>
@@ -436,8 +576,8 @@
 	test/integration/helper.rb, test/integration/test-dollar-0.rb,
 	test/integration/test-edit.rb, test/integration/test-raise.rb: Push
 	towards getting integration tests working. Add "set/show autoeval"
-	and "set debug test".  processor.rb: handle  # comments and
-	autoeval. help.rb: remove extraneous \n.
+	and "set debug test". processor.rb: handle  # comments and autoeval.
+	help.rb: remove extraneous \n.
 
 2011-05-31  rocky <rockyb@rubyforge.org>
 
@@ -528,7 +668,7 @@
 	processor/eval.rb, processor/load_cmds.rb, processor/location.rb,
 	processor/running.rb, processor/validate.rb, processor/virtual.rb: 
 	module Trepan; class CmdProcessor -> class Trepan::CmdProcessor
-	which should make things more cross-implementation portable.  Add
+	which should make things more cross-implementation portable. Add
 	processor.location.rb.
 
 2011-05-29  rocky <rockyb@rubyforge.org>
@@ -730,6 +870,6 @@
 
 	* First attempt to backport trepanning. Right now it's mostly
 	ruby-debug w/o ruby-debug-base and separated from the main code in
-	git.  There are some small changes towards the trepanning file
-	system organization. Also module Debugger is now module Trepan.
+	git. There are some small changes towards the trepanning file system
+	organization. Also module Debugger is now module Trepan.
 
