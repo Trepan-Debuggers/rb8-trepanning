@@ -1,12 +1,12 @@
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
-require_relative '../../io/input' # For GNU_readline?
 require_relative 'base/cmd'
 
 class Trepan::Command::IRBCommand < Trepan::Command
 
   unless defined?(HELP)
-    require_relative '../../app/irb'
+    require_relative '../../io/input' # For GNU_readline? and supress_warnings
+    Trepan.suppress_warnings { require 'irb' }
     NAME = File.basename(__FILE__, '.rb')
     HELP = <<-HELP
 #{NAME} [-d]
@@ -126,6 +126,7 @@ end
 
 if __FILE__ == $0
   require_relative '../mock'
+  require_relative '../../app/irb'
   # dbgr, cmd = MockDebugger::setup
   dbgr, cmd = MockDebugger::setup(nil, false)
   cmd.proc.frame.instance_variable_set('@binding', binding)

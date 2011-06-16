@@ -67,7 +67,7 @@ module IRB # :nodoc:
       ExtendCommandBundle.def_extend_command command, sym
     end
   end
-  
+
   def self.start_session(binding, dbg_cmdproc, conf={})
     unless @__initialized
 
