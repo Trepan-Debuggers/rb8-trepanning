@@ -6,49 +6,50 @@ module IRB # :nodoc:
     # FIXME: should we read these out of a directory to 
     #        make this more user-customizable? 
 
-    # A base command class that resume execution
-    class TrepanResumeCommand
-      def self.execute(conf, *opts)
-        name = 
-          if self.name =~ /IRB::ExtendCommand::(\S+)/
-            $1.downcase
-          else
-            'unknown'
-          end
-        $trepan_args = opts
-        $trepan_command = 
-          if $trepan_irb_statements 
-            $trepan_irb_statements
-          else
-            ([name] + opts).join(' ')
-          end
+    unless defined? Continue
 
-        throw :IRB_EXIT, name.to_sym
+      # A base command class that resume execution
+      class TrepanResumeCommand
+        def self.execute(conf, *opts)
+          name = 
+            if self.name =~ /IRB::ExtendCommand::(\S+)/
+              $1.downcase
+            else
+              'unknown'
+            end
+          $trepan_args = opts
+          $trepan_command = 
+            if $trepan_irb_statements 
+              $trepan_irb_statements
+            else
+              ([name] + opts).join(' ')
+            end
+          
+          throw :IRB_EXIT, name.to_sym
+        end
+      end
+      
+      class Continue < TrepanResumeCommand ; end
+      class Finish   < TrepanResumeCommand ; end
+      class Next     < TrepanResumeCommand ; end
+      class Quit     < TrepanResumeCommand ; end
+      class Step     < TrepanResumeCommand ; end
+    
+      # Issues a comamnd to the debugger without continuing
+      # execution. 
+      class Dbgr
+        def self.execute(conf, *opts)
+          $trepan_command = 
+            if opts.size == 1 && opts[0].is_a?(String)
+              $trepan_args = opts[0]
+            else
+              opts.join(' ')
+            end
+          dbg_cmdproc = conf.workspace.instance_variable_get('@dbg_cmdproc')
+          dbg_cmdproc.run_command($trepan_command)
+        end
       end
     end
-
-    # FIXME: figure out why superclass type mismatch problem on 1.9
-    class Continue < TrepanResumeCommand ; end
-    class Finish   < TrepanResumeCommand ; end
-    class Next     < TrepanResumeCommand ; end
-    class Quit     < TrepanResumeCommand ; end
-    class Step     < TrepanResumeCommand ; end
-
-    # Issues a comamnd to the debugger without continuing
-    # execution. 
-    class Dbgr
-      def self.execute(conf, *opts)
-        $trepan_command = 
-          if opts.size == 1 && opts[0].is_a?(String)
-            $trepan_args = opts[0]
-          else
-            opts.join(' ')
-          end
-        dbg_cmdproc = conf.workspace.instance_variable_get('@dbg_cmdproc')
-        dbg_cmdproc.run_command($trepan_command)
-      end
-    end
-
   end
   if defined?(ExtendCommandBundle)
     # New irb Commands which are the same name as their debugger

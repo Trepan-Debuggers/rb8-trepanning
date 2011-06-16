@@ -1,13 +1,12 @@
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../../io/input' # For GNU_readline?
-Trepan.suppress_warnings { require 'irb' }
 require_relative 'base/cmd'
-require_relative '../../app/irb'
 
 class Trepan::Command::IRBCommand < Trepan::Command
 
   unless defined?(HELP)
+    require_relative '../../app/irb'
     NAME = File.basename(__FILE__, '.rb')
     HELP = <<-HELP
 #{NAME} [-d]

@@ -1,6 +1,5 @@
 require 'test/unit'
 require 'rubygems'; require 'require_relative'
-# require_relative '../../app/core'
 require_relative '../../processor/mock'
 require_relative '../../processor/frame'
 
@@ -10,9 +9,9 @@ module UnitHelper
   module_function
   def common_setup
     @dbg      ||= MockDebugger::MockDebugger.new(:nx => true)
-    @cmdproc  = Trepan::CmdProcessor.new(@dbg.intf)
+    @cmdproc  ||= Trepan::CmdProcessor.new(@dbg.intf)
     @cmdproc.frame_initialize
-    @cmdproc.dbgr  = @dbg
+    @cmdproc.dbgr  ||= @dbg
     @cmds     = @cmdproc.commands
 
     def @cmdproc.errmsg(message, opts={})
