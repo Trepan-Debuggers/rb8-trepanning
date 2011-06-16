@@ -48,18 +48,13 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   #   @next_thread     = Thread.current
   # end
   
-  # # Does whatever needs to be done to set to step program
-  # # execution.
-  # def step(step_count=1, opts={}, condition=nil)
-  #   continue
-  #   @core.step_count = step_count
-  #   @different_pos   = opts[:different_pos] if 
-  #     opts.keys.member?(:different_pos)
-  #   @stop_condition  = condition
-  #   @stop_events     = opts[:stop_events]   if 
-  #     opts.keys.member?(:stop_events)
-  #   @to_method       = opts[:to_method]
-  # end
+  # Does whatever needs to be done to set to step program
+  # execution.
+  def step(step_count=1, opts={}, condition=nil)
+    @context.step(step_count, opts[:different_pos])
+    @state.proceed
+    @leave_cmd_loop = true
+  end
   
   def quit(cmd='quit')
     @next_level      = 32000 # I'm guessing the stack size can't

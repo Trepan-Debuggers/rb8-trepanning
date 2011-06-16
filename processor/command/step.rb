@@ -68,10 +68,7 @@ See also the commands:
       step_count = @proc.get_an_int(step_str, count_opts)
       return unless step_count
     end
-    ## @proc.state.context.step(step_count, force)
-    @proc.context.step(step_count, opts[:different_pos])
-    @proc.state.proceed
-    @proc.leave_cmd_loop = true
+    @proc.step(step_count, opts)
   end
 end
 

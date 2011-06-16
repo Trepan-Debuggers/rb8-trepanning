@@ -7,7 +7,7 @@ module IRB # :nodoc:
     #        make this more user-customizable? 
 
     # A base command class that resume execution
-    class DebuggerResumeCommand
+    class TrepanResumeCommand
       def self.execute(conf, *opts)
         name = 
           if self.name =~ /IRB::ExtendCommand::(\S+)/
@@ -28,13 +28,11 @@ module IRB # :nodoc:
     end
 
     # FIXME: figure out why superclass type mismatch problem on 1.9
-    if RUBY_VERSION !~ /^1.9/
-      class Continue < DebuggerResumeCommand ; end
-      class Finish   < DebuggerResumeCommand ; end
-      class Next     < DebuggerResumeCommand ; end
-      class Quit     < DebuggerResumeCommand ; end
-      class Step     < DebuggerResumeCommand ; end
-    end
+    class Continue < TrepanResumeCommand ; end
+    class Finish   < TrepanResumeCommand ; end
+    class Next     < TrepanResumeCommand ; end
+    class Quit     < TrepanResumeCommand ; end
+    class Step     < TrepanResumeCommand ; end
 
     # Issues a comamnd to the debugger without continuing
     # execution. 
