@@ -29,7 +29,7 @@ In the third form, list lines centered around the current line.
 Use 'set max list' or 'show max list' to see or set the value.
     HELP
 
-    ALIASES       = %W(l)
+    ALIASES       = %W(l cat)
     CATEGORY      = 'files'
     MAX_ARGS      = 2
     SHORT_HELP    = 'List source code'

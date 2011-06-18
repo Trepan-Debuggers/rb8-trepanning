@@ -5,11 +5,9 @@
 require 'set'
 
 require 'rubygems'; require 'require_relative'
-## %w(default display eventbuf eval load_cmds location frame hook msg 
-##    validate).each do
-# %w(default breakpoint disassemble display eval eventbuf load_cmds location 
-#    frame hook msg running stepping validate).each do
-%w(default display eval eventbuf frame hook load_cmds location msg running validate).each do
+# Other debuggers have in addition: breakpoint disassemble stepping
+%w(default display eval eventbuf frame hook load_cmds location msg running 
+   validate).each do
   |mod_str|
   require_relative mod_str
 end
@@ -43,6 +41,7 @@ module Trepan
     attr_accessor :event           # Stop event
     attr_reader   :intf            # Current interface
                                    # Trepan::Core instance)
+    attr_reader   :interfaces      # Array of all interfaces
     attr_accessor :leave_cmd_loop  # Commands set this to signal to leave
                                    # the command loop (which often continues to 
                                    # run the debugged program). 
