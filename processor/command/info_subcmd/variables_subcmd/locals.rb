@@ -25,7 +25,7 @@ EOH
   }
 
   def get_names
-    @proc.state.context.frame_args(@state.frame_pos)
+    @proc.state.context.frame_args(@proc.state.frame_pos)
   end
 
   def run_for_type(args, type)

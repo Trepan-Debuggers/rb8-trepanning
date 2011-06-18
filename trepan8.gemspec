@@ -44,7 +44,7 @@ EOF
   spec.name         = 'rb8-trepanning'
   spec.license      = 'MIT'
   if RUBY_VERSION =~ /^1.8.7/
-    spec.platform = Gem::Platform::new ['universal', 'ruby', '1.8.7']
+    spec.platform = Gem::Platform::RUBY
   elsif RUBY_VERSION =~ /^1.9.2/
     spec.platform = Gem::Platform::new ['universal', 'ruby', '1.9.2']
   else
