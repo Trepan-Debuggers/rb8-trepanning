@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
-require 'columnize'
-require_relative '../../base/subsubcmd'
-require_relative '../../../../app/frame'
+require_relative 'locals'
 
-class Trepan::Subcommand::InfoVariablesGlobals < Trepan::SubSubcommand
+class Trepan::SubSubcommand::InfoVariablesGlobals < Trepan::SubSubcommand
   Trepan::Util.suppress_warnings {
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
     HELP         = <<-EOH
@@ -23,7 +21,7 @@ EOH
   }
 
   def get_names
-    global_variables
+    global_variables.sort
   end
 
   def run(args)
@@ -35,7 +33,7 @@ EOH
         else
           section "Global variable names:"
           width = settings[:maxwidth]
-          mess = Columnize::columnize(global_variables.sort, 
+          mess = Columnize::columnize(names, 
                                       @proc.settings[:maxwidth], '  ',
                                       false, true, ' ' * 2).chomp
           msg mess
@@ -49,7 +47,7 @@ EOH
         msg "No global variables defined."
       else
         section "Global variables:"
-        names.sort.each do |var_name| 
+        names.each do |var_name| 
           s = @proc.debug_eval(var_name.to_s)
           msg("#{var_name} = #{s.inspect}")
         end
@@ -63,8 +61,9 @@ end
 if __FILE__ == $0
   # Demo it.
   require_relative '../../../mock'
-  cmd = MockDebugger::subsub_setup(Trepan::Subcommand::InfoVariablesGlobals, 
-                                   false)
+  require_relative '../variables'
+  cmd = MockDebugger::subsub_setup(Trepan::Subcommand::InfoVariables, 
+                                   Trepan::SubSubcommand::InfoVariablesGlobals)
   cmd.run(cmd.prefix)
   cmd.run(cmd.prefix + ['name'])
 end

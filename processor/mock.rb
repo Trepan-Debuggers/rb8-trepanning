@@ -105,7 +105,7 @@ module MockDebugger
 
   def subsub_setup(sub_class, subsub_class, run=true)
     subsub_name = subsub_class.const_get('PREFIX')
-    dbgr, cmd = setup(subsub_name[0], false)
+    cmd = sub_setup(sub_class, false)
     sub_cmd = sub_class.new(dbgr.processor, cmd)
     subsub_cmd = subsub_class.new(cmd.proc, sub_cmd, subsub_name.join(''))
     subsub_cmd.run([subsub_cmd.name]) if run

@@ -4,7 +4,7 @@ require 'rubygems'; require 'require_relative'
 require_relative '../base/subsubcmd'
 require_relative '../base/subsubmgr'
 
-class Trepan::SubSubcommand::InfoVariables < Trepan::SubSubcommandMgr
+class Trepan::Subcommand::InfoVariables < Trepan::SubSubcommandMgr
   unless defined?(HELP)
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
     HELP = <<-EOH
@@ -25,8 +25,8 @@ if __FILE__ == $0
   # Demo it.
   require_relative '../../mock'
   dbgr, parent_cmd = MockDebugger::setup('info', false)
-  cmd = Trepan::SubSubcommand::InfoVariables.new(dbgr.core.processor, 
-                                                 parent_cmd)
+  cmd = Trepan::Subcommand::InfoVariables.new(dbgr.processor, 
+                                              parent_cmd)
   cmd.run(cmd.prefix + %w(locals))
   cmd.run(cmd.prefix + %w(globals name))
   %w(loc glo globals i).each do |prefix|
