@@ -27,6 +27,7 @@ EOF
 
   if RUBY_VERSION.start_with?('1.8')
     spec.add_dependency('linecache', '>= 0.43')
+    spec.add_dependency('ruby-debug-base', '>= 0.10.4')
   elsif RUBY_VERSION.start_with?('1.9') 
     spec.add_dependency('linecache19', '>= 0.5.12')
   end
