@@ -62,8 +62,8 @@ Here then is a loop to query VM stack values:
     end
 
     $trepan = @proc.dbgr 
+    $trepan_cmdproc  = @proc
     if add_debugging
-      $trepan_cmdproc  = @proc
       $trepan_frame    = @proc.frame
     end
     $trepan_in_irb = true

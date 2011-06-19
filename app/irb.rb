@@ -13,10 +13,11 @@ module IRB # :nodoc:
         def self.execute(conf, *opts)
           name = 
             if self.name =~ /IRB::ExtendCommand::(\S+)/
-              $1.downcase
+              $1[1..-1].downcase
             else
               'unknown'
             end
+          p ['++++', name]
           $trepan_args = opts
           $trepan_command = 
             if $trepan_irb_statements 
@@ -37,7 +38,7 @@ module IRB # :nodoc:
     
       # Issues a comamnd to the debugger without continuing
       # execution. 
-      class Dbgr
+      class TDbgr
         def self.execute(conf, *opts)
           $trepan_command = 
             if opts.size == 1 && opts[0].is_a?(String)
@@ -45,8 +46,9 @@ module IRB # :nodoc:
             else
               opts.join(' ')
             end
-          dbg_cmdproc = conf.workspace.instance_variable_get('@dbg_cmdproc')
-          dbg_cmdproc.run_command($trepan_command)
+          # dbg_cmdproc = conf.workspace.instance_variable_get('@dbg_cmdproc')
+          # dbg_cmdproc.run_command($trepan_command)
+          $trepan_cmdproc.run_command($trepan_command)
         end
       end
     end
@@ -55,7 +57,7 @@ module IRB # :nodoc:
     # New irb Commands which are the same name as their debugger
     # counterpart
     %w(TDbgr TFinish TStep).each do |name|
-      command = name.downcase
+      command = name[1..-1].downcase
       sym     = name.to_sym
       ExtendCommandBundle.def_extend_command command, sym
     end
