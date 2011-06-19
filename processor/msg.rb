@@ -18,6 +18,7 @@ module Trepan
 
     def msg(message, opts={})
       message = safe_rep(message) unless opts[:unlimited]
+      message = ruby_format(message) if opts[:code]
       @intf.msg(message)
     end
 

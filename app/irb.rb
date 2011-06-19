@@ -6,7 +6,7 @@ module IRB # :nodoc:
     # FIXME: should we read these out of a directory to 
     #        make this more user-customizable? 
 
-    unless defined? Continue
+    unless defined? TContinue
 
       # A base command class that resume execution
       class TrepanResumeCommand
@@ -29,11 +29,11 @@ module IRB # :nodoc:
         end
       end
       
-      class Continue < TrepanResumeCommand ; end
-      class Finish   < TrepanResumeCommand ; end
-      class Next     < TrepanResumeCommand ; end
-      class Quit     < TrepanResumeCommand ; end
-      class Step     < TrepanResumeCommand ; end
+      class TContinue < TrepanResumeCommand ; end
+      class TFinish   < TrepanResumeCommand ; end
+      class TNext     < TrepanResumeCommand ; end
+      class TQuit     < TrepanResumeCommand ; end
+      class TStep     < TrepanResumeCommand ; end
     
       # Issues a comamnd to the debugger without continuing
       # execution. 
@@ -54,16 +54,16 @@ module IRB # :nodoc:
   if defined?(ExtendCommandBundle)
     # New irb Commands which are the same name as their debugger
     # counterpart
-    %w(Dbgr Finish Step).each do |name|
+    %w(TDbgr TFinish TStep).each do |name|
       command = name.downcase
       sym     = name.to_sym
       ExtendCommandBundle.def_extend_command command, sym
     end
     # New irb Commands which are the slightly different from their
     # debugger counterpart
-    [['cont',   :Continue],
-     ['ne',     :Next],
-     ['q',      :Quit]].each do |command, sym|
+    [['cont',   :TContinue],
+     ['ne',     :TNext],
+     ['q',      :TQuit]].each do |command, sym|
       ExtendCommandBundle.def_extend_command command, sym
     end
   end

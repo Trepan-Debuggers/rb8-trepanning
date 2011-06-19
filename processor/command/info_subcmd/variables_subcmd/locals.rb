@@ -28,14 +28,17 @@ EOH
     @proc.state.context.frame_args(@proc.state.frame_pos)
   end
 
-  def run_for_type(args, type)
+  def run_for_type(args, type, klass=nil)
+    suffix = klass ? " for #{klass.to_s}" : ''
+    names = get_names()
     if args.size == 2
       if 0 == 'names'.index(args[-1].downcase)
         names = get_names()
         if names.empty?
           msg "No #{type} variables defined."
         else
-          section "#{type.capitalize} variable names:"
+          section "#{type.capitalize} variable names#{suffix}:"
+
           width = settings[:maxwidth]
           mess = Columnize::columnize(names, 
                                       @proc.settings[:maxwidth], '  ',
@@ -46,14 +49,14 @@ EOH
         errmsg("unrecognized argument: #{args[-1]}")
       end
     elsif args.size == 1
-      names = get_names
       if names.empty?
-        msg "No #{type} variables defined."
+        msg "No #{type} variables defined#{suffix}."
       else
-        section "#{type.capitalize} variables:"
+        section "#{type.capitalize} variables#{suffix}:"
         names.each do |var_name| 
-          var_value = @proc.safe_rep(@proc.debug_eval_no_errmsg(var_name).inspect)
-          msg("#{var_name} = #{var_value}")
+          var_value = 
+            @proc.safe_rep(@proc.debug_eval_no_errmsg(var_name).inspect)
+          msg("#{var_name} = #{var_value}", :code =>true)
         end
       end
     else
@@ -61,7 +64,7 @@ EOH
     end
   end
   def run(args)
-    run_for_type(args, 'local')
+    run_for_type(args, 'local', @proc.debug_eval('self'))
   end
 end
 
