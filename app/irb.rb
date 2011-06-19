@@ -1,6 +1,12 @@
-# Copyright (C) 2010 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 # This code comes more or less from ruby-debug.
-require 'irb'
+require 'rubygems'; require 'require_relative'
+require_relative 'util'
+
+Trepan::Util.suppress_warnings { 
+  require 'irb'
+}
+
 module IRB # :nodoc:
   module ExtendCommand # :nodoc:
     # FIXME: should we read these out of a directory to 
@@ -17,7 +23,6 @@ module IRB # :nodoc:
             else
               'unknown'
             end
-          p ['++++', name]
           $trepan_args = opts
           $trepan_command = 
             if $trepan_irb_statements 

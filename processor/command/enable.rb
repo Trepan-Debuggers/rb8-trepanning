@@ -23,12 +23,9 @@ See also "info break" to get a list of breakpoints.
     SHORT_HELP    = 'Enable some breakpoints'
   }
 
-  def run(args)
-    if args.size == 1
-      errmsg('No breakpoint number given.')
-      return
-    end
-    enable_disable_breakpoints("Disable", args[1..-1])
+  def initialize(proc)
+    super
+    @enable_parm = true # true if enable 
   end
 
 end
@@ -38,9 +35,13 @@ if __FILE__ == $0
   dbgr, cmd = MockDebugger::setup
   cmd.run([cmd.name])
   cmd.run([cmd.name, '1'])
-  cmds = cmd.proc.commands
+  cmdproc = cmd.proc
+  cmds = cmdproc.commands
   break_cmd = cmds['break']
   puts "To be continued..."
-  # break_cmd.run(['break', cmdproc.frame.source_location[0].to_s])
-  # cmd.run([cmd.name, '1'])
+  require 'ruby-debug-base';
+  cmdproc.frame_setup(Debugger.current_context, nil)
+  cmdproc.frame.instance_variable_set('@binding', TOPLEVEL_BINDING)
+  break_cmd.run(['break', __LINE__.to_s])
+  cmd.run([cmd.name, '1'])
 end
