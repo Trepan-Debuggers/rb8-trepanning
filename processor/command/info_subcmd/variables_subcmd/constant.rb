@@ -3,7 +3,7 @@
 require 'rubygems'; require 'require_relative'
 require_relative 'locals'
 
-class Trepan::Subcommand::InfoVariablesClass < 
+class Trepan::Subcommand::InfoVariablesConstant < 
     Trepan::Subcommand::InfoVariablesLocals
   Trepan::Util.suppress_warnings {
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
@@ -11,23 +11,23 @@ class Trepan::Subcommand::InfoVariablesClass <
 #{CMD}
 #{CMD} [names]
 
-Show class variables of the current stack frame.
+Show class constants of the current stack frame.
 Normally for each which show both the name and value. If you just
 want a list of names add parameter 'names'.
 EOH
     SHORT_HELP   = 'Show instance variables of the current stack frame'
-    MIN_ABBREV   = 'cl'.size
+    MIN_ABBREV   = 'co'.size
     MIN_ARGS     = 0
     MAX_ARGS     = 1
     NEED_STACK   = true
   }
 
   def get_names
-    @proc.debug_eval_no_errmsg('self.class_variables') || []
+    @proc.debug_eval_no_errmsg('self.class.constants.sort') || []
   end
 
   def run(args)
-    run_for_type(args, 'class', @proc.debug_eval('self'))
+    run_for_type(args, 'constant', @proc.debug_eval('self'))
   end
 end
 
@@ -36,7 +36,7 @@ if __FILE__ == $0
   require_relative '../../mock'
   cmd = 
     MockDebugger::subsub_setup(Trepan::Subcommand::InfoVariables,
-                               Trepan::Subcommand::InfoVariablesClass)
+                               Trepan::Subcommand::InfoVariablesConstant)
   cmd.run(cmd.prefix)
   cmd.run(cmd.prefix + ['name'])
 end

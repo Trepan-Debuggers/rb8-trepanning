@@ -31,5 +31,5 @@ if __FILE__ == $0
   cmd.run(cmd.prefix + %w(globals name))
   %w(loc glo globals i).each do |prefix|
     p [prefix, cmd.complete(prefix)]
-    end
   end
+end
