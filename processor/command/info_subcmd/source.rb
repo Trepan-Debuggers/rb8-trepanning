@@ -10,6 +10,7 @@ end
 require 'columnize'
 require_relative '../base/subcmd'
 require_relative '../../../app/complete'
+require_relative '../../../app/run'
 
 class Trepan::Subcommand::InfoSource < Trepan::Subcommand
   unless defined?(HELP)
@@ -52,10 +53,15 @@ EOH
     max_line = LineCache::size(canonic_name)
     msg 'File has %d lines.' % max_line if max_line
     msg('SHA1 is %s.' % LineCache::sha1(canonic_name))
-    msg('Possible breakpoint line numbers:')
-    lines = LineCache.trace_line_numbers(canonic_name)
-    fmt_lines = columnize_numbers(lines)
-    msg(fmt_lines)
+    syntax_errors = Trepan::ruby_syntax_errors(canonic_name)
+    if syntax_errors
+      msg('Not a syntactically-correct Ruby program.')
+    else    
+      msg('Possible breakpoint line numbers:')
+      lines = LineCache.trace_line_numbers(canonic_name)
+      fmt_lines = columnize_numbers(lines)
+      msg(fmt_lines)
+    end
     msg("Stat info:\n\t%s" % LineCache::stat(canonic_name).pretty_inspect)
   end
 end

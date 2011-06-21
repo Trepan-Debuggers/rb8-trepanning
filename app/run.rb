@@ -15,8 +15,9 @@ module Trepan
     # Make sure Ruby script syntax checks okay.
     # Otherwise we get a load message that looks like trepan8 has 
     # a problem. 
-    output = `#{ruby_path} -c #{Trepan::PROG_SCRIPT.inspect} 2>&1`
-    if $?.exitstatus != 0 and RUBY_PLATFORM !~ /mswin/
+    
+    output = ruby_syntax_errors(Trepan::PROG_SCRIPT.inspect)
+    if output
       puts output
       exit $?.exitstatus 
     end
@@ -55,6 +56,14 @@ module Trepan
     # Failure
     return prog_script
   end
+
+  def ruby_syntax_errors(prog_script)
+    output = `#{RbConfig.ruby} -c #{prog_script} 2>&1`
+    if $?.exitstatus != 0 and RUBY_PLATFORM !~ /mswin/
+      return output
+    end
+    return nil
+  end
 end
 
 # Path name of Ruby interpreter we were invoked with. Is part of 
@@ -71,4 +80,10 @@ if __FILE__ == $0
   puts whence_file('irb')
   puts whence_file('probably-does-not-exist')
   puts RbConfig.ruby
+  puts "#{__FILE__} is syntactically correct" unless 
+    ruby_syntax_errors(__FILE__)
+  readme = File.join(File.dirname(__FILE__), '..', 'README.textile')
+  puts "#{readme} is not syntactically correct" if
+    ruby_syntax_errors(readme)
+
 end

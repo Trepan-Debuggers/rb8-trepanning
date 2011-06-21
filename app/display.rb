@@ -123,6 +123,8 @@ end
 
 if __FILE__ == $0
   # Demo it.
+  require 'rubygems'
+  require 'ruby-debug-base'; Debugger.start
   mgr = DisplayMgr.new
 
   def print_display(mgr)
@@ -130,7 +132,7 @@ if __FILE__ == $0
     puts '=' * 40
   end
     
-  frame = Rubinius::VM.backtrace(0)[0]
+  frame = Debugger.current_context
 
   x = 1
   mgr.add(frame, 'x > 1')

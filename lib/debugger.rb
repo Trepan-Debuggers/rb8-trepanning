@@ -2,7 +2,6 @@
 # minimal fuss. Compare with: require "debug"
 require 'rubygems'
 require 'require_relative'
-require_relative "rubygems"
 require './trepanning'
 Trepan.start
 debugger
