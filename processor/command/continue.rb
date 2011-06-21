@@ -38,6 +38,12 @@ See also 'step', 'next', 'finish', 'nexti' commands and "help location".
       filename = @proc.frame.file
       line_number = @proc.get_an_int(args[1])
       return unless line_number
+      syntax_errors = Trepan::ruby_syntax_errors(filename)
+      if syntax_errors
+        msg ["File #{filename} is not a syntactically correct Ruby program.",
+             "Therefore we can't check line numbers."]
+        return unless confirm('Set breakpoint anyway?', false)
+      end
       unless LineCache.trace_line_numbers(filename).member?(line_number)
         errmsg("Line %d is not a stopping point in file \"%s\".\n" %
                [line_number, filename])
