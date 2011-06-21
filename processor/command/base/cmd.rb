@@ -6,6 +6,7 @@
 require 'rubygems'; require 'require_relative'
 require 'columnize'
 require_relative '../../../app/complete'
+require_relative '../../../app/util'
 ## require 'rubygems'; require 'ruby-debug'; Debugger.start
 
 module Trepan

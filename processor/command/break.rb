@@ -3,11 +3,11 @@ require 'rubygems'; require 'require_relative'
 require_relative './base/cmd'
 
 class Trepan::Command::BreakCommand < Trepan::Command
-
-  ALIASES      = %w(b)
-  CATEGORY     = 'breakpoints'
-  NAME         = File.basename(__FILE__, '.rb')
-  HELP         = <<-HELP
+  Trepan::Util::suppress_warnings {
+    ALIASES      = %w(b)
+    CATEGORY     = 'breakpoints'
+    NAME         = File.basename(__FILE__, '.rb')
+    HELP         = <<-HELP
 #{NAME} LOCATION [ {if|unless} CONDITION ]
 
 Set a breakpoint. In the second form where CONDITIOn is given, the
@@ -25,7 +25,8 @@ Examples:
 
 See also condition, continue and "help location".
       HELP
-  SHORT_HELP   = 'Set a breakpoint at a point in a method'
+    SHORT_HELP   = 'Set a breakpoint at a point in a method'
+  }
 
   # This method runs the command
   def run(args, temp=false)
@@ -53,10 +54,17 @@ See also condition, continue and "help location".
                  @proc.canonic_file(file)]) 
           return
         end
-        unless LineCache.trace_line_numbers(file).member?(line)
-          errmsg('Line %d is not a stopping point in file "%s".' % 
-                 [line, @proc.canonic_file(file)])
-          return
+        syntax_errors = Trepan::ruby_syntax_errors(file)
+        if syntax_errors
+          msg ["File #{file} is not a syntactically correct Ruby program.",
+               "Therefore we can't check line numbers."]
+          return unless confirm('Set breakpoint anyway?', false)
+        else
+          unless LineCache.trace_line_numbers(file).member?(line)
+            errmsg('Line %d is not a stopping point in file "%s".' % 
+                   [line, @proc.canonic_file(file)])
+            return
+          end
         end
       else
         errmsg('No source file named %s' % @proc.canonic_file(file))
