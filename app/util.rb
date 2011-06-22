@@ -65,7 +65,15 @@ if __FILE__ == $0
   puts safe_repr(string, 17)
   puts safe_repr(string.inspect, 17)
   puts safe_repr(string.inspect, 17, '')
-  ## puts "main script in above is #{locs.size() - 1 - find_main_script(locs)}"
+  # ------------------------------------
+  # extract_expression
+  ['if condition("if")', 
+   'until until_termination',
+   'return return_value',
+    'nothing_to_be.done'
+  ].each do |stmt|
+    puts extract_expression stmt
+  end
 
   list = %w(disassemble disable distance up)
   p list

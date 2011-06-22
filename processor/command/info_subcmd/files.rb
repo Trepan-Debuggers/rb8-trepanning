@@ -4,14 +4,14 @@ require 'rubygems'; require 'require_relative'
 require_relative '../base/subcmd'
 
 class Trepan::Subcommand::InfoFiles < Trepan::Subcommand
-  unless defined?(HELP)
+  Trepan::Util::suppress_warnings {
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
     HELP         = 'Show files cached by the debugger'
     MIN_ABBREV   = 'files'.size
     MIN_ARGS     = 0
     MAX_ARGS     = 0
     NEED_STACK   = false
-   end
+  }
 
   def run(args)
     files = LineCache::cached_files

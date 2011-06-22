@@ -10,7 +10,6 @@ module Trepan
   # The caller must ensure that ARGV is set up to remove any debugger
   # arguments or things that the debugged program isn't supposed to
   # see.  FIXME: Should we make ARGV an explicit parameter?
-
   def debug_program(ruby_path, options)
     # Make sure Ruby script syntax checks okay.
     # Otherwise we get a load message that looks like trepan8 has 
@@ -58,7 +57,7 @@ module Trepan
   end
 
   def ruby_syntax_errors(prog_script)
-    output = `#{RbConfig.ruby} -c #{prog_script} 2>&1`
+    output = `#{RbConfig.ruby} -c #{prog_script.inspect} 2>&1`
     if $?.exitstatus != 0 and RUBY_PLATFORM !~ /mswin/
       return output
     end
