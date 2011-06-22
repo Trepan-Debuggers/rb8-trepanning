@@ -57,7 +57,7 @@ module Trepan
   end
 
   def ruby_syntax_errors(prog_script)
-    output = `#{RbConfig.ruby} -c #{prog_script.inspect} 2>&1`
+    output = `#{RbConfig.ruby} -c #{prog_script} 2>&1`
     if $?.exitstatus != 0 and RUBY_PLATFORM !~ /mswin/
       return output
     end
