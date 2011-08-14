@@ -52,18 +52,20 @@ class TestAppOptions < Test::Unit::TestCase
     end
   end
 
-  # FIXME: have to work around the fact that exit is called by help.
   def no_test_help_and_version_opts
-    %w(help version).each do |name|
-      setup
-      o    = ["--#{name}"]
-      rest = @opts.parse o
-      assert_not_equal('', @stdout.string)
-      assert_equal('', @stderr.string)
-      assert_equal(true, @options[name.to_sym])
-      other_sym = 'help' == name ? :version : :help
-      assert_equal(false, @options.member?(other_sym))
-    end
+    omit unless Process.respond_to?(:fork) 
+    Process.fork {
+      %w(help version).each do |name|
+        setup
+        o    = ["--#{name}"]
+        rest = @opts.parse o
+        assert_not_equal('', @stdout.string)
+        assert_equal('', @stderr.string)
+        assert_equal(true, @options[name.to_sym])
+        other_sym = 'help' == name ? :version : :help
+        assert_equal(false, @options.member?(other_sym))
+      end
+    }
   end
 
   def test_both_client_server_opts
