@@ -59,7 +59,7 @@ Examples:
       end
     end
     begin
-      ## @proc.intf.finalize  if 'KILL' == sig || Signal['KILL'] == sig
+      ## @proc.intf.finalize  if 'KILL' == sig || Signal.list['KILL'] == sig
       Process.kill(sig, Process.pid)
     rescue Errno::ESRCH, Errno::EINVAL, Errno::EPERM, RangeError
       errmsg "Unable to send kill #{sig} to process #{Process.pid}: #{$!}"
