@@ -1,270 +1,178 @@
-require 'rubygems'
+# -*- coding: utf-8 -*-
+# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Base class of all commands. Code common to all commands is here.
+# Note: don't end classname with Command (capital C) since main
+# will think this a command name like QuitCommand 
+require 'rubygems'; require 'require_relative'
 require 'columnize'
-require 'require_relative'
-require_relative './helper'
+require_relative '../app/complete'
+require_relative '../app/util'
+## require 'rubygems'; require 'ruby-debug'; Debugger.start
 
 module Trepan
-  RUBY_DEBUG_DIR = File.expand_path(File.dirname(__FILE__)) unless
-    defined?(RUBY_DEBUG_DIR)
+  class Command
+    attr_accessor :core, :proc
 
-  # A Trepan::Command object is is the base class for commands that
-  # implement a single debugger command. Individual debugger commands
-  # will be a subclass of this. The singleton class object is the
-  # command manager for all commands.
-  # 
-  # Each debugger command is expected to implement the following methods:
-  # _regexp_::   A regular expression which input strings are matched
-  #              against. If we have a match, run this command. 
-  #              It is the ruby-debug programmer's responsibility
-  #              to make sure that these regular expressions match disjoint
-  #              sets of strings. Otherwise one is arbitrarily used.
-  # _execute_::  Ruby code that implements the command.
-  # _help_::     Should return a String containing descriptive help for
-  #              the commmand. Used by the 'help' command Trepan::HelpCommand
-  # _help_command_:: The name of the command listed via help.
-  # 
-  # _help_ and _help_command_ methods are singleton methods, not 
-  # instance methods like _regexp_ and _execute_.
-  class OldCommand
-    SubcmdStruct=Struct.new(:name, :min, :short_help, :long_help) unless
-      defined?(SubcmdStruct)
-
-    include Columnize
-
-    # Find _param_ in _subcmds_. The _param_ id downcased and can be
-    # abbreviated to the minimum length listed in the subcommands
-    def find(subcmds, param)
-      param.downcase!
-      for try_subcmd in subcmds do
-        if (param.size >= try_subcmd.min) and
-            (try_subcmd.name[0..param.size-1] == param)
-          return try_subcmd
-        end
-      end
-      return nil
+    unless defined?(MIN_ARGS)
+      MIN_ARGS      = 0      # run()'s args array must be at least this many
+      MAX_ARGS      = nil    # run()'s args array must be at least this many
+      NEED_STACK    = false  # We'll say that commands which need a stack
+                             # to run have to declare that and those that
+                             # don't don't have to mention it.
     end
 
-    class << self
-      # An Array containing Trepan::Command classes that implment each
-      # of the debugger commands.
-      def commands
-        @commands ||= []
-      end
-      
-      DEF_OPTIONS = {
-        :allow_in_control     => false, 
-        :allow_in_post_mortem => true,
-        :event => true, 
-        :always_run => 0,
-        :unknown => false,
-        :need_context => false,
-      } unless defined?(DEF_OPTIONS)
-      
-      def inherited(klass)
-        DEF_OPTIONS.each do |o, v|
-          klass.options[o] = v if klass.options[o].nil?
-        end
-        commands << klass
-      end 
-
-      # Read in and "include" all the subclasses of the
-      # Trepan::Command class. For example
-      # Trepan::QuitCommand is one of them. The list of Ruby
-      # files to read are all the files that end .rb in directory
-      # Trepan::RUBY_DEBUG_DIR
-      def load_commands
-        Dir[File.join(%W(#{Trepan.const_get(:RUBY_DEBUG_DIR)}
-                      command-ruby-debug *))].each do 
-          |file|
-          require file if file =~ /\.rb$/
-        end
-        Trepan.constants.grep(/Functions$/).map { |name| Trepan.const_get(name) }.each do |mod|
-          include mod
-        end
-      end
-      
-      def method_missing(meth, *args, &block)
-        if meth.to_s =~ /^(.+?)=$/
-          @options[$1.intern] = args.first
-        else
-          if @options.has_key?(meth)
-            @options[meth]
-          else
-            super
-          end
-        end
-      end
-      
-      def options
-        @options ||= {}
-      end
-
-      def settings_map
-        @@settings_map ||= {}
-      end
-      private :settings_map
-
-      # Returns a Hash of Debugger settings, @settings. If doesn't exist
-      # we create a @settings hash with [] setter and getter and return that.
-      def settings
-        unless true and defined? @settings and @settings
-          @settings = Object.new
-          map = settings_map
-          c = class << @settings; self end
-          if c.respond_to?(:funcall)
-            c.funcall(:define_method, :[]) do |name|
-              raise "No such setting #{name}" unless map.has_key?(name)
-              map[name][:getter].call
-            end
-          else
-            c.send(:define_method, :[]) do |name|
-              raise "No such setting #{name}" unless map.has_key?(name)
-              map[name][:getter].call
-            end
-          end
-          c = class << @settings; self end
-          if c.respond_to?(:funcall)
-            c.funcall(:define_method, :[]=) do |name, value|
-              raise "No such setting #{name}" unless map.has_key?(name)
-              map[name][:setter].call(value)
-            end
-          else
-            c.send(:define_method, :[]=) do |name, value|
-              raise "No such setting #{name}" unless map.has_key?(name)
-              map[name][:setter].call(value)
-            end
-          end
-        end
-        @settings
-      end
-
-      def register_setting_var(name, default)
-        var_name = "@@#{name}"
-        class_variable_set(var_name, default)
-        register_setting_get(name) { class_variable_get(var_name) }
-        register_setting_set(name) { |value| class_variable_set(var_name, value) }
-      end
-
-      def register_setting_get(name, &block)
-        settings_map[name] ||= {}
-        settings_map[name][:getter] = block
-      end
-
-      def register_setting_set(name, &block)
-        settings_map[name] ||= {}
-        settings_map[name][:setter] = block
-      end
+    def initialize(proc)
+      @name = my_const(:NAME)
+      @proc = proc
     end
 
-    register_setting_var(:basename, false)  # use basename in showing files? 
-    register_setting_var(:callstyle, :last)
-    register_setting_var(:debuggertesting, false)
-    register_setting_var(:force_stepping, false)
-    register_setting_var(:full_path, true)
-    register_setting_var(:listsize, 10)    # number of lines in list command
-    register_setting_var(:stack_trace_on_error, false)
-    register_setting_var(:tracing_plus, false) # different linetrace lines?
-    
-    # width of line output. Use COLUMNS value if it exists and is 
-    # not too rediculously large.
-    width = ENV['COLUMNS'].to_i 
-    width = 80 unless width > 10
-    register_setting_var(:width, width)  
-
-    if not defined? Trepan::ARGV
-      Trepan::ARGV = ARGV.clone
-    end
-    register_setting_var(:argv, Trepan::ARGV)
-    
-    def initialize(state)
-      @state = state
+    def category
+      my_const(:CATEGORY)
     end
 
-    def match(input)
-      @match = regexp.match(input)
+    # List commands arranged in an aligned columns
+    def columnize_commands(commands)
+      width = settings[:maxwidth]
+      Columnize::columnize(commands, width, ' ' * 4, 
+                           true, true, ' ' * 2).chomp
     end
 
-    protected
-
-    # FIXME: use delegate? 
-    def errmsg(*args)
-      @state.errmsg(*args)
+    def columnize_numbers(commands)
+      width = settings[:maxwidth]
+      Columnize::columnize(commands, width, ', ',
+                           false, false, ' ' * 2).chomp
     end
 
-    def print(*args)
-      @state.print(*args)
+    # FIXME: probably there is a way to do the delegation to proc methods
+    # without having type it all out.
+
+    def confirm(message, default)
+      @proc.confirm(message, default)
     end
 
-    # Called when we are about to do a dangerous operation. _msg_
-    # contains a prompt message. Return _true_ if confirmed or _false_
-    # if not confirmed.
-    def confirm(msg)
-      @state.confirm(msg) == 'y'
+    def errmsg(message, opts={})
+      @proc.errmsg(message, opts)
     end
 
-    # debug_eval like Kernel.eval or Object.instance_eval but using
-    # the bindings for the debugged program. If there is a
-    # syntax-error like exception in running eval, print an
-    # appropriate message and throw :debug_error
-    def debug_eval(str, b = get_binding)
-      begin
-        val = eval(str, b)
-      rescue StandardError, ScriptError => e
-        if OldCommand.settings[:stack_trace_on_error]
-          at = eval("caller(1)", b)
-          print "%s:%s\n", at.shift, e.to_s.sub(/\(eval\):1:(in `.*?':)?/, '')
-          for i in at
-            print "\tfrom %s\n", i
-          end
-        else
-          print "#{e.class} Exception: #{e.message}\n"
-        end
-        throw :debug_error
+    def obj_const(obj, name)
+      obj.class.const_get(name) 
+    end
+
+    def msg(message, opts={})
+      @proc.msg(message, opts)
+    end
+
+    # Convenience short-hand for @dbgr.intf[-1].msg_nocr
+    def msg_nocr(msg, opts={})
+      @proc.msg_nocr(msg, opts)
+    end
+
+    def my_const(name)
+      # Set class constant SHORT_HELP to be the first line of HELP
+      # unless it has been defined in the class already.
+      # The below was the simplest way I could find to do this since
+      # we are the super class but want to set the subclass's constant.
+      # defined? didn't seem to work here.
+      c = self.class.constants
+      if (c.member?('HELP') || c.member?(:HELP)) and
+          !(c.member?('SHORT_HELP') || c.member?(:SHORT_HELP))
+        help = self.class.const_get(:HELP) || self.class.const_get('HELP')
+        short_help = help.split("\n")[0].chomp('.')
+        self.class.const_set(:SHORT_HELP, short_help)
       end
+      self.class.const_get(name)
     end
 
-    # debug_eval like Kernel.eval or Object.instance_eval but using
-    # the bindings for the debugged program. If there is a syntax
-    # error kind of exception in running eval, no warning is given and
-    # nil is returned.
-    def debug_silent_eval(str)
-      begin
-        eval(str, get_binding)
-      rescue StandardError, ScriptError
-        nil
-      end
+    def name
+      self.class.const_get(:NAME)
     end
 
-    # Return a binding object for the debugged program.
-    def get_binding
-      @state.context.frame_binding(@state.frame_pos)
+    # The method that implements the debugger command.
+    def run(*args)
+      raise RuntimeError, 'You need to define this method elsewhere'
     end
 
-    def line_at(file, line)
-      Debugger.line_at(file, line)
+    def section(message, opts={})
+      ## debugger
+      @proc.section(message, opts)
     end
 
-    def get_context(thnum)
-      Debugger.contexts.find{|c| c.thnum == thnum}
-    end  
+    def settings
+      @proc.settings
+    end
+
+    def short_help
+      help_constant_sym = if self.class.constants.member?('SHORT_HELP') 
+                            :SHORT_HELP 
+                          else :HELP
+                          end
+      my_const(help_constant_sym)
+    end
+
+    # Define a method called 'complete' on the singleton class.
+    def self.completion(ary) 
+      self.send(:define_method, 
+                :complete, 
+                Proc.new {|prefix| 
+                  Trepan::Complete.complete_token(ary, prefix) })
+    end
+
+    # From reference debugger
+    def run_code(str)
+      @proc.dbgr.current_frame.run(str)
+    end
+
+    def current_method
+      @proc.frame.method
+    end
+
+    def current_frame
+      @proc.frame
+    end
+
+    def variables
+      @proc.variables
+    end
+
+    def listen(step=false)
+      @proc.listen(step)
+    end
+
   end
-  
-  OldCommand.load_commands
-
-  # Returns setting object.
-  # Use Debugger.settings[] and Debugger.settings[]= methods to query and set
-  # debugger settings. These settings are available:
-  # 
-  # - :autolist - automatically calls 'list' command on breakpoint
-  # - :autoeval - evaluates input in the current binding if it's not recognized as a debugger command
-  # - :autoirb - automatically calls 'irb' command on breakpoint
-  # - :stack_trace_on_error - shows full stack trace if eval command results with an exception
-  # - :frame_full_path - displays full paths when showing frame stack
-  # - :frame_class_names - displays method's class name when showing frame stack
-  # - :reload_source_on_change - makes 'list' command to always display up-to-date source code
-  # - :force_stepping - stepping command asways move to the new line
-  # 
-  def self.settings
-    OldCommand.settings
+end
+if __FILE__ == $0
+  module Trepan
+    class CmdProcessor
+      def initialize(dbgr)
+      end
+      def confirm(message, default)
+        p ['confirm: ', message, default]
+      end
+      def errmsg(message, opts)
+        p ['err:', message, opts]
+      end
+      def msg(message, opts)
+        p [message, opts]
+      end
+      def msg_nocr(message, opts)
+        p ['nocr: ', message, opts]
+      end
+      def section(message, opts)
+        p ['section: ', message, opts]
+      end
+    end
+    class Command::Test < Trepan::Command
+      NAME = 'test'
+      CATEGORY = 'testcategory'
+      completion %w(a aa ab ba aac)
+    end
   end
+  proc = Trepan::CmdProcessor.new(nil)
+  cmd = Trepan::Command::Test.new(proc)
+  %w(confirm errmsg msg msg_nocr section).each do |meth|
+    cmd.send(meth, 'test', nil)
+  end
+  p cmd.complete('aa')
+  cmd.instance_variable_set('@completions', %w(aardvark apple))
+  p cmd.complete('aa')
 end

@@ -85,7 +85,7 @@ if __FILE__ == $0
 
   require 'rubygems'; require 'require_relative'
   require_relative 'mock'
-  require_relative 'command/base/cmd'
+  require_relative 'command'
 
   class Trepan::TestCommand < Trepan::Command
     

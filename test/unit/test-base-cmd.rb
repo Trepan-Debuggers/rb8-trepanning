@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'test/unit'
 require 'rubygems'; require 'require_relative'
-require_relative '../../processor/command/base/cmd'
+require_relative '../../processor/command'
 
 class Trepan::Command::Test < Trepan::Command
   NAME = 'test'
