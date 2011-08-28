@@ -2,9 +2,8 @@ require 'rubygems'
 require 'ruby-debug-base'
 require 'require_relative'
 require_relative '../interface/user'
-require_relative './command'
-require_relative './default'
-require_relative './main'
+require_relative '../processor/command'
+require_relative '../processor/default'
 require_relative '../app/frame'
 
 # _Trepan_ is the module name space for this debugger.

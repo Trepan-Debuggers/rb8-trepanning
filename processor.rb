@@ -9,7 +9,7 @@ require 'rubygems'; require 'require_relative'
 %w(default display eval eventbuf frame hook load_cmds location msg running 
    validate).each do
   |mod_str|
-  require_relative mod_str
+  require_relative File.join('processor', mod_str);
 end
 ## require_relative '../app/brkptmgr'
 
@@ -63,34 +63,6 @@ module Trepan
     attr_accessor :last_pos       # Last position. 6-Tuple: of
                                   # [location, container, stack_size, 
                                   #  current_thread, pc_offset]
-
-    unless defined?(EVENT2ICON)
-      # Event icons used in printing locations.
-      EVENT2ICON = {
-        'brkpt'          => 'xx',
-        'tbrkpt'         => 'x1',
-        'c-call'         => 'C>',
-        'c-return'       => '<C',
-        'step-call'      => '->',
-        'call'           => '->',
-        'class'          => '::',
-        'coverage'       => '[]',
-        'debugger-call'  => ':o',
-        'end'            => '-|',
-        'line'           => '--',
-        'raise'          => '!!',
-        'return'         => '<-',
-        'start'          => '>>',
-        'switch'         => 'sw',
-        'trace-var'      => '$V',
-        'unknown'        => '?!',
-        'vm'             => 'VM',
-        'vm-insn'        => '..',
-      } 
-      # These events are important enough event that we always want to
-      # stop on them.
-      UNMASKABLE_EVENTS = Set.new(['end', 'raise', 'unknown'])
-    end
 
     ## def initialize(dbgr, settings={})
     def initialize(interfaces, settings={})
@@ -201,11 +173,7 @@ module Trepan
               @cmd_queue.shift
             end
           if @current_command.empty? 
-            if @last_command && intf.interactive?
-              @current_command = @last_command 
-            else
-              next
-            end
+            next unless @last_command && intf.interactive?;
           end
           next if @current_command[0..0] == '#' # Skip comment lines
           break
@@ -412,7 +380,7 @@ end
 
 if __FILE__ == $0
   $0 = 'foo' # So we don't get here again
-  require_relative '../lib/trepanning'
+  require_relative 'lib/trepanning'
   puts "To be continued...."
   exit
   dbg =  Trepan.new(:nx => true)

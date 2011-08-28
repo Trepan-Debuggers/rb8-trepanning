@@ -8,7 +8,8 @@ require_relative '../app/default'
 require_relative '../interface/user'  # user interface (includes I/O)
 
 require 'ruby-debug-base'; Debugger.start(:init => true)
-require_relative 'processor'
+require_relative '../processor'
+require_relative 'old-processor'
 
 module MockDebugger
   class MockDebugger

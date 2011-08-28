@@ -13,6 +13,31 @@ require_relative 'msg'
 require_relative 'virtual'
 class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
 
+    unless defined?(EVENT2ICON)
+      # Event icons used in printing locations.
+      EVENT2ICON = {
+        'brkpt'          => 'xx',
+        'tbrkpt'         => 'x1',
+        'c-call'         => 'C>',
+        'c-return'       => '<C',
+        'step-call'      => '->',
+        'call'           => '->',
+        'class'          => '::',
+        'coverage'       => '[]',
+        'debugger-call'  => ':o',
+        'end'            => '-|',
+        'line'           => '--',
+        'raise'          => '!!',
+        'return'         => '<-',
+        'start'          => '>>',
+        'switch'         => 'sw',
+        'trace-var'      => '$V',
+        'unknown'        => '?!',
+        'vm'             => 'VM',
+        'vm-insn'        => '..',
+      } 
+    end
+
   def canonic_file(filename, resolve=true)
     # For now we want resolved filenames 
     if @settings[:basename] 

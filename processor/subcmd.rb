@@ -68,37 +68,10 @@ module Trepan
       @cmdlist << subcmd_name
     end
 
-    # Run subcmd_name with args using obj for the environent
-    def run( subcmd_name, arg)
-      entry=lookup(subcmd_name)
-      if entry
-        entry['callback'].send(arg)
-      else
-        @proc.undefined_cmd(entry.__class__.name, subcmd_name)
-      end
-    end
-
     # help for subcommands
     # Note: format of help is compatible with ddd.
     def help(*args)
-
-      msg args
-      subcmd_prefix = args[0]
-      if not subcmd_prefix or subcmd_prefix.size == 0
-        @proc.msg(self.doc)
-        @proc.msg("\nList of %s subcommands:\n" % [@name])
-        @list.each do |subcmd_name|
-          subcmd_helper(subcmd_name, obj, true, true)
-        end
-
-        entry = lookup(subcmd_prefix)
-        if entry and entry.respond_to? :help
-          entry.help(args)
-        else
-          @proc.errmsg("Unknown 'help %s' subcommand %s" %
-                       [@name, subcmd_prefix])
-        end
-      end
+      # Not used but tested for.
     end
 
     def list
