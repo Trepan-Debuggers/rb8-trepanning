@@ -7,7 +7,8 @@ require 'ruby-debug-base'
 require 'require_relative'
 require_relative '../interface/script'
 require_relative '../interface/user'
-require_relative '../processor/processor'
+require_relative '../processor/old-processor'
+require_relative '../processor'
 
 module Trepan
 

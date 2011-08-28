@@ -6,7 +6,7 @@
 # Our local modules
 
 require 'rubygems'; require 'require_relative'
-require_relative 'base_intf'
+require_relative '../interface'
 require_relative '../io/input'
 
 # Interface when communicating with the user.
@@ -162,4 +162,6 @@ if __FILE__ == $0
     end
   end
   puts "User interface closed?: #{intf.closed?}"
+  intf.close
+  STDERR.puts "User interface closed?: #{intf.closed?}"
 end

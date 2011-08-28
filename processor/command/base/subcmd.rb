@@ -131,10 +131,6 @@ module Trepan
       ["#{subcmd_prefix_string} #{settings[subcmd_setting_key]}"]
     end
 
-    def settings
-      @proc.settings
-    end
-        
     def subcmd_prefix_string
       self.class.const_get(:PREFIX).join(' ')
     end
