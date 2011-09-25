@@ -1,4 +1,4 @@
-# Copyright (C) 2010 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../command'
 require_relative '../../app/complete'
@@ -6,13 +6,13 @@ require_relative '../../app/complete'
 class Trepan::Command::UnaliasCommand < Trepan::Command
 
   unless defined?(HELP)
-    HELP = 
-"unalias COMMAND
+    HELP = <<-HELP
+unalias ALIAS
 
-Remove alias for COMMAND
+Remove alias ALIAS
 
 See also 'alias'.
-"
+HELP
 
     CATEGORY      = 'support'
     MIN_ARGS      = 1
@@ -43,7 +43,7 @@ if __FILE__ == $0
   # Demo it.
   require_relative '../mock'
   dbgr, cmd = MockDebugger::setup
-  cmd.run %w(cmd.name exit!)
-  cmd.run %w(cmd.name exit!)
+  cmd.run %w(cmd.name n)
+  cmd.run %w(cmd.name n)
   cmd.run %w(cmd.name foo bar c)
 end

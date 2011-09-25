@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../command'
@@ -11,13 +12,17 @@ class Trepan::Command::FinishCommand < Trepan::Command
     HELP         = <<-HELP
 #{NAME} [FRAME_NUM]
 
-Execute until selected stack frame returns.
+Continue execution until leaving the current method.  Sometimes this
+is called 'step out'.
 
 If no frame number is given, we run until the currently selected frame
 returns.  The currently selected frame starts out the most-recent
 frame or 0 if no frame positioning (e.g "up", "down" or "frame") has
 been performed. If a frame number is given we run until that frame
 returns.
+
+See also commands:
+'continue', 'break', 'next', 'nexti', 'step' for other ways to continue.
       HELP
     NEED_RUNNING = true
     SHORT_HELP   = 'Step into next method call or to next line'
