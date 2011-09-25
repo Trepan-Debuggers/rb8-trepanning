@@ -10,7 +10,7 @@ class Trepan::Subcommand::SetDifferent < Trepan::SetBoolSubcommand
     HELP         = <<-EOH
 #{PREFIX.join(' ')} [on|off|nostack]
 
-Make sure 'next/step' moves to a new line number.
+Set to make sure 'next' or 'step' moves to a new position.
 
 Due to the interpretive, expression-oriented nature of the Ruby
 Language and implementation, each line often may contain many possible
