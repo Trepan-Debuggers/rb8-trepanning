@@ -33,6 +33,7 @@ EOF
   end
 
   spec.add_dependency('rbx-require-relative', '> 0.0.4')
+  spec.add_dependency('rdoc', '> 2.4.2')
   spec.add_dependency('columnize')
   spec.author       = 'R. Bernstein'
   spec.bindir       = 'bin'

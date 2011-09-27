@@ -10,7 +10,7 @@ def gemspec
   @gemspec ||= eval(File.read(Gemspec_filename), binding, Gemspec_filename)
 end
 
-require 'rake/gempackagetask'
+require 'rdoc/task'
 desc 'Build the gem'
 task :package=>:gem
 task :gem=>:gemspec do
@@ -177,7 +177,6 @@ task :gemspec do
 end
 
 # ---------  RDoc Documentation ------
-require 'rake/rdoctask'
 desc 'Generate rdoc documentation'
 Rake::RDocTask.new('rdoc') do |rdoc|
   rdoc.rdoc_dir = 'doc'
