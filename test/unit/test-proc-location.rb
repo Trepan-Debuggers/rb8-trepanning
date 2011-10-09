@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'test/unit'
 require 'rubygems'; require 'require_relative'
-require 'ruby-debug'; 
 begin
   require 'linecache'
 rescue LoadError
