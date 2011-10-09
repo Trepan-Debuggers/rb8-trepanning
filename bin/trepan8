@@ -83,8 +83,6 @@ else
 
     # activate post-mortem
     Trepan.post_mortem if options[:post_mortem]
-    options[:stop] = false if options[:tracing]
-    Debugger.tracing = options[:tracing]
 
     if !options[:quit]
       if Debugger.started?

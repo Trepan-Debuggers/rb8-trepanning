@@ -59,6 +59,7 @@ module Trepan
     @@intf = [Trepan::UserInterface.new(nil, nil, opts)]
 
     attr_accessor :handler
+
     Trepan.handler = Debugger.handler = CommandProcessor.new(@@intf)
 
     # gdb-style annotation mode. Used in GNU Emacs interface

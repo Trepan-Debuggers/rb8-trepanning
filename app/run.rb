@@ -21,10 +21,13 @@ module Trepan
       exit $?.exitstatus 
     end
 
-    %w(highlight basename).each do |opt|
+    cmdproc = Debugger.handler.cmdproc
+    %w(highlight basename traceprint).each do |opt|
       opt = opt.to_sym
-      Debugger.handler.cmdproc.settings[opt] = options[opt]
+      cmdproc.settings[opt] = options[opt]
     end
+    cmdproc.unconditional_prehooks.insert_if_new(-1, *cmdproc.trace_hook) if
+      options[:traceprint]
 
     # Record where we are we can know if the call stack has been
     # truncated or not.

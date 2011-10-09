@@ -163,7 +163,8 @@ EOB
         options[:wait] = true
       end
       opts.on('-x', '--trace', 'Turn on line tracing') do 
-        options[:tracing] = true
+        options[:traceprint] = true
+        options[:nx] = true
       end
       opts.separator ''
       opts.on_tail('-?', '--help', 'Show this message') do

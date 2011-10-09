@@ -1,0 +1,46 @@
+-- (gcd.rb:4)
+def gcd(a, b)
+-- (gcd.rb:18)
+gcd(3,5)
+-- (gcd.rb:6)
+if a > b
+-- (gcd.rb:6)
+if a > b
+-- (gcd.rb:10)
+return nil if a <= 0
+-- (gcd.rb:10)
+return nil if a <= 0
+-- (gcd.rb:12)
+if a == 1 or b-a == 0
+-- (gcd.rb:12)
+if a == 1 or b-a == 0
+-- (gcd.rb:15)
+return gcd(b-a, a)
+-- (gcd.rb:6)
+if a > b
+-- (gcd.rb:6)
+if a > b
+-- (gcd.rb:10)
+return nil if a <= 0
+-- (gcd.rb:10)
+return nil if a <= 0
+-- (gcd.rb:12)
+if a == 1 or b-a == 0
+-- (gcd.rb:12)
+if a == 1 or b-a == 0
+-- (gcd.rb:15)
+return gcd(b-a, a)
+-- (gcd.rb:6)
+if a > b
+-- (gcd.rb:6)
+if a > b
+-- (gcd.rb:10)
+return nil if a <= 0
+-- (gcd.rb:10)
+return nil if a <= 0
+-- (gcd.rb:12)
+if a == 1 or b-a == 0
+-- (gcd.rb:12)
+if a == 1 or b-a == 0
+-- (gcd.rb:13)
+return a

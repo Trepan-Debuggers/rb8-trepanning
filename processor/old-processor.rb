@@ -195,13 +195,13 @@ module Trepan
         Debugger::RDEBUG_FILE == file # Don't trace ourself
       @last_file = CommandProcessor.canonic_file(file)
       canonic_file = CommandProcessor.canonic_file(file)
-      unless canonic_file == @last_file and @last_line == line and 
-          Command.settings[:tracing_plus]
-        print "Tracing(%d):%s:%s %s",
-        context.thnum, canonic_file, line, Debugger.line_at(file, line)
+      # unless canonic_file == @last_file and @last_line == line and 
+      #    Command.settings[:tracing_plus]
+        print("Tracing(%d):%s:%s %s" % 
+              [context.thnum, canonic_file, line, Debugger.line_at(file, line)])
         @last_file = canonic_file
         @last_line = line
-      end
+      # end
       always_run(context, file, line, 2)
     end
     protect :at_tracing

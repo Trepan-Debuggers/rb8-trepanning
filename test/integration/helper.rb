@@ -135,6 +135,8 @@ module TestHelper
   def config_load(key, may_be_nil=false, default_value='')
     conf = File.join('config.private.yaml') # try private first
     conf = File.join('config.yaml') unless File.exists?(conf)
+    assert(File.exists?(conf), 
+           "Should be able to find YAML file #{File.expand_path(conf)}")
     value = YAML.load_file(conf)[key]
     assert_not_nil(value, "#{key} is set in config.yaml") unless may_be_nil
     value || default_value

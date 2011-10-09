@@ -105,6 +105,8 @@ module Trepan
         self.send("#{submod}_initialize")
       end
       hook_initialize(commands)
+      unconditional_prehooks.insert_if_new(-1, *@trace_hook) if 
+        @settings[:traceprint]
     end
 
     def compute_prompt
@@ -209,6 +211,11 @@ module Trepan
       frame_setup(@context, @state)
 
       @unconditional_prehooks.run
+      if @settings[:traceprint]
+        step
+        return
+      end
+
       if breakpoint?
         delete_breakpoint(@brkpt) if @brkpt.temp?
         @last_pos = [@frame.vm_location, @stack_size, @current_thread, @event] 
@@ -229,7 +236,7 @@ module Trepan
       @prompt = compute_prompt
 
       @leave_cmd_loop = false
-      print_location unless @settings[:traceprint]
+      print_location
       # if 'trace-var' == @event 
       #   msg "Note: we are stopped *after* the above location."
       # end
@@ -250,6 +257,10 @@ module Trepan
       # @event = @core.event
 
       @unconditional_prehooks.run
+      if @settings[:traceprint]
+        step
+        return
+      end
       # if breakpoint?
       #   @last_pos = [@frame.source_container, frame_line,
       #                @stack_size, @current_thread, @event, 
@@ -261,7 +272,7 @@ module Trepan
       @prompt = compute_prompt
 
       @leave_cmd_loop = false
-      print_location unless @settings[:traceprint]
+      print_location
       # if 'trace-var' == @event 
       #   msg "Note: we are stopped *after* the above location."
       # end
