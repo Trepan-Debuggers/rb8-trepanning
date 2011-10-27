@@ -1,3 +1,279 @@
+2011-10-15  rocky <rockyb@rubyforge.org>
+
+	* app/display.rb, processor/command/undisplay.rb: Sync with
+	rb-trepanning.
+
+2011-10-14  rocky <rockyb@rubyforge.org>
+
+	I hate conflicted merges
+
+2011-10-14  rocky <rockyb@rubyforge.org>
+
+	* app/display.rb, processor/command/disable.rb,
+	processor/command/display.rb, processor/command/enable.rb,
+	processor/command/set_subcmd/auto.rb, processor/display.rb: Sync
+	with rb-trepanning and rbx-trepanning although enable/disable
+	display numbers not supported yet.
+
+2011-10-09  rocky <rockyb@rubyforge.org>
+
+	* processor/command/set_subcmd/auto.rb,
+	processor/command/set_subcmd/trace.rb,
+	processor/command/set_subcmd/trace_subcmd/print.rb: Regularize and
+	improve "set" help a little bit. Sync with rb-trepanning
+
+2011-10-09  rocky <rockyb@rubyforge.org>
+
+	Merge branch 'master' of github.com:rocky/rb8-trepanning
+
+2011-10-09  rocky <rockyb@rubyforge.org>
+
+	* app/options.rb, app/run.rb, bin/trepan8, lib/trepanning.rb,
+	processor.rb, processor/old-processor.rb, test/data/trace.cmd,
+	test/data/trace.right, test/integration/helper.rb,
+	test/integration/test-trace.rb: trepan8 --trace option (-x) works
+	again.
+
+2011-09-27  rocky <rockyb@rubyforge.org>
+
+	* Rakefile, trepan8.gemspec: Go with rdoc > 2.4.2 now. Sigh
+
+2011-09-27  rocky <rockyb@rubyforge.org>
+
+	* processor/command/macro.rb, test/unit/test-proc-location.rb: 
+	Improve documentation for "macro". Remove a stray "require
+	'ruby-debug'".
+
+2011-09-25  rocky <rockyb@rubyforge.org>
+
+	* processor/command/show_subcmd/alias.rb,
+	processor/command/show_subcmd/aliases.rb: show alias => show aliases
+
+
+2011-09-25  rocky <rockyb@rubyforge.org>
+
+	* processor/command/finish.rb, processor/command/unalias.rb: Sync
+	with rbx-trepanning.
+
+2011-09-25  rocky <rockyb@rubyforge.org>
+
+	* app/run.rb, processor/command/kill.rb,
+	processor/command/set_subcmd/different.rb,
+	processor/command/unalias.rb, test/unit/test-cmd-kill.rb: Misc
+	changes to sync with rb{,x}-trepanning
+
+2011-08-28  rocky <rockyb@rubyforge.org>
+
+	* processor/command.rb, processor/command/alias.rb,
+	processor/command/backtrace.rb, processor/command/base/cmd.rb,
+	processor/command/base/subcmd.rb, processor/command/base/submgr.rb,
+	processor/command/base/subsubcmd.rb, processor/command/break.rb,
+	processor/command/catch.rb, processor/command/complete.rb,
+	processor/command/continue.rb, processor/command/directory.rb,
+	processor/command/disable.rb, processor/command/display.rb,
+	processor/command/edit.rb, processor/command/eval.rb,
+	processor/command/exit.rb, processor/command/finish.rb,
+	processor/command/frame.rb, processor/command/help.rb,
+	processor/command/kill.rb, processor/command/list.rb,
+	processor/command/macro.rb, processor/command/next.rb,
+	processor/command/parsetree.rb, processor/command/pp.rb,
+	processor/command/pr.rb, processor/command/ps.rb,
+	processor/command/restart.rb, processor/command/save.rb,
+	processor/command/shell.rb, processor/command/source.rb,
+	processor/command/step.rb, processor/command/tbreak.rb,
+	processor/command/unalias.rb, processor/command/undisplay.rb,
+	processor/command/up.rb, processor/old-command.rb,
+	processor/old-processor.rb, processor/subcmd.rb,
+	test/unit/test-base-cmd.rb: processor/command.rb  ->
+	processor/old-command.rb processor/base/cmd.rb ->
+	processor/command.rb
+
+2011-08-28  rocky <rockyb@rubyforge.org>
+
+	Merge branch 'master' of github.com:rocky/rb8-trepanning
+
+2011-08-28  rocky <rockyb@rubyforge.org>
+
+	* interface.rb, interface/base_intf.rb, interface/script.rb,
+	interface/server.rb, interface/user.rb, io.rb, io/base_io.rb,
+	io/input.rb, io/null_output.rb, io/string_array.rb,
+	io/tcpclient.rb, io/tcpserver.rb, lib/trepanning.rb, processor.rb,
+	processor/command/base/subcmd.rb, processor/command/exit.rb,
+	processor/command/help.rb, processor/help.rb,
+	processor/location.rb, processor/main.rb, processor/mock.rb,
+	processor/msg.rb, processor/old-processor.rb,
+	processor/processor.rb, processor/subcmd.rb, processor/validate.rb,
+	test/unit/test-proc-eval.rb, test/unit/test-subcmd-help.rb: Partial
+	sync with rbx-trepanning:   interface/base_intf.rb -> interface.rb
+	base_io -> io.rb   processor/main.rb -> processor.b
+
+2011-08-28  rocky <rockyb@rubyforge.org>
+
+	* lib/trepanning.rb, processor.rb,
+	processor/command/base/subcmd.rb, processor/command/exit.rb,
+	processor/command/help.rb, processor/help.rb,
+	processor/location.rb, processor/main.rb, processor/mock.rb,
+	processor/msg.rb, processor/old-processor.rb,
+	processor/processor.rb, processor/subcmd.rb, processor/validate.rb,
+	test/unit/test-proc-eval.rb, test/unit/test-subcmd-help.rb: Partial
+	sync with rbx-trepanning.
+
+2011-08-14  rocky <rockyb@rubyforge.org>
+
+	* processor/command/kill.rb: See above
+
+2011-08-14  rocky <rockyb@rubyforge.org>
+
+	* processor/command/kill.rb, test/unit/test-app-options.rb: 
+	test-app-options.rb: testing help/version options was killing the
+	rest of the tests Speaking of killing.. add more robust kill
+	checking and fix an outright bug in name-to-number access.
+
+2011-06-21  rocky <rockyb@rubyforge.org>
+
+	* app/run.rb: backticks work differently between 1.9.2 and 1.8.7?
+	Can't do an inspect on a string and have the shell drop the quotes.
+
+
+2011-06-21  rocky <rockyb@rubyforge.org>
+
+	* app/run.rb, app/util.rb, processor/command/info_subcmd/files.rb: 
+	Sync with rb-trepanning
+
+2011-06-21  rocky <rockyb@rubyforge.org>
+
+	* processor/command/continue.rb: One more place we should be
+	checking for a valid Ruby program.
+
+2011-06-21  rocky <rockyb@rubyforge.org>
+
+	* processor/command/base/cmd.rb, processor/command/break.rb,
+	processor/command/disable.rb, processor/command/eval.rb,
+	processor/command/up.rb: Test for syntactically-correct Ruby program
+	on the break command. DRY including util which is needed for
+	silencing already-defined constant messages.
+
+2011-06-21  rocky <rockyb@rubyforge.org>
+
+	* app/display.rb, app/run.rb, lib/debugger.rb,
+	processor/command/info_subcmd/source.rb,
+	processor/command/info_subcmd/variables_subcmd/constant.rb,
+	test/unit/test-app-run.rb: "info source" should not try to look for
+	breakpoint line numbers if the source is syntactically invalid as is
+	the case for erb files. Other small changes.
+
+2011-06-19  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/variables.rb,
+	processor/command/info_subcmd/variables_subcmd/class.rb,
+	processor/command/info_subcmd/variables_subcmd/constant.rb,
+	processor/help.rb, processor/msg.rb, processor/subcmd.rb: Add "info
+	var constant". Correct abbreviation lookup. Sync with
+	rbx-trepanning.
+
+2011-06-19  rocky <rockyb@rubyforge.org>
+
+	* app/irb.rb, processor/command/enable.rb: Silence another
+	constant-init wraning. Sync with rbx-trepanning.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* app/irb.rb, processor/command/shell.rb: Fix bug in running 'dbgr'
+	inside irb.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* app/irb.rb,
+	processor/command/info_subcmd/variables_subcmd/class.rb,
+	processor/command/info_subcmd/variables_subcmd/globals.rb,
+	processor/command/info_subcmd/variables_subcmd/instance.rb,
+	processor/command/info_subcmd/variables_subcmd/locals.rb,
+	processor/command/shell.rb, processor/msg.rb: Colorize "info
+	variable" display and show class name in header.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* processor/command/help.rb,
+	processor/command/info_subcmd/variables.rb,
+	processor/command/info_subcmd/variables_subcmd/globals.rb,
+	processor/mock.rb: Small changes.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* processor/command/info_subcmd/variables.rb,
+	processor/command/info_subcmd/variables_subcmd/locals.rb,
+	trepan8.gemspec: Correct info variables.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* processor/command/base/subsubmgr.rb,
+	processor/command/info_subcmd/globals.rb,
+	processor/command/info_subcmd/iv.rb,
+	processor/command/info_subcmd/locals.rb,
+	processor/command/info_subcmd/variables_subcmd/.gitignore,
+	processor/command/info_subcmd/variables_subcmd/class.rb,
+	processor/command/info_subcmd/variables_subcmd/globals.rb,
+	processor/command/info_subcmd/variables_subcmd/instance.rb,
+	processor/command/info_subcmd/variables_subcmd/locals.rb: Add "info
+	variables". Sync with rb-trepanning.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* trepan8.gemspec: Add ruby-debug-base dependency. Issue #1.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* app/util.rb, processor/command/disable.rb,
+	processor/command/down.rb, processor/command/enable.rb,
+	processor/command/info.rb,
+	processor/command/info_subcmd/globals.rb,
+	processor/command/info_subcmd/iv.rb,
+	processor/command/info_subcmd/locals.rb, processor/command/up.rb: 
+	Add 'info iv' for instance variables. Use better way to suppress
+	warnings.
+
+2011-06-18  rocky <rockyb@rubyforge.org>
+
+	* data/perldb.bindings, processor/command/alias.rb,
+	processor/command/list.rb, processor/main.rb,
+	test/unit/test-io-tcpserver.rb: alias.rb: cat is an alias for
+	"list". perldb.bindings first attempt at perldb bindings.
+	test-io-tcpserver.rb: skip test if we can't open socket.
+
+2011-06-16  rocky <rockyb@rubyforge.org>
+
+	* app/irb.rb, app/options.rb, processor/command/shell.rb: Suppress
+	rb-readline dup constant warnings.
+
+2011-06-16  rocky <rockyb@rubyforge.org>
+
+	* app/irb.rb, processor/command/shell.rb, test/unit/cmd-helper.rb,
+	test/unit/test-proc-location.rb: Get unit test test-proc-location
+	working. There is weirdness here where things are getting required
+	multiple times.
+
+2011-06-15  rocky <rockyb@rubyforge.org>
+
+	* app/irb.rb, processor/command/step.rb, processor/hook.rb,
+	processor/running.rb: Had broken "autoirb" when I renamed "irb" to
+	"shell". Make a little more like other trepanning debuggers.
+
+2011-06-12  rocky <rockyb@rubyforge.org>
+
+	* processor/command/set_subcmd/trace.rb,
+	processor/command/set_subcmd/trace_subcmd/buffer.rb,
+	processor/command/set_subcmd/trace_subcmd/print.rb,
+	processor/command/show_subcmd/trace.rb,
+	processor/command/show_subcmd/trace_subcmd/buffer.rb,
+	processor/command/show_subcmd/trace_subcmd/print.rb,
+	trepan8.gemspec: Wrong package name and forgot to add set/show trace
+	files.
+
+2011-06-11  rocky <rockyb@rubyforge.org>
+
+	* ChangeLog, Rakefile, app/options.rb: Get ready for 0.1.3 release.
+
+
 2011-06-11  rocky <rockyb@rubyforge.org>
 
 	* Rakefile: I run rubinius on this too often.
