@@ -7,6 +7,8 @@ class TestTrace < Test::Unit::TestCase
   include TestHelper
   TREPAN_LOC    = /.. \(.+:\d+( @\d+)?\)/
   def test_trepan_trace
+    skip "We may get different results on an unpatched 1.9.2" if 
+      RUBY_VERSION =~ /1.9/
     common_setup(__FILE__)
     Dir.chdir(@srcdir) do 
       last_line = nil
