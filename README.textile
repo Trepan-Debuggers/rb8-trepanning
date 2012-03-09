@@ -31,7 +31,7 @@ Over time, I gained a better understanding of what was important (to me), and I 
 the code. This code base is a backport of the "trepanning debugger for
 Rubinius":https://github.com/rocky/rbx-trepanning/wiki which in turn
 is a port of the "trepanning debugger for a patched MRI YARV
-1.9.2":https://github.com/rocky/rb-trepanning/wiki which is a port of "a debugger for Python":http://code.google.com/p/pydbgr/ which is a port of ruby-debug)
+1.9.2":https://github.com/rocky/rb-trepanning/wiki which is a port of "a debugger for Python":http://code.google.com/p/pydbgr/ which is a port of ruby-debug.
 
 h2. Compatibility with ruby-debug
 
@@ -55,5 +55,5 @@ The debugger needs to work in more limited environments, so there are a number p
 
 Required dependencies are the same as ruby-debug:
 * _ruby-debug-base_ -- for run-time debugging support
-* _linecache_ or _linecache19_ -- for caching source-code lines and figuring out breakpoint lines)
+* _linecache_ or _linecache19_ -- for caching source-code lines and figuring out breakpoint lines
 * _columnize_ -- for showing commands in columns
