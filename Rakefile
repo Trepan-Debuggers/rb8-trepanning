@@ -10,7 +10,7 @@ def gemspec
   @gemspec ||= eval(File.read(Gemspec_filename), binding, Gemspec_filename)
 end
 
-require 'rdoc/task'
+require 'rake/gempackagetask'
 desc 'Build the gem'
 task :package=>:gem
 task :gem=>:gemspec do
@@ -29,13 +29,18 @@ task :install => :gem do
 end
 
 require 'rake/testtask'
-require 'rbconfig'
+desc "Test everything."
+Rake::TestTask.new(:test) do |t|
+  t.libs << './lib'
+  t.pattern = 'test/test-*.rb'
+  t.verbose = true
+end
+task :test => :lib
 
-def RbConfig.ruby
-  File.join(RbConfig::CONFIG['bindir'],  
-            RbConfig::CONFIG['RUBY_INSTALL_NAME'] + 
-            RbConfig::CONFIG['EXEEXT'])
-end unless defined? RbConfig.ruby
+desc "same as test"
+task :check => :test
+
+require 'rbconfig'
 
 def run_standalone_ruby_files(list, opts={})
   puts '*' * 40
@@ -177,6 +182,7 @@ task :gemspec do
 end
 
 # ---------  RDoc Documentation ------
+require 'rake/rdoctask'
 desc 'Generate rdoc documentation'
 Rake::RDocTask.new('rdoc') do |rdoc|
   rdoc.rdoc_dir = 'doc'
