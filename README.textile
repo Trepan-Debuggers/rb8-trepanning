@@ -18,7 +18,7 @@ There is a "google group mailing list":http://groups.google.com/group/ruby-debug
 
 h2. Installing (from git)
 
-bq.   $ git://github.com/rocky/rb8-trepanning.git
+bq.   $ git clone git://github.com/rocky/rb8-trepanning.git
    $ cd rb8-trepanning
    $ rake test
    $ rake install
