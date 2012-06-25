@@ -14,6 +14,8 @@ module Trepan
   # input or GNU Readline.
   class UserInput < Trepan::InputBase
 
+    attr_reader   :use_readline
+
     @@readline_finalized = false
 
     def initialize(inp, opts={})

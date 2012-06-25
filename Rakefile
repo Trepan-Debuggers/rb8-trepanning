@@ -86,7 +86,7 @@ Rake::TestTask.new(:'test:integration') do |t|
   t.options = '--verbose' if $VERBOSE
 end
 
-desc 'Test everything - unit tests for now.'
+desc 'Test everything - unit and functional tests.'
 task :test do
   exceptions = %w(test:unit test:integration).collect do |task|
     begin
