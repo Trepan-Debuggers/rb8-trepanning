@@ -81,8 +81,8 @@ else
     # run startup script if specified
     Trepan.add_command_file(options[:script]) if options[:script]
 
-    # activate post-mortem
-    Trepan.post_mortem if options[:post_mortem]
+    # activate post-mortem. ruby-debug-base provides the hooks
+    Debugger.post_mortem if options[:post_mortem]
 
     if !options[:quit]
       if Debugger.started?

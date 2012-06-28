@@ -19,7 +19,8 @@ class Trepan::Subcommand::InfoProgram < Trepan::Subcommand
       return
     end
     case @proc.event 
-    when :raise
+    when 'raise'
+    when 'post-mortem'
       status = 'crashed'
     else
       status = 'stopped'
@@ -35,6 +36,9 @@ class Trepan::Subcommand::InfoProgram < Trepan::Subcommand
             (Debugger.breakpoints.index(event_arg)+1))
     when :catchpoint
       msg("Handling an uncaught exception `%s' (%s)." % [event_arg,  
+            event_arg.class])
+    when :"post-mortem"
+      msg("It stopped in post-mortem exception `%s' (%s)." % [event_arg,  
             event_arg.class])
     else
       msg "unknown reason: %s" % @proc.context.stop_reason.to_s

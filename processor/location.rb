@@ -16,17 +16,20 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
     unless defined?(EVENT2ICON)
       # Event icons used in printing locations.
       EVENT2ICON = {
-        'brkpt'          => 'xx',
+        'breakpoint'     => 'xx',
         'tbrkpt'         => 'x1',
         'c-call'         => 'C>',
         'c-return'       => '<C',
         'step-call'      => '->',
         'call'           => '->',
+        'catchpoint'     => '!!',
         'class'          => '::',
         'coverage'       => '[]',
         'debugger-call'  => ':o',
         'end'            => '-|',
         'line'           => '--',
+        'step'           => '--',
+        'post-mortem'    => ':/',
         'raise'          => '!!',
         'return'         => '<-',
         'start'          => '>>',

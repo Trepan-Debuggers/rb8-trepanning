@@ -5,11 +5,11 @@ debugger testing is on.
 Breakpoint 1 file bp_loop_issue.rb, line 2
 + break_loop_bug.cmd line 3: cont
 Breakpoint 1 at bp_loop_issue.rb:2
--- (bp_loop_issue.rb:2)
+xx (bp_loop_issue.rb:2)
 sleep 0.01
 + break_loop_bug.cmd line 4: cont
 Breakpoint 1 at bp_loop_issue.rb:2
--- (bp_loop_issue.rb:2)
+xx (bp_loop_issue.rb:2)
 sleep 0.01
 + break_loop_bug.cmd line 5: cont
 trepan8: That's all, folks...

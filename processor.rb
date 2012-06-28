@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010-2012 Rocky Bernstein <rockyb@rubyforge.net>
 # The main "driver" class for a command processor. Other parts of the 
 # command class and debugger command objects are pulled in from here.
 
@@ -254,7 +254,10 @@ module Trepan
       @context = context
       @state   = state
       frame_setup(@context, @state)
-      # @event = @core.event
+
+      # FIXME: put in a method 'compute_event'
+      @event  = @context.stop_reason.to_s
+      @event  = 'line' if @event == 'step'
 
       @unconditional_prehooks.run
       if @settings[:traceprint]
