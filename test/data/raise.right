@@ -7,7 +7,6 @@ Catch exception x.
 + raise.cmd line 7: catch ZeroDivisionError
 Catch exception ZeroDivisionError.
 + raise.cmd line 8: info catch
-x
 ZeroDivisionError
 + raise.cmd line 9: catch 5
 Warning 5 is not known to be a Class

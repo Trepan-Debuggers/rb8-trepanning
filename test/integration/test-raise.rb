@@ -14,8 +14,17 @@ class TestRaise < Test::Unit::TestCase
       RUBY_VERSION =~ /1.9/
     common_setup(__FILE__)
     Dir.chdir(@srcdir) do 
+      filter = Proc.new{|got_lines, correct_lines|
+        new_lines = []
+        got_lines.each do |s|
+          new_lines << s unless s == 'x'
+        end
+        got_lines[0..-1] = new_lines[0..-1]
+      }
       assert_equal(true, 
-                   run_debugger(@testname, @prefix + '../example/raise.rb'))
+                   run_debugger(@testname, 
+                                @prefix + '../example/raise.rb',
+                                nil, filter))
     end
   end
 end
