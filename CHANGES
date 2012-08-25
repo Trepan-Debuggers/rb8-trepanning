@@ -1,3 +1,6 @@
+- Incompatible change: Remove aliases 'd' and 'u' for down and up
+  respectively. gdb uses 'u' and 'd' to mean something different.
+
 Oct 27, 2011 (0.1.4)
 
 - POSIX shell -x (long form: --trace) fixed

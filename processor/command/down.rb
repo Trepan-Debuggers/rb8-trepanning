@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010-2012 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative 'up'
 
@@ -19,7 +19,6 @@ is the most recent frame. If no count is given, move down 1.
 See also 'up' and 'frame'.
   HELP
 
-    ALIASES       = %w(d)
     NAME          = File.basename(__FILE__, '.rb')
     SHORT_HELP    = 'Move frame in the direction of the caller of the last-selected frame'
   }
