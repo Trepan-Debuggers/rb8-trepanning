@@ -9,6 +9,6 @@ edit ../example/gcd.rb 5
 # File should not exist
 edit foo
 # Add space to the end of 'edit'
-edit 
+edit
 edit ../example/gcd.rb
 quit!

@@ -5,7 +5,7 @@ require_relative '../command'
 
 class Trepan::Command::EvalCommand < Trepan::Command
 
-  old_verbose = $VERBOSE  
+  old_verbose = $VERBOSE
   $VERBOSE    = nil
   NAME          = File.basename(__FILE__, '.rb')
   HELP    = <<-HELP
@@ -19,7 +19,7 @@ next to the inspect output of the value.
 
 If no string is given, we run the string from the current source code
 about to be run. If the command ends ? (via an alias) and no string is
-given we will the following translations occur:
+given, the following translations occur:
 
    {if|elsif|unless} expr [then]  => expr
    {until|while} expr [do]        => expr
@@ -38,7 +38,7 @@ Examples:
 #{NAME} @v
 #{NAME}      # Run current source-code line
 #{NAME}?     # but strips off leading 'if', 'while', ..
-             # from command 
+             # from command
 
 See also 'set autoeval'. The command helps one predict future execution.
 See 'set buffer trace' for showing what may have already been run.
@@ -48,14 +48,14 @@ See 'set buffer trace' for showing what may have already been run.
   CATEGORY      = 'data'
   NEED_STACK    = true
   SHORT_HELP    = 'Run code in the current context'
-  $VERBOSE      = old_verbose 
+  $VERBOSE      = old_verbose
 
   def complete(prefix)
-    if prefix.empty? 
+    if prefix.empty?
       if @proc.leading_str.start_with?('eval?')
         Trepan::Util.extract_expression(@proc.current_source_text)
       else
-        @proc.current_source_text 
+        @proc.current_source_text
       end
     else
       prefix
@@ -66,7 +66,7 @@ See 'set buffer trace' for showing what may have already been run.
     if args.size == 1
       text  = @proc.current_source_text.chomp
       ## FIXME turn into a subroutine and use in complete.
-      if  '?' == args[0][-1..-1] 
+      if  '?' == args[0][-1..-1]
         text = Trepan::Util::extract_expression(text)
         msg "eval: #{text}"
       end

@@ -12,13 +12,13 @@ module Trepan
   # see.  FIXME: Should we make ARGV an explicit parameter?
   def debug_program(ruby_path, options)
     # Make sure Ruby script syntax checks okay.
-    # Otherwise we get a load message that looks like trepan8 has 
-    # a problem. 
-    
+    # Otherwise we get a load message that looks like trepan8 has
+    # a problem.
+
     output = ruby_syntax_errors(Trepan::PROG_SCRIPT.inspect)
     if output
       puts output
-      exit $?.exitstatus 
+      exit $?.exitstatus
     end
 
     cmdproc = Debugger.handler.cmdproc
@@ -47,6 +47,14 @@ module Trepan
   # Do a shell-like path lookup for prog_script and return the results.
   # If we can't find anything return prog_script.
   def whence_file(prog_script)
+    if RbConfig::CONFIG['target_os'].start_with?('mingw')
+      if (prog_script =~ /^[a-zA-Z][:]/)
+        start = prog_script[2..2]
+        if [File::ALT_SEPARATOR, File::SEPARATOR].member?(start)
+          return prog_script
+        end
+      end
+    end
     if prog_script.start_with?(File::SEPARATOR) || prog_script.start_with?('.')
       # Don't search since this name has path is explicitly absolute or
       # relative.
@@ -69,11 +77,11 @@ module Trepan
   end
 end
 
-# Path name of Ruby interpreter we were invoked with. Is part of 
+# Path name of Ruby interpreter we were invoked with. Is part of
 # 1.9 but not necessarily 1.8.
 def RbConfig.ruby
-  File.join(RbConfig::CONFIG['bindir'],  
-            RbConfig::CONFIG['RUBY_INSTALL_NAME'] + 
+  File.join(RbConfig::CONFIG['bindir'],
+            RbConfig::CONFIG['RUBY_INSTALL_NAME'] +
             RbConfig::CONFIG['EXEEXT'])
 end unless defined? RbConfig.ruby
 
@@ -83,7 +91,7 @@ if __FILE__ == $0
   puts whence_file('irb')
   puts whence_file('probably-does-not-exist')
   puts RbConfig.ruby
-  puts "#{__FILE__} is syntactically correct" unless 
+  puts "#{__FILE__} is syntactically correct" unless
     ruby_syntax_errors(__FILE__)
   readme = File.join(File.dirname(__FILE__), '..', 'README.textile')
   puts "#{readme} is not syntactically correct" if

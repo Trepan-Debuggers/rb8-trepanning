@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# Copyright (C) 2013 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'
 require 'pp'
 require 'stringio'
@@ -18,10 +20,10 @@ module Trepan
     # The method is called when we want to do debugger command completion
     # such as called from GNU Readline with <TAB>.
     def self.completion_method(last_token, leading=nil)
-      if leading.nil? 
+      if leading.nil?
           if Readline.respond_to?(:line_buffer)
-            completion = 
-              Trepan.handler.cmdproc.complete(Readline.line_buffer, 
+            completion =
+              Trepan.handler.cmdproc.complete(Readline.line_buffer,
                                                 last_token)
           else
             completion = Trepan.handler.cmdproc.complete(last_token, '')
@@ -29,10 +31,10 @@ module Trepan
       else
         completion = Trepan.handler.cmdproc.complete(leading, last_token)
       end
-      if 1 == completion.size 
+      if 1 == completion.size
         completion_token = completion[0]
         if last_token.end_with?(' ')
-          if last_token.rstrip == completion_token 
+          if last_token.rstrip == completion_token
             # There is nothing more to complete
             []
           else
@@ -65,14 +67,14 @@ module Trepan
     # gdb-style annotation mode. Used in GNU Emacs interface
     attr_accessor :annotate
 
-    # in remote mode, wait for the remote connection 
+    # in remote mode, wait for the remote connection
     attr_accessor :wait_connection
 
     # If start_sentinal is set, it is a string to look for in caller()
     # and is used to see if the call stack is truncated. Is also
     # defined in app/default.rb
-    attr_accessor :start_sentinal 
-    
+    attr_accessor :start_sentinal
+
     attr_reader :thread, :control_thread, :cmd_port, :ctrl_port
 
     def interface=(value) # :nodoc:
@@ -101,37 +103,37 @@ module Trepan
     # <i>Note that if you want to stop debugger, you must call
     # Trepan.stop as many time as you called Trepan.start
     # method.</i>
-    # 
+    #
     # +options+ is a hash used to set various debugging options.
     # Set :init true if you want to save ARGV and some variables which
     # make a debugger restart possible. Only the first time :init is set true
-    # will values get set. Since ARGV is saved, you should make sure 
-    # it hasn't been changed before the (first) call. 
+    # will values get set. Since ARGV is saved, you should make sure
+    # it hasn't been changed before the (first) call.
     # Set :post_mortem true if you want to enter post-mortem debugging
     # on an uncaught exception. Once post-mortem debugging is set, it can't
     # be unset.
     def start(options={}, &block)
       options = Trepan::DEFAULT_START_SETTINGS.merge(options)
       if options[:init]
-        Trepan.const_set('ARGV', ARGV.clone) unless 
+        Trepan.const_set('ARGV', ARGV.clone) unless
           defined? Trepan::ARGV
-        Trepan.const_set('PROG_SCRIPT', $0) unless 
+        Trepan.const_set('PROG_SCRIPT', $0) unless
           defined? Trepan::PROG_SCRIPT
-        Trepan.const_set('INITIAL_DIR', Dir.pwd) unless 
+        Trepan.const_set('INITIAL_DIR', Dir.pwd) unless
           defined? Trepan::INITIAL_DIR
       end
       Trepan.tracing = options[:tracing] unless options[:tracing].nil?
-      retval = Debugger.started? ? block && block.call(self) : Debugger.start_(&block) 
+      retval = Debugger.started? ? block && block.call(self) : Debugger.start_(&block)
       if options[:post_mortem]
         post_mortem
       end
       return retval
     end
-    
+
     def started?
       Debugger.started?
     end
-    
+
     #
     # Starts a remote debugger.
     #
@@ -150,12 +152,12 @@ module Trepan
       end
 
       ctrl_port = start_control(host, ctrl_port)
-      
+
       yield if block_given?
-      
+
       mutex = Mutex.new
       proceed = ConditionVariable.new
-      
+
       server = TCPServer.new(host, cmd_port)
       @cmd_port = cmd_port = server.addr[1]
       @thread = Debugger::DebugThread.new do
@@ -171,11 +173,11 @@ module Trepan
       if wait_connection
         mutex.synchronize do
           proceed.wait(mutex)
-        end 
+        end
       end
     end
     alias start_server start_remote
-    
+
     def start_control(host = nil, ctrl_port = PORT + 1) # :nodoc:
       raise "Debugger is not started" unless started?
       return @ctrl_port if defined?(@control_thread) && @control_thread
@@ -190,7 +192,7 @@ module Trepan
       end
       @ctrl_port
     end
-    
+
     #
     # Connects to the remote debugger
     #
@@ -199,10 +201,10 @@ module Trepan
       interface = Trepan::LocalInterface.new
       socket = TCPSocket.new(host, port)
       puts "Connected."
-      
+
       catch(:exit) do
         while (line = socket.gets)
-          case line 
+          case line
           when /^PROMPT (.*)$/
             input = interface.read_command($1)
             throw :exit unless input
@@ -231,14 +233,14 @@ module Trepan
       end
       @@intf << Trepan::ScriptInterface.new(cmdfile, @output, opts)
     end
-    
+
     def add_startup_files()
       seen = {}
       cwd_initfile = File.join('.', Trepan::CMD_INITFILE_BASE)
       [cwd_initfile, Trepan::CMD_INITFILE].each do |initfile|
         full_initfile_path = File.expand_path(initfile)
         next if seen[full_initfile_path]
-        add_command_file(full_initfile_path) if 
+        add_command_file(full_initfile_path) if
           File.readable?(full_initfile_path)
         seen[full_initfile_path] = true
       end
@@ -249,7 +251,7 @@ module Trepan
       puts caller
       exit
       settings[:cmdfiles].each do |item|
-        cmdfile, opts = 
+        cmdfile, opts =
           if item.kind_of?(Array)
             item
           else

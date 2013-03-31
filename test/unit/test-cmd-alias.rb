@@ -33,8 +33,8 @@ class TestCommandAliasUnalias < Test::Unit::TestCase
   def alias_defined?(alias_name)
     @cmdproc.aliases.member?(alias_name)
   end
-  
-  def test_alias_command
+
+  def test_alias_unalias_command
 
     assert_equal(false, @cmdproc.aliases.empty?,
                  'There should be some aliases defined')

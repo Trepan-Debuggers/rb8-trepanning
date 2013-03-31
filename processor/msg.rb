@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010-2011, 2013 Rocky Bernstein <rockyb@rubyforge.net>
 # I/O related command processor methods
 require 'rubygems'; require 'require_relative'
 require_relative '../app/util'
@@ -23,8 +23,8 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
       message = safe_rep(message) unless opts[:unlimited]
     end
     if @settings[:highlight] && defined?(Term::ANSIColor)
-      message = 
-        Term::ANSIColor.italic + message + Term::ANSIColor.reset 
+      message =
+        Term::ANSIColor.italic + message + Term::ANSIColor.reset
     end
     @intf.errmsg(message)
   end
@@ -65,8 +65,8 @@ class Trepan::CmdProcessor < Trepan::VirtualCmdProcessor
   def section(message, opts={})
     message = safe_rep(message) unless opts[:unlimited]
     if @settings[:highlight] && defined?(Term::ANSIColor)
-      message = 
-        Term::ANSIColor.bold + message + Term::ANSIColor.reset 
+      message =
+        Term::ANSIColor.bold + message + Term::ANSIColor.reset
     end
     @intf.msg(message)
   end

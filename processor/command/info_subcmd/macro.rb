@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010-2011, 2013 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../base/subcmd'
 require_relative '../../../app/complete'
@@ -8,14 +8,14 @@ class Trepan::Subcommand::InfoMacro < Trepan::Subcommand
   unless defined?(HELP)
     Trepanning::Subcommand.set_name_prefix(__FILE__, self)
     HELP = <<-HELP
-#{CMD} 
+#{CMD}
 #{CMD} *
 #{CMD} MACRO1 [MACRO2 ..]
 
 In the first form a list of the existing macro names are shown
 in column format.
 
-In the second form, all macro names and their definitions are show.
+In the second form, all macro names and their definitions are shown.
 
 In the last form the only definitions of the given macro names is shown.
     HELP
@@ -29,12 +29,12 @@ In the last form the only definitions of the given macro names is shown.
 
   def run(args)
     if args.size > 2
-      macro_names = 
-        if args.size == 3 && '*' == args[2] 
+      macro_names =
+        if args.size == 3 && '*' == args[2]
           @proc.macros.keys
         else
           args[2..-1]
-        end        
+        end
       macro_names.each do |macro_name|
         if @proc.macros.member?(macro_name)
           section "#{macro_name}:"

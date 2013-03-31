@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
 #=== Summary
-# Parses command-line options. 
+# Parses command-line options.
 
 require 'optparse'
 module Trepan
@@ -21,7 +21,7 @@ module Trepan
   def copy_default_options
     options = {}
     DEFAULT_CMDLINE_SETTINGS.each do |key, value|
-      begin 
+      begin
         options[key] = value.clone
       rescue TypeError
         options[key] = value
@@ -46,8 +46,8 @@ EOB
           options[:client] = true
         end
       end
-      opts.on('-c', '--command FILE', String, 
-              'Execute debugger commands from FILE') do |cmdfile| 
+      opts.on('-c', '--command FILE', String,
+              'Execute debugger commands from FILE') do |cmdfile|
         if File.readable?(cmdfile)
           options[:cmdfiles] << cmdfile
         elsif File.exists?(cmdfile)
@@ -56,7 +56,7 @@ EOB
           stderr.puts "Command file '#{cmdfile}' does not exist."
         end
       end
-      opts.on('--cd DIR', String, 'Change current directory to DIR') do |dir| 
+      opts.on('--cd DIR', String, 'Change current directory to DIR') do |dir|
         if File.directory?(dir)
           if File.executable?(dir)
             options[:chdir] = dir
@@ -67,14 +67,14 @@ EOB
           stderr.puts "\"#{dir}\" is not a directory. Option --cd ignored."
         end
       end
-      opts.on('--basename', 
-              'Show only file basename in file locations') do 
+      opts.on('--basename',
+              'Show only file basename in file locations') do
         options[:basename] = true
       end
-      opts.on('-d', '--debug', 'Set $DEBUG=true') do 
+      opts.on('-d', '--debug', 'Set $DEBUG=true') do
         $DEBUG = true
       end
-      opts.on('--cport PORT', Integer, 'Port used for control commands') do 
+      opts.on('--cport PORT', Integer, 'Port used for control commands') do
         |cport|
         options[:cport] = cport
       end
@@ -89,23 +89,23 @@ EOB
           end
           unless LineCache.respond_to?(:clear_file_format_cache)
             stderr.puts "Your version of LineCache doesn't support terminal highlight"
-            options[:higlight] = false 
+            options[:higlight] = false
           end
         end
       end
-      opts.on('-h', '--host NAME', String, 
-              'Host or IP used in TCP connections for --server or --client. ' + 
-              "Default is #{DEFAULT_SETTINGS[:host].inspect}.") do 
-        |name_or_ip| 
+      opts.on('-h', '--host NAME', String,
+              'Host or IP used in TCP connections for --server or --client. ' +
+              "Default is #{DEFAULT_SETTINGS[:host].inspect}.") do
+        |name_or_ip|
         options[:host] = name_or_ip
       end
       opts.on('-I', '--include PATH', String, 'Add PATH to $LOAD_PATH') do |path|
         $LOAD_PATH.unshift(path)
       end
-      opts.on('--keep-frame-binding', 'Keep frame bindings') do 
+      opts.on('--keep-frame-binding', 'Keep frame bindings') do
         options[:frame_bind] = true
       end
-      opts.on('-m', '--post-mortem', 'Activate post-mortem mode') do 
+      opts.on('-m', '--post-mortem', 'Activate post-mortem mode') do
         options[:post_mortem] = true
       end
       opts.on('--nx',
@@ -115,10 +115,10 @@ EOB
       opts.on('--[no-]control', 'Start [not] control thread') do |v|
         options[:control] = v
       end
-      opts.on('-p', '--port NUMBER', Integer, 
-              'Port number used in TCP connections for --server or --client. ' + 
-              "Default is #{DEFAULT_SETTINGS[:port]}.") do 
-        |num| 
+      opts.on('-p', '--port NUMBER', Integer,
+              'Port number used in TCP connections for --server or --client. ' +
+              "Default is #{DEFAULT_SETTINGS[:port]}.") do
+        |num|
         options[:port] = num
       end
       opts.on('--[no-]quit', 'Do [not] quit when script finishes') do |v|
@@ -143,7 +143,7 @@ EOB
       opts.on('--[no-]stop', 'Do not stop when script is loaded') do |v|
         options[:stop] = v
       end
-      opts.on('--script FILE', String, 'Name of the script file to run') do 
+      opts.on('--script FILE', String, 'Name of the script file to run') do
         |script|
         options[:script] = script
         unless File.exists?(options[:script])
@@ -162,7 +162,7 @@ EOB
       opts.on('-w', '--wait', 'Wait for a client connection; implies -s option') do
         options[:wait] = true
       end
-      opts.on('-x', '--trace', 'Turn on line tracing') do 
+      opts.on('-x', '--trace', 'Turn on line tracing') do
         options[:traceprint] = true
         options[:nx] = true
       end
@@ -170,9 +170,9 @@ EOB
       opts.on_tail('-?', '--help', 'Show this message') do
         options[:help] = true
         stdout.puts opts
-        exit 
+        exit
       end
-      opts.on_tail('-v', '--version', 
+      opts.on_tail('-v', '--version',
                    'print the version') do
         options[:version] = true
         stdout.puts show_version

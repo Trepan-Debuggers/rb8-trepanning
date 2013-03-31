@@ -1,8 +1,9 @@
-# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010-2011, 2013 Rocky Bernstein <rockyb@rubyforge.net>
 
 # Trepan command input validation routines.  A String type is
 # usually passed in as the argument to validation routines.
 
+require 'rbconfig'
 require 'rubygems'
 require 'require_relative'
 begin
@@ -23,7 +24,7 @@ require_relative 'msg'      # for errmsg, msg
 
 module Trepan
   class CmdProcessor < VirtualCmdProcessor
-  
+
     attr_reader :file_exists_proc  # Like File.exists? but checks using
                                    # cached files
 
@@ -36,7 +37,7 @@ module Trepan
     def confirm(msg, default)
       @settings[:confirm] ? @intf.confirm(msg, default) : true
     end
-    
+
   # Like cmdfns.get_an_int(), but if there's a stack frame use that
     # in evaluation.
     def get_an_int(arg, opts={})
@@ -60,19 +61,19 @@ module Trepan
       end
       return ret_value
     end
-    
+
     unless defined?(DEFAULT_GET_INT_OPTS)
       DEFAULT_GET_INT_OPTS = {
         :min_value => 0, :default => 1, :cmdname => nil, :max_value => nil}
     end
-    
+
     # If argument parameter 'arg' is not given, then use what is in
     # opts[:default]. If String 'arg' evaluates to an integer between
     # least min_value and at_most, use that. Otherwise report an
     # error.  If there's a stack frame use that for bindings in
     # evaluation.
     def get_int(arg, opts={})
-      
+
       return default unless arg
       opts = DEFAULT_GET_INT_OPTS.merge(opts)
       val = arg ? get_int_noerr(arg) : opts[:default]
@@ -85,7 +86,7 @@ module Trepan
         end
         return nil
       end
-      
+
       if val < opts[:min_value]
         if opts[:cmdname]
           errmsg(("Command '%s' expects an integer at least" +
@@ -110,11 +111,11 @@ module Trepan
       end
       return val
     end
-    
+
     def get_int_list(args, opts={})
       args.map{|arg| get_an_int(arg, opts)}.compact
     end
-    
+
     # Eval arg and it is an integer return the value. Otherwise
     # return nil
     def get_int_noerr(arg)
@@ -122,10 +123,10 @@ module Trepan
       val = Integer(eval(arg, b))
     rescue SyntaxError
       nil
-    rescue 
+    rescue
       nil
     end
-    
+
     def get_thread_from_string(id_or_num_str)
       if id_or_num_str == '.'
         Thread.current
@@ -140,7 +141,7 @@ module Trepan
         end
       end
     end
-    
+
     # Parse a breakpoint position. On success return:
     #   - the Method the position is in
     #   - the file name - a Fixnum
@@ -155,7 +156,7 @@ module Trepan
                         end
       return [nil] * 5 unless break_cmd_parse
       tail = [break_cmd_parse.condition, break_cmd_parse.negate]
-      cm, file, line, position_type = 
+      cm, file, line, position_type =
         parse_position(break_cmd_parse.position)
       if cm or file or line
         return [cm, file, line, position_type] + tail
@@ -163,7 +164,7 @@ module Trepan
       errmsg("Unable to get breakpoint position for #{position_str}")
       return [nil] * 5
     end
-    
+
     # Return true if arg is 'on' or 1 and false arg is 'off' or 0.
     # Any other value is raises TypeError.
     def get_onoff(arg, default=nil, print_error=true)
@@ -179,16 +180,16 @@ module Trepan
       darg = arg.downcase
       return true  if arg == '1' || darg == 'on'
       return false if arg == '0' || darg =='off'
-      
+
       errmsg("Expecting 'on', 1, 'off', or 0. Got: %s." % arg.to_s) if
         print_error
       raise TypeError
     end
-    
+
     include Trepan::CmdParser
-    
+
     def get_method(meth)
-      start_binding = 
+      start_binding =
         begin
           @frame.binding
         rescue
@@ -205,13 +206,13 @@ module Trepan
         end
       end
     end
-    
-    # FIXME: this is a ? method but we return 
-    # the method value. 
+
+    # FIXME: this is a ? method but we return
+    # the method value.
     def method?(meth)
       get_method(meth)
     end
-    
+
     # parse_position(self)->(meth, filename, offset, offset_type)
     # See app/cmd_parser.kpeg for the syntax of a position which
     # should include things like:
@@ -219,6 +220,14 @@ module Trepan
     # Make sure it works for C:\foo\bar.py:12
     def parse_position(info)
       info = parse_location(info) if info.kind_of?(String)
+      ## FIXME: push into parse
+      if RbConfig::CONFIG['target_os'].start_with?('mingw') and
+          info =~ /^[A-Za-z]:/
+        drive_letter = info[0..1]
+        info = info[2..-1]
+      else
+        drive_leter = nil
+      end
       case info.container_type
       when :fn
         unless info.container
@@ -227,7 +236,7 @@ module Trepan
         end
         if cm = method?(info.container)
           ## Add bogus - canonic_file: active-path
-          return [cm, 'bogus', info.position, 
+          return [cm, 'bogus', info.position,
                   info.position_type]
         else
           return [nil] * 4
@@ -235,13 +244,13 @@ module Trepan
       when :file
         ## filename = canonic_file(info.container)
         filename = info.container
-        # cm = 
-        #   if canonic_file(@frame.file) == filename 
+        # cm =
+        #   if canonic_file(@frame.file) == filename
         #     cm = @frame.method
         #     if :line == info.position_type
         #       find_method_with_line(cm, info.position)
         #     end
-        #   else 
+        #   else
         #     LineCache.compiled_method(filename)
         #   end
         return nil, filename,  info.position, info.position_type
@@ -265,9 +274,9 @@ module Trepan
         return [nil] * 4
       end
     end
-    
+
     def parse_method(meth_str)
-      begin 
+      begin
         meth_for_string(meth_str, @frame.binding)
       rescue NameError
         nil
@@ -275,7 +284,7 @@ module Trepan
         nil
       end
     end
-    
+
     def validate_initialize
       ## top_srcdir = File.expand_path(File.join(File.dirname(__FILE__), '..'))
       ## @dbgr_script_iseqs, @dbgr_iseqs = filter_scripts(top_srcdir)
@@ -296,15 +305,15 @@ if __FILE__ == $0
   # FIXME have to pull in main for its initalize routine
   DIRNAME = File.dirname(__FILE__)
   load File.join(DIRNAME, 'main.rb')
-  
+
   require_relative 'mock'
   dbgr, cmd = MockDebugger::setup('exit', false)
   cmdproc  = cmd.proc
   onoff = %w(1 0 on off)
   onoff.each { |val| puts "onoff(#{val}) = #{cmdproc.get_onoff(val)}" }
   cmdproc.frame.instance_variable_set('@binding', binding)
-  %w(1 1E bad 1+1 -5).each do |val| 
-    puts "get_int_noerr(#{val}) = #{cmdproc.get_int_noerr(val).inspect}" 
+  %w(1 1E bad 1+1 -5).each do |val|
+    puts "get_int_noerr(#{val}) = #{cmdproc.get_int_noerr(val).inspect}"
   end
   def foo; 5 end
   def cmdproc.errmsg(msg)
@@ -322,7 +331,7 @@ if __FILE__ == $0
 
   puts "To be continued...."
   exit
-  
+
   cmdproc.method?('cmdproc.errmsg')
   puts '=' * 40
   ['Array.map', 'Trepan::CmdProcessor.new',
@@ -330,11 +339,11 @@ if __FILE__ == $0
     puts "#{str} should be true: #{cmdproc.method?(str).inspect}"
   end
   puts '=' * 40
-  
+
   # FIXME:
   # Array#foo should be false: true
   # Trepan::CmdProcessor.allocate should be false: true
-  
+
   ['food', '.errmsg'].each do |str|
     puts "#{str} should be false: #{cmdproc.method?(str).inspect}"
   end

@@ -10,8 +10,8 @@ def gemspec
   @gemspec ||= eval(File.read(Gemspec_filename), binding, Gemspec_filename)
 end
 
-require 'rake/gempackagetask'
-desc 'Build the gem'
+require 'rubygems/package_task'
+desc "Build the gem"
 task :package=>:gem
 task :gem=>:gemspec do
   Dir.chdir(ROOT_DIR) do
@@ -86,9 +86,9 @@ Rake::TestTask.new(:'test:integration') do |t|
   t.options = '--verbose' if $VERBOSE
 end
 
-desc 'Test everything - unit and functional tests.'
+desc 'Test everything - unit, functional, and integration tests.'
 task :test do
-  exceptions = %w(test:unit test:integration).collect do |task|
+  exceptions = %w(test:unit test:functional test:integration).collect do |task|
     begin
       Rake::Task[task].invoke
       nil
@@ -96,7 +96,7 @@ task :test do
       e
     end
   end.compact
-  
+
   exceptions.each {|e| puts e;puts e.backtrace }
   raise 'Test failures' unless exceptions.empty?
 end
@@ -153,12 +153,12 @@ end
 desc 'Generate command parser.'
 task :'cmd_parse' do
   require 'tmpdir'
-  temp_file = 
-    File.join(Dir.tmpdir, 
+  temp_file =
+    File.join(Dir.tmpdir,
               Dir::Tmpname.make_tmpname(['cmd_parser_', '.rb'], nil))
 
-  sh('kpeg --name CmdParse --verbose --stand-alone  ' + 
-     "#{File.join(ROOT_DIR, %w(app cmd_parse.kpeg))} " + 
+  sh("kpeg --name CmdParse --verbose --stand-alone  " +
+     "#{File.join(ROOT_DIR, %w(app cmd_parse.kpeg))} " +
      "--output #{temp_file}")
 end
 
@@ -182,13 +182,13 @@ task :gemspec do
 end
 
 # ---------  RDoc Documentation ------
-require 'rake/rdoctask'
-desc 'Generate rdoc documentation'
-Rake::RDocTask.new('rdoc') do |rdoc|
+require 'rdoc/task'
+desc "Generate rdoc documentation"
+Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = "Trepanning #{Trepan::VERSION} Documentation"
 
-  rdoc.rdoc_files.include(%w(lib/*.rb 
+  rdoc.rdoc_files.include(%w(lib/*.rb
                           app/*.rb intf/*.rb io/*.rb
                           bin/trepan8
                          ))
@@ -207,14 +207,14 @@ end
 
 desc 'Remove residue from running patch'
 task :rm_patch_residue do
-  FileUtils.rm_rf FileList['**/*.{rej,orig}'].to_a, :verbose => true
+  FileUtils.rm_rf FileList['**/*.{rej,orig}'].to_a
 end
 
 desc 'Remove ~ backup files'
 task :rm_tilde_backups do
   FileUtils.rm_rf Dir.glob('**/*~'), :verbose => true
-  FileUtils.rm_rf Dir.glob('**/*.rbc'), :verbose => true
 end
 
 desc 'Remove built files'
-task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue, :rm_tilde_backups]
+task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue,
+                :rm_tilde_backups]

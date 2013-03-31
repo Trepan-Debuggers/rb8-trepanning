@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2011, 2013 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../command'
 
 class Trepan::Command::EditCommand < Trepan::Command
 
-  old_verbose = $VERBOSE  
+  old_verbose = $VERBOSE
   $VERBOSE    = nil
   NAME        = File.basename(__FILE__, '.rb')
   HELP    = <<-HELP
@@ -30,7 +30,7 @@ Examples:
   NEED_STACK    = false
   SHORT_HELP    = 'Invoke an editor on some source code'
   MAX_ARGS      = 2
-  $VERBOSE      = old_verbose 
+  $VERBOSE      = old_verbose
 
   # FIXME: redo with locations and kparse.
   def run(args)
@@ -38,28 +38,32 @@ Examples:
     when 1
       unless @proc.context
         errmsg "We are not in a state that has an associated file."
-        return 
+        return
       end
       file = @proc.frame.file
       line = @proc.frame.line
     when 2
       line = Integer(args[1]) rescue nil
-      if line 
+      if line
         unless @proc.context
           errmsg "We are not in a state that has an associated file."
-          return 
+          return
         end
         file = @proc.frame.file
-      else 
+      else
         file = args[1]
         line = 1
       end
     when 3
       line, file =  args[2], args[1]
     else
-      errmsg "edit needs at most 2 args." 
+      errmsg "edit needs at most 2 args."
     end
     editor = ENV['EDITOR'] || '/bin/ex'
+    unless File.executable?(editor)
+      errmsg "Editor #{editor} is not executable. Trying anyway..."
+    end
+
     if File.readable?(file)
       file = File.basename(file) if settings[:basename]
       edit_cmd = "#{editor} +#{line} \"#{file}\""

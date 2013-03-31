@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+# Copyright (C) 2010-2011, 2013 Rocky Bernstein <rockyb@rubyforge.net>
 require 'rubygems'; require 'require_relative'
 require_relative '../command'
 require_relative '../eval'
@@ -37,25 +37,25 @@ could do that this way:
 
   macro fin+ Proc.new{|*args| ['finish \#{args[0]}' 'step']}
 
-Invoking with 
+Invoking with
   fin+ 3
 
 would expand to ["finish 3", "step"]
 
-If you were to add another parameter for 'step', the note that the 
+If you were to add another parameter for 'step', the note that the
 invocation might be:
   fin+ 3 2
 
 rather than 'fin+(3,2)' or 'fin+ 3, 2'.
 
-See also 'show macro'.
+See also 'alias' and 'info macro'.
     HELP
 
     CATEGORY      = 'support'
     MIN_ARGS      = 2  # Need at least this many
     SHORT_HELP    = 'Define a macro'
   end
-  
+
   def run(args)
     cmd_name = args[1]
     cmd_argstr = @proc.cmd_argstr[cmd_name.size..-1].lstrip
@@ -70,7 +70,7 @@ See also 'show macro'.
     end
   end
 end
-        
+
 if __FILE__ == $0
   require_relative '../mock'
   dbgr, cmd = MockDebugger::setup

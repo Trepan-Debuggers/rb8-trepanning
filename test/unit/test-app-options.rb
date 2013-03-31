@@ -31,7 +31,13 @@ class TestAppOptions < Test::Unit::TestCase
     assert_equal(orig_cd, @options[:chdir])
     assert_not_equal('', @stderr.string)
     assert_equal('', @stdout.string)
-    File.unlink tf.path
+    # Looks like on various MinGW systems Tempfile and tf.path and unlike don't
+    # work together
+    begin
+      File.unlink tf.path
+    rescue
+    end
+
     # FIXME: add test where directory isn't executable.
   end
 
@@ -53,7 +59,7 @@ class TestAppOptions < Test::Unit::TestCase
   end
 
   def no_test_help_and_version_opts
-    omit unless Process.respond_to?(:fork) 
+    omit unless Process.respond_to?(:fork)
     Process.fork {
       %w(help version).each do |name|
         setup
@@ -88,7 +94,7 @@ class TestAppOptions < Test::Unit::TestCase
     assert_equal(true, @options[:client])
     ## FIXME - reinstate
     ## assert_equal(false, @options[:server])
-    
+
   end
 
 end
