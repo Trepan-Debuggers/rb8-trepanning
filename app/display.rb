@@ -13,14 +13,14 @@ end
 
 # Manage a list of display expressions.
 class DisplayMgr
-  
+
   def initialize
     @next = 0
     @list = []
   end
-  
+
   def [](index)
-    raise TypeError, 
+    raise TypeError,
     "index #{index} should be a Fixnum, is #{index.class}" unless
       index.is_a?(Fixnum)
     @list.detect {|disp| disp.number == index }
@@ -108,7 +108,7 @@ class Display
   attr_reader   :number
   attr_reader   :signature
   attr_accessor :enabled
-  
+
   def initialize(frame, arg, fmt, number)
     @signature = display_signature(frame)
     @fmt       = fmt
@@ -135,7 +135,7 @@ class Display
 
   def to_s(frame)
     return 'No symbol "' + @arg + '" in current context.' unless frame
-    
+
     begin
       val = eval(@arg, frame.binding)
     rescue
@@ -148,7 +148,7 @@ class Display
   # format display item
   def format(show_enabled=true)
     what = ''
-    what += @enabled ? ' y ' : ' n ' if 
+    what += @enabled ? ' y ' : ' n ' if
       show_enabled
     what += (@fmt + ' ') if @fmt
     what += @arg if @arg
@@ -167,7 +167,7 @@ if __FILE__ == $0
     mgr.all.each {|line| puts line}
     puts '=' * 40
   end
-    
+
   frame = Debugger.current_context
 
   x = 1

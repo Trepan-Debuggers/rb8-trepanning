@@ -1,3 +1,14 @@
+Mar 31, 2013 (0.1.6)
+
+- Command completion includes macro names. Some completion output is now
+  sorted
+
+- Small document fixes. Some trailing blanks removed from source-code
+
+- More Windows and MinGW tolerance
+
+
+Aug 08, 2012 (0.1.5)
 - Incompatible change: Remove aliases 'd' and 'u' for down and up
   respectively. gdb uses 'u' and 'd' to mean something different.
 
@@ -20,7 +31,7 @@ New features
  - tab completion (more complete on MRI 1.8.7 rb-readline gem used)
  - parsetree (if ParseTree installed)
 
-New commands from trepanning: 
+New commands from trepanning:
  - gdb-like "confirm" to turn on/off prompting of dangerous commands
 - "eval" and "eval?" without args to run parts of the current source line
 - macros
@@ -29,16 +40,16 @@ New commands from trepanning:
 - unique command abbrev (or not if "set abbrev off")
 - new "!" suffix on "quit" and "kill" command, e.g. "q!", to avoid prompting.
 
-Incompatibilities: 
+Incompatibilities:
 - autoeval is on by default
 - ";;" separates debugger commands so you can use ";" in eval
 - some possibliy lesser-used commands have been dropped. If people notice,
   they can be reinstated.
 - p is now pr to avoid eval confusion with Ruby's "p" method
 - dropped support for annotations and ruby-debug emacs. Use newer emacs-dbgr
-- some commands have been moved to closer match gdb: 
+- some commands have been moved to closer match gdb:
    * threads -> info threads
-   * reload  -> set reload 
+   * reload  -> set reload
    * trace   -> set trace
 
 This sort of works for an unpatched MRI 1.9. Better is a patched MRI

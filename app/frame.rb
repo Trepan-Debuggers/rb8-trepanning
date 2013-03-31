@@ -12,7 +12,7 @@ module Trepan
     end
 
     def reset
-      @binding = @klass = @file = @line = 
+      @binding = @klass = @file = @line =
         @local_variables = @method_name = @thread = nil
     end
 
@@ -42,19 +42,19 @@ module Trepan
           if opts[:callstyle] == :tracked
             arg_info = @context.frame_args_info(@index)
           end
-          call_str << "#{klass}." 
+          call_str << "#{klass}."
         end
         call_str << method_name
         if args.any?
           call_str << "("
           args.each_with_index do |name, i|
-            case opts[:callstyle] 
+            case opts[:callstyle]
             when :short
               call_str += "%s, " % [name]
             when :last
               klass = locals[name].class
               if klass.inspect.size > 20+3
-                klass = klass.inspect[0..20]+"..." 
+                klass = klass.inspect[0..20]+"..."
               end
               call_str += "%s#%s, " % [name, klass]
             when :tracked
@@ -70,7 +70,7 @@ module Trepan
               break
             end
           end
-          call_str[-2..-1] = ")" # Strip off trailing ', ' if any 
+          call_str[-2..-1] = ")" # Strip off trailing ', ' if any
         end
       end
       return call_str
@@ -149,12 +149,12 @@ if __FILE__ == $0
   def foo(str, num)
     x = 1
     context = Debugger.current_context
-    Debugger.skip do 
+    Debugger.skip do
       0.upto(Debugger.current_context.stack_size-1) do |i|
         frame = Trepan::Frame.new(context)
         frame.index = i
-        puts "Frame #{i}: #{frame.file}, line #{frame.line}, " + 
-          "class #{frame.klass}, thread: #{frame.thread}, " + 
+        puts "Frame #{i}: #{frame.file}, line #{frame.line}, " +
+          "class #{frame.klass}, thread: #{frame.thread}, " +
           "method: #{frame.method_name}"
         p frame.local_variables
         puts frame.describe(:maxwidth => 80, :callstyle=>:tracked)

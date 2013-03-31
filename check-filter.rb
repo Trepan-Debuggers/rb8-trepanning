@@ -9,7 +9,7 @@ pats = ["^(?:Loaded",
         "Making check in",
         'Test run options',
         "^Loaded suite",
-        '^(?:re)?make\[', 
+        '^(?:re)?make\[',
         '^##[<>]+'
        ].join('|') + ')'
 # puts pats
