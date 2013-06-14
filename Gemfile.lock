@@ -8,6 +8,8 @@ GEM
     json (1.8.0)
     rake (10.0.4)
     rbx-require-relative (0.0.4)
+    ruby-debug-base (0.10.4)
+       linecache (0.3)
     rdoc (4.0.1)
       json (~> 1.4)
 
@@ -15,6 +17,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  columnize!
+  columnize
+  rbx-require-relative
+  ruby-debug-base
   rake
   rdoc

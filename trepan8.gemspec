@@ -2,11 +2,11 @@
 # -*- encoding: utf-8 -*-
 require 'rake'
 unless Object.const_defined?(:'Trepan')
-  if RUBY_VERSION =~ /^1.9.2/
+  if RUBY_VERSION =~ /^1.9.[23]/
     require File.expand_path(File.dirname(__FILE__) + '/app/options')
   else
     require 'rubygems'; require 'require_relative'
-    require_relative './app/options' 
+    require_relative './app/options'
   end
 end
 
@@ -29,8 +29,9 @@ EOF
   # spec.add_dependency('rb-trace', '>= 0.5')
 
   spec.add_dependency('rbx-require-relative', '> 0.0.4')
-  spec.add_dependency('rdoc', '> 2.4.2')
   spec.add_dependency('columnize')
+  spec.add_development_dependency('rdoc', '> 2.4.2')
+  spec.add_development_dependency('rake')
   spec.author       = 'R. Bernstein'
   spec.bindir       = 'bin'
   spec.email        = 'rockyb@rubyforge.net'
