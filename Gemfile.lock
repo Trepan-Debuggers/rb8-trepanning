@@ -18,7 +18,7 @@ PLATFORMS
 
 DEPENDENCIES
   columnize
-  rbx-require-relative
+  require-relative
   ruby-debug-base
   rake
   rdoc
