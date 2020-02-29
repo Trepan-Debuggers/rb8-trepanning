@@ -1,15 +1,17 @@
 PATH
   remote: .
+  specs:
+    rb8-trepanning (0.0.1)
+      columnize
+      rbx-require-relative (> 0.0.4)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    columnize (0.3.6)
+    columnize (0.9.0)
     json (1.8.0)
-    rake (10.0.4)
-    rbx-require-relative (0.0.4)
-    ruby-debug-base (0.10.4)
-       linecache (0.3)
+    rake (13.0.1)
+    rbx-require-relative (0.0.9)
     rdoc (4.0.1)
       json (~> 1.4)
 
@@ -17,8 +19,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  columnize
-  require-relative
-  ruby-debug-base
   rake
-  rdoc
+  rb8-trepanning!
+  rdoc (> 2.4.2)
